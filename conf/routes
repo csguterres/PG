@@ -1,0 +1,11 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                           br.ufes.scap.controllers.ApplicationController.index
+GET    /add                        br.ufes.scap.controllers.ApplicationController.addUser
+POST    /add                        br.ufes.scap.controllers.ApplicationController.addUser
+GET     /delete/:id                 br.ufes.scap.controllers.ApplicationController.deleteUser(id : Long)
+GET     /edit/:id                   br.ufes.scap.controllers.ApplicationController.editUser(id : Long)
+POST     /update/:id                   br.ufes.scap.controllers.ApplicationController.updateUser(id : Long)
