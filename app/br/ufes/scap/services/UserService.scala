@@ -33,4 +33,5 @@ object UserService {
   def getUserByMatricula(matricula : String): Future[Seq[User]] = {
     Users.getByMatricula(matricula)
   }
+  
 }

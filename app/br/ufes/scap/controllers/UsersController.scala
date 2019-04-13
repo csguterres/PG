@@ -2,13 +2,12 @@ package br.ufes.scap.controllers
 
 import br.ufes.scap.models.{User, UserForm}
 import play.api.mvc._
-import scala.concurrent.Future
 import br.ufes.scap.services.UserService
 import scala.concurrent.ExecutionContext.Implicits.global
 import javax.inject.Inject
 import scala.concurrent.Future
 
-class ApplicationController extends Controller { 
+class UsersController extends Controller { 
 
   def index = Action.async { implicit request =>
     UserService.listAllUsers map { users =>

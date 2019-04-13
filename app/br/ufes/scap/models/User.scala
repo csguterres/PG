@@ -4,7 +4,6 @@ import play.api.mvc._
 import play.api.data.Form
 import play.api.data.Forms._
 import slick.driver.MySQLDriver.api._
-import br.ufes.scap.services
 import br.ufes.scap.services.UserService
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent._
@@ -24,10 +23,10 @@ object UserForm {
 	"password" -> nonEmptyText,	
 	"tipo" -> nonEmptyText
     )(UserFormData.apply)(UserFormData.unapply)      
-			  .verifying("Matricula ja cadastrada",  s => jaExiste(s.matricula)
+			  .verifying("Matricula ja cadastrada",  s => checaMatricula(s.matricula)
   ))
 
-  def jaExiste(matricula : String): Boolean = {
+  def checaMatricula(matricula : String): Boolean = {
     val numeroDeMatriculas = UserService.getUserByMatricula(matricula).map(_.size)
     if (Await.result(numeroDeMatriculas,10 seconds) == 0){ 
         true
