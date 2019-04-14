@@ -31,8 +31,8 @@ table, th, td {
                     <td>@user.matricula</td>
                     <td>@user.email</td>
 			  <td>@user.tipo</td>
-                    <td><a href="@br.ufes.scap.controllers.routes.ApplicationController.deleteUser(user.id)">deletar</a></td>
-                    <td><a href="@br.ufes.scap.controllers.routes.ApplicationController.editUser(user.id)#end">editar</a></td>
+                    <td><a href="@br.ufes.scap.controllers.routes.UsersController.deleteUser(user.id)">deletar</a></td>
+                    <td><a href="@br.ufes.scap.controllers.routes.UsersController.editUser(user.id)#end">editar</a></td>
                 </tr>
                 }
 </table>
@@ -42,7 +42,7 @@ table, th, td {
 
 <br>
 <br>
-<form id="user-add-form" role="form" action='@br.ufes.scap.controllers.routes.ApplicationController.addUser()' method="get"
+<form id="user-add-form" role="form" action='@br.ufes.scap.controllers.routes.UsersController.addUser()' method="get"
       class="form-horizontal" align="center" autocomplete="off">
             <div class="form-actions controls ynt-btn-xlarge">
                 <button type="submit" class="btn btn-primary ynt-btn-orange">Adicionar Novo Usuário</button>

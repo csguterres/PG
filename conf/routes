@@ -4,8 +4,10 @@
 
 # Home page
 GET     /                           br.ufes.scap.controllers.UsersController.index
-GET    /add                        br.ufes.scap.controllers.UsersController.addUser
+GET     /add                        br.ufes.scap.controllers.UsersController.addUser
 POST    /add                        br.ufes.scap.controllers.UsersController.addUser
 GET     /delete/:id                 br.ufes.scap.controllers.UsersController.deleteUser(id : Long)
 GET     /edit/:id                   br.ufes.scap.controllers.UsersController.editUser(id : Long)
-POST     /update/:id                   br.ufes.scap.controllers.UsersController.updateUser(id : Long)
+POST    /update/:id                 br.ufes.scap.controllers.UsersController.updateUser(id : Long)
+GET	  /erro				br.ufes.scap.controllers.SolicitacoesController.index
+GET     /delete/:id                 br.ufes.scap.controllers.SolicitacoesController.deleteSolicitacao(id : Long)

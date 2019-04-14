@@ -6,15 +6,15 @@ import scala.concurrent.Future
 
 object SolicitacaoService {
 
-  def addUser(solicitacao: Solicitacao): Future[String] = {
+  def addSolicitacao(solicitacao: Solicitacao): Future[String] = {
     Solicitacoes.add(solicitacao)
   }
 
-  def deleteUser(id: Long): Future[Int] = {
+  def deleteSolicitacao(id: Long): Future[Int] = {
     Solicitacoes.delete(id)
   }
 
-  def getUser(id: Long): Future[Option[Solicitacao]] = {
+  def getSolicitacao(id: Long): Future[Option[Solicitacao]] = {
     Solicitacoes.get(id)
   }
 

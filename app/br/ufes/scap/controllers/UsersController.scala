@@ -22,14 +22,14 @@ class UsersController extends Controller {
       data => {
         val newUser = User(0, data.nome, data.matricula, data.email, data.password, data.tipo)
         UserService.addUser(newUser).map(res =>
-          Redirect(routes.ApplicationController.index())
+          Redirect(routes.UsersController.index())
         )
       })
   }
 
   def deleteUser(id: Long) = Action.async { implicit request =>
     UserService.deleteUser(id) map { res =>
-      Redirect(routes.ApplicationController.index())
+      Redirect(routes.UsersController.index())
     }
   }
   
@@ -46,7 +46,7 @@ class UsersController extends Controller {
       data => {
         val newUser = User(id, data.nome, data.matricula, data.email, data.password, data.tipo)
         UserService.update(newUser).map(res =>
-          Redirect(routes.ApplicationController.index())
+          Redirect(routes.UsersController.index())
         )
       })
   }

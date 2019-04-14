@@ -1,0 +1,49 @@
+@(solicitacaoForm: Form[br.ufes.scap.models.SolicitacaoFormData],solicitacoes : Seq[br.ufes.scap.models.Solicitacao])(implicit request: RequestHeader)
+@main() {
+
+<html>
+
+<head>
+<style>
+table, th, td {
+  border: 1px solid black;
+}
+</style>
+</head>
+
+<body>
+<h2>Usuários</h2>
+<table style="width:100%">
+                <tr>
+                    <th>ID</th>
+                    <th>ID DO PROFESSOR</th>
+                    <th>NOME DO EVENTO</th>
+                    <th>DATA INICIO DO EVENTO</th>
+                    <th>DATA FIM DO EVENTO</th>
+			  <th>DATA INICIO DO AFASTAMENTO</th>
+			  <th>DATA FIM DO AFASTAMENTO</th>
+			  <th>DELETAR</th>
+                </tr>
+
+                @for(solicitacao <- solicitacoes){
+                <tr>
+                    <td>@solicitacao.id</td>
+                    <td>@solicitacao.idProfessor</td>
+                    <td>@solicitacao.nomeEvento</td>
+                    <td>@solicitacao.dataIniEvento</td>
+			  <td>@solicitacao.dataFimEvento</td>
+			  <td>@solicitacao.dataIniAfast</td>
+			  <td>@solicitacao.dataFimAfast</td>
+                    <td><a href="@br.ufes.scap.controllers.routes.SolicitacoesController.deleteSolicitacao(solicitacao.id)">deletar</a></td>
+                </tr>
+                }
+</table>
+
+</body>
+
+
+<br>
+<br>
+
+</html>
+}

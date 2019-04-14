@@ -1,0 +1,70 @@
+@()(content: Html)
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <title>=SCAP - Sistema de Controle de Afastamento de Professores </title>
+
+
+</head>
+
+<!-- The #page-top ID is part of the scrolling feature - the data-spy and data-target are part of the built-in Bootstrap scrollspy function -->
+
+<body>
+<style type="text/css" scoped>
+     .scrollspy-example {
+    position: relative;
+    height: 80%;
+    margin-top: .5rem;
+    overflow: auto; }
+
+
+    /*YOUR CSS SHOULD LOOK LIKE THIS*/
+
+
+
+/* unvisited link grey */
+#top-menu a:link {
+	color: #777;
+
+	display: block;
+	padding: 2px 0px 2px 10px;
+
+}
+/* visited link grey */
+#top-menu a:visited {
+	color: #777;
+}
+/* mouse over link blue */
+#top-menu a:hover {
+	background-color: black;
+	border-left: thick solid red;
+}
+/* selected link blue */
+#top-menu a:active {
+	color: #0CF;
+}
+/* !IMPORTANT ONLY ADD THIS CLASS TO YOUR ACTIVE PAGE LINK ( Color Blue )*/
+.activePage a {
+	color: #0CF !important
+}
+</style>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1>Erro! Você não tem permissão para acessar essa área.</h1>
+                    @content
+                </div>
+            </div>
+        </div>
+    </section>
+
+</body>
+
+
+</html>
