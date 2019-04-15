@@ -11,3 +11,5 @@ GET     /edit/:id                   br.ufes.scap.controllers.UsersController.edi
 POST    /update/:id                 br.ufes.scap.controllers.UsersController.updateUser(id : Long)
 GET	  /erro				br.ufes.scap.controllers.SolicitacoesController.index
 GET     /delete/:id                 br.ufes.scap.controllers.SolicitacoesController.deleteSolicitacao(id : Long)
+GET	  /addSolicitacao			br.ufes.scap.controllers.SolicitacoesController.addSolicitacao
+POST	  /addSolicitacao			br.ufes.scap.controllers.SolicitacoesController.addSolicitacao

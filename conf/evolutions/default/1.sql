@@ -8,7 +8,7 @@ create table `user` (
   `email` TEXT NOT NULL,
   `password` TEXT NOT NULL,
   `tipo` TEXT NOT NULL
-)
+);
 
 create table `solicitacao` (
   `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,

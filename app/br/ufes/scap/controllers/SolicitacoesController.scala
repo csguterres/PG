@@ -6,6 +6,9 @@ import br.ufes.scap.services.SolicitacaoService
 import scala.concurrent.ExecutionContext.Implicits.global
 import javax.inject.Inject
 import scala.concurrent.Future
+import java.sql.Timestamp
+import java.sql.Date
+import java.text.SimpleDateFormat
 
 class SolicitacoesController extends Controller { 
   
@@ -26,6 +29,28 @@ class SolicitacoesController extends Controller {
     SolicitacaoService.deleteSolicitacao(id) map { res =>
       Redirect(routes.SolicitacoesController.index())
     }
+  }
+  
+  def addSolicitacao() = Action.async { implicit request =>
+    SolicitacaoForm.form.bindFromRequest.fold(
+      // if any error in submitted data
+      errorForm => Future.successful(BadRequest(br.ufes.scap.views.html.addSolicitacao(errorForm, Seq.empty[Solicitacao]))),
+      data => {
+        val professorID = 1
+        
+        val iniAfast = new Timestamp(data.dataIniAfast.getTime())
+        val fimAfast = new Timestamp(data.dataFimAfast.getTime())
+        val iniEvento = new Timestamp(data.dataIniEvento.getTime())
+        val fimEvento = new Timestamp(data.dataFimEvento.getTime())
+        
+        val newSolicitacao = Solicitacao(0, professorID,
+            iniAfast, fimAfast, iniEvento, fimEvento, 
+            data.nomeEvento, data.cidade, data.onus, data.tipoAfastamento,
+            "INICIADA", "", iniEvento)
+        SolicitacaoService.addSolicitacao(newSolicitacao).map(res =>
+          Redirect(routes.SolicitacoesController.index())
+        )
+      })
   }
   
 }

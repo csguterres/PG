@@ -55,18 +55,18 @@ object SolicitacaoForm {
 class SolicitacaoTableDef(tag: Tag) extends Table[Solicitacao](tag, "solicitacao") {
    
    def id = column[Long]("id", O.PrimaryKey,O.AutoInc)
-   def idProfessor = column[Long]("id professor")
-   def dataIniAfast = column[Timestamp]("data inicio afastamento")
-   def dataFimAfast = column[Timestamp]("data fim afastamento")
-   def dataIniEvento = column[Timestamp]("data inicio evento")
-   def dataFimEvento = column[Timestamp]("data fim evento")
-   def nomeEvento = column[String]("nome do evento")
+   def idProfessor = column[Long]("idProfessor")
+   def dataIniAfast = column[Timestamp]("dataIniAfast")
+   def dataFimAfast = column[Timestamp]("dataFimAfast")
+   def dataIniEvento = column[Timestamp]("dataIniEvento")
+   def dataFimEvento = column[Timestamp]("dataFimEvento")
+   def nomeEvento = column[String]("nomeEvento")
    def cidade = column[String]("cidade")
    def onus = column[String]("onus")
-   def tipoAfastamento = column[String]("tipo do afastamento")
-   def statusSolicitacao = column[String]("status da solicitacao")
-   def motivoCancelamento = column[String]("motivo do cancelamento")
-   def dataJulgamentoAfast = column[Timestamp]("data fim evento")
+   def tipoAfastamento = column[String]("tipoAfastamento")
+   def statusSolicitacao = column[String]("statusSolicitacao")
+   def motivoCancelamento = column[String]("motivoCancelamento")
+   def dataJulgamentoAfast = column[Timestamp]("dataJulgamentoAfast")
 
    override def * =
     (id, idProfessor, dataIniAfast, dataFimAfast, dataIniEvento, 

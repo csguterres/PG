@@ -17,7 +17,8 @@ object Solicitacoes {
   val solicitacoes = TableQuery[SolicitacaoTableDef]
   
   def add(solicitacao: Solicitacao): Future[String] = {
-    dbConfig.db.run(solicitacoes += solicitacao).map(res => "Solicitacao successfully added").recover {
+    dbConfig.db.run(solicitacoes += solicitacao).map(res => 
+      "Solicitacao successfully added").recover {
       case ex: Exception => ex.getCause.getMessage
     }
   }

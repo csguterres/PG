@@ -1,0 +1,127 @@
+@(solicitacaoForm: Form[br.ufes.scap.models.SolicitacaoFormData],solicitacoes : Seq[br.ufes.scap.models.Solicitacao])(implicit request: RequestHeader)
+@main() {
+
+    @solicitacaoForm.globalError.map { error =>
+        <p class="error">
+            @error.message
+        </p>
+	}
+
+<form id="solicitacao-data-form" role="form" action='@br.ufes.scap.controllers.routes.SolicitacoesController.addSolicitacao()' method="post"
+      class="form-horizontal" align="center" autocomplete="off">
+
+    <fieldset class="solicitacao-fieldset">
+        <div class="col-xs-4">
+            <div class="solicitacao-form">
+                <label class="form-title"
+                       style="color: #F8741B; font-size: 22px;font-weight: bold; text-decoration:none">Registrar Nova Solicitação</label>
+            </div>
+            <br/>
+
+            <div class="input-group input-group-sm">
+                <span class="input-group-addon" id="sizing-addon2"><b>Data de início do afastamento</b></span>
+  			<input type="date" name="dataIniAfast" value="" 
+				placeholder="XX/XX/XXXX" aria-describedby="sizing-addon1" required> 
+  			<br>
+            </div>
+
+		<br>
+		<br>
+
+            <div class="input-group input-group-sm">
+                <span class="input-group-addon" id="sizing-addon2"><b>Data de fim do afastamento</b></span>
+  			<input type="date" name="dataFimAfast" value="" 
+				placeholder="XX/XX/XXXX" aria-describedby="sizing-addon1" required> 
+  			<br>
+            </div>
+
+		<br>
+		<br>
+
+            <div class="input-group input-group-sm">
+                <span class="input-group-addon" id="sizing-addon2"><b>Data de início do evento</b></span>
+  			<input type="date" name="dataIniEvento" value="" 
+				placeholder="XX/XX/XXXX" aria-describedby="sizing-addon1" required> 
+  			<br>
+            </div>
+
+		<br>
+		<br>
+
+            <div class="input-group input-group-sm">
+                <span class="input-group-addon" id="sizing-addon2"><b>Data de fim do evento</b></span>
+  			<input type="date" name="dataFimEvento" value="" 
+				placeholder="XX/XX/XXXX" aria-describedby="sizing-addon1" required> 
+  			<br>
+            </div>
+
+		<br>
+		<br>
+
+            <div class="input-group input-group-sm">
+                <span class="input-group-addon" id="sizing-addon2"><b>Nome do Evento</b></span>
+                <input type="text" class="form-control" id="nome" name="nomeEvento" value=""
+                       placeholder="Nome do Evento" aria-describedby="sizing-addon1" required>
+                <br>
+            </div>
+
+		<br>
+		<br>
+
+            <div class="input-group input-group-sm">
+                <span class="input-group-addon" id="sizing-addon2"><b>Cidade do Evento</b></span>
+                <input type="text" class="form-control" id="cidade" name="cidade" value="" placeholder="Cidade do Evento"
+                       aria-describedby="sizing-addon1" required>
+                <br>
+            </div>
+
+		<br>
+		<br>
+
+            <div class="input-group input-group-sm">
+            <span class="input-group-addon" id="sizing-addon2"><b>Onus  </b></span>
+		<select id=onus name="onus" value="">
+    			<option value="INEXISTENTE">INEXISTENTE</option>
+    			<option value="PARCIAL">PARCIAL</option>
+    			<option value="TOTAL">TOTAL</option>
+		</select>
+            </div>
+
+		<br>
+		<br>
+
+            <div class="input-group input-group-sm">
+            <span class="input-group-addon" id="sizing-addon2"><b>Tipo do Afastamento  </b></span>
+		<select id=tipoAfastamento name="tipoAfastamento" value="">
+    			<option value="NACIONAL">NACIONAL</option>
+    			<option value="INTERNACIONAL">INTERNACIONAL</option>
+		</select>
+            </div>
+
+		<br>
+		<br>
+    </ul>
+  </div>
+
+
+            <br/>
+            <div class="form-actions controls ynt-btn-xlarge">
+                <button type="submit" class="btn btn-primary ynt-btn-orange">Adicionar Nova Solicitação</button>
+            </div>
+
+        </div>
+    </fieldset>
+</form>
+
+<br>
+<br>
+<br>
+
+<form id="solicitacao-list-form" role="form" action='@br.ufes.scap.controllers.routes.SolicitacoesController.index()' method="get"
+      class="form-horizontal" align="center" autocomplete="off">
+            <div class="form-actions controls ynt-btn-xlarge">
+                <button type="submit" class="btn btn-primary ynt-btn-orange">Listar Solicitações</button>
+            </div>
+</form>
+
+}
