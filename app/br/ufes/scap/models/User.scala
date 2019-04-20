@@ -6,12 +6,26 @@ import play.api.data.Forms._
 import slick.driver.MySQLDriver.api._
 import br.ufes.scap.services.UserService
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent._
-import scala.concurrent.duration._
+
 
 case class User(id: Long, nome: String, matricula: String, email: String, password : String, tipo: String)
 
 case class UserFormData(nome: String, matricula: String, email: String, password: String, tipo: String)
+
+case class UserLogin(matricula : String, password : String)
+    
+case class UserLoginFormData(matricula : String, password : String)
+
+object UserLoginForm{
+  
+  val form = Form(
+      mapping(
+      "matricula" -> nonEmptyText,
+      "password" -> nonEmptyText
+      )(UserLoginFormData.apply)(UserLoginFormData.unapply)
+       .verifying("Matrícula ou senha inválidos",  s => UserService.checaMatriculaSenha(s.matricula, s.password)
+      ))
+}
 
 object UserForm {
 
@@ -23,17 +37,8 @@ object UserForm {
 	"password" -> nonEmptyText,	
 	"tipo" -> nonEmptyText
     )(UserFormData.apply)(UserFormData.unapply)      
-			  .verifying("Matricula ja cadastrada",  s => checaMatricula(s.matricula)
+			  .verifying("Matricula ja cadastrada",  s => UserService.checaMatricula(s.matricula)
   ))
-
-  def checaMatricula(matricula : String): Boolean = {
-    val numeroDeMatriculas = UserService.getUserByMatricula(matricula).map(_.size)
-    if (Await.result(numeroDeMatriculas,10 seconds) == 0){ 
-        true
-    }else{
-        false
-    }  
-  }
   
 }
   

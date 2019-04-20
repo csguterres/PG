@@ -1,0 +1,48 @@
+@(userLoginForm: Form[br.ufes.scap.models.UserLoginFormData])(implicit request: RequestHeader)
+@main(){
+
+    @userLoginForm.globalError.map { error =>
+        <p class="error">
+            @error.message
+        </p>
+	}
+
+
+<form id="user-data-form" role="form" action='@br.ufes.scap.controllers.routes.LoginController.login()' method="post"
+      class="form-horizontal" align="center" autocomplete="off">
+
+    <fieldset class="user-fieldset">
+        <div class="col-xs-4">
+            <div class="user-form">
+                <label class="form-title"
+                       style="color: #F8741B; font-size: 22px;font-weight: bold; text-decoration:none">Login</label>
+            </div>
+            <br/>
+
+            <div class="input-group input-group-sm">
+                <span class="input-group-addon" id="sizing-addon2"><b>Nome</b></span>
+                <input type="text" class="form-control" id="matricula" name="matricula" value=""
+                       placeholder="Matricula" aria-describedby="sizing-addon1" required>
+                <br>
+            </div>
+
+		<br>
+
+            <div class="input-group input-group-sm">
+                <span class="input-group-addon" id="sizing-addon2"><b>Senha</b></span>
+                <input type="password" class="form-control" id="password" name="password" value="" placeholder="Senha"
+                       aria-describedby="sizing-addon1" required>
+                <br>
+            </div>
+
+		<br>
+
+            <div class="form-actions controls ynt-btn-xlarge">
+                <button type="Login" class="btn btn-primary ynt-btn-orange">Login</button>
+            </div>
+
+        </div>
+    </fieldset>
+</form>
+
+}

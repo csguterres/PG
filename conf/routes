@@ -13,3 +13,5 @@ GET	  /erro				br.ufes.scap.controllers.SolicitacoesController.index
 GET     /delete/:id                 br.ufes.scap.controllers.SolicitacoesController.deleteSolicitacao(id : Long)
 GET	  /addSolicitacao			br.ufes.scap.controllers.SolicitacoesController.addSolicitacao
 POST	  /addSolicitacao			br.ufes.scap.controllers.SolicitacoesController.addSolicitacao
+GET	  /login				br.ufes.scap.controllers.LoginController.login
+POST	  /login				br.ufes.scap.controllers.LoginController.login

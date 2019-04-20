@@ -17,8 +17,8 @@ object Users {
 
   val users = TableQuery[UserTableDef]
   
-  def getByMatricula(matricula: String): Future[Seq[User]] = {
-      dbConfig.db.run(users.filter(_.matricula === matricula).result)
+  def getByMatricula(matricula: String): Future[Option[User]] = {
+      dbConfig.db.run(users.filter(_.matricula === matricula).result.headOption)
   }
   
   def add(user: User): Future[String] = {

@@ -1,4 +1,4 @@
-@()(content: Html)
+@()(implicit request: RequestHeader)
 
 <!DOCTYPE html>
 
@@ -57,8 +57,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1>Erro! Você não tem permissão para acessar essa área.</h1>
-                    @content
+                    <h1>Usuario logado!</h1>
                 </div>
             </div>
         </div>
