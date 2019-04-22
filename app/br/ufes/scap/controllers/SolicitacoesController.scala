@@ -14,21 +14,17 @@ import scala.concurrent._
 
 class SolicitacoesController extends Controller { 
   
-  def index = Action.async { implicit request =>
+  def index = Action { implicit request =>
     if (Global.isLoggedIn()){
       if (Global.isSecretario()){
-        SolicitacaoService.listAllSolicitacoes map { solicitacoes =>
-          Ok(br.ufes.scap.views.html.listSolicitacoes(SolicitacaoForm.form, solicitacoes))
-        }
+        val solicitacoes = Await.result(SolicitacaoService.listAllSolicitacoes, Duration.Inf)
+        Ok(br.ufes.scap.views.html.listSolicitacoes(SolicitacaoForm.form, solicitacoes))
       }else{
-        SolicitacaoService.listAllSolicitacoesBySolicitante(Global.SESSION_KEY) map { solicitacoes =>
-          Ok(br.ufes.scap.views.html.listSolicitacoes(SolicitacaoForm.form, solicitacoes))
-        } 
+        val solicitacoes = Await.result(SolicitacaoService.listAllSolicitacoesBySolicitante(Global.SESSION_KEY), Duration.Inf)
+        Ok(br.ufes.scap.views.html.listSolicitacoes(SolicitacaoForm.form, solicitacoes))
       }
     }else{
-        SolicitacaoService.listAllSolicitacoesBySolicitante(0) map { solicitacoes =>
-          Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
-        } 
+       Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
      }
   }
 

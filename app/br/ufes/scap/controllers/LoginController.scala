@@ -1,6 +1,6 @@
 package br.ufes.scap.controllers
 
-import br.ufes.scap.models.{User, UserLogin, UserLoginForm, Global}
+import br.ufes.scap.models.{User, UserLogin, UserForm, UserLoginForm, Global}
 import play.api.mvc._
 import br.ufes.scap.services.UserService
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -23,9 +23,15 @@ class LoginController extends Controller {
         Global.SESSION_KEY = userReal.get.id 
         Global.SESSION_TIPO = userReal.get.tipo
         Global.SESSION_MATRICULA = userReal.get.matricula
-        UserService.getUserByMatricula(data.matricula).map(res =>
-          Redirect(routes.UsersController.editUser(Global.SESSION_KEY))
-        )
+        if(Global.SESSION_TIPO.equals("SECRETARIO")){
+          UserService.getUserByMatricula(data.matricula).map(res =>
+            Ok(br.ufes.scap.views.html.menuSecretario(UserForm.form, userReal))
+          )
+        }else{
+          UserService.getUserByMatricula(data.matricula).map(res =>
+            Ok(br.ufes.scap.views.html.menuUsuario(UserForm.form, userReal))
+          )
+        }
       })
   }
     

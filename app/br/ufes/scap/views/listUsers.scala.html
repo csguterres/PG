@@ -23,7 +23,6 @@ table, th, td {
 			  <th>DELETAR</th>
 			  <th>EDITAR</th>
                 </tr>
-
                 @for(user <- users){
                 <tr>
                     <td>@user.id</td>
@@ -32,7 +31,7 @@ table, th, td {
                     <td>@user.email</td>
 			  <td>@user.tipo</td>
                     <td><a href="@br.ufes.scap.controllers.routes.UsersController.deleteUser(user.id)">deletar</a></td>
-                    <td><a href="@br.ufes.scap.controllers.routes.UsersController.editUser(user.id)#end">editar</a></td>
+                    <td><a href="@br.ufes.scap.controllers.routes.UsersController.editUser(user.id)">editar</a></td>
                 </tr>
                 }
 </table>

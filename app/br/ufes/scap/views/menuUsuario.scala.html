@@ -1,0 +1,21 @@
+@(userForm: Form[br.ufes.scap.models.UserFormData], user : Option[br.ufes.scap.models.User])(implicit request: RequestHeader)
+@main() {
+<!DOCTYPE html>
+<html>
+<body>
+
+<br>
+<br>
+<h1>Menu Principal</h1>
+
+<br>
+<br>
+<a href="@br.ufes.scap.controllers.routes.SolicitacoesController.index">Listar suas Solicitações</a>
+<br>
+<br>
+<a href="@br.ufes.scap.controllers.routes.UsersController.editUser(user.get.id)">Editar seu perfil</a>
+<br>
+
+</body>
+</html>
+}
