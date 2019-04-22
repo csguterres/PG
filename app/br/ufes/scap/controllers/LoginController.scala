@@ -19,18 +19,32 @@ class LoginController extends Controller {
       errorForm => Future.successful(BadRequest(br.ufes.scap.views.html.userLogin(errorForm))),
       data => {
         val user = UserService.getUserByMatricula(data.matricula)
-        val userReal = Await.result(user,10 seconds)
+        val userReal = Await.result(user,Duration.Inf)
         Global.SESSION_KEY = userReal.get.id 
         Global.SESSION_TIPO = userReal.get.tipo
         Global.SESSION_MATRICULA = userReal.get.matricula
-        
         UserService.getUserByMatricula(data.matricula).map(res =>
-          Redirect(routes.UsersController.index())
+          Redirect(routes.UsersController.editUser(Global.SESSION_KEY))
         )
-        //)
       })
   }
     
+    def notLoggedIn() = Action{
+      Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
+    }
+    
+    def logout() = Action {
+        Global.SESSION_KEY = 0
+        Global.SESSION_TIPO = ""
+        Global.SESSION_MATRICULA = ""
+        Redirect(routes.LoginController.login)
+    }
+    /*
+    def notLoggedIn() = Action{
+      Ok(br.ufes.scap.views.html.erro(UserForm.form))
+    }
+    
+    */
     /*
     private val logger = play.api.Logger(this.getClass)
 

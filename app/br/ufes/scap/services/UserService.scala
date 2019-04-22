@@ -37,7 +37,7 @@ object UserService {
   
   def checaMatriculaSenha(matricula : String, password : String): Boolean = {
     val usuario = getUserByMatricula(matricula)
-    val usuarioReal = Await.result(usuario,10 seconds)
+    val usuarioReal = Await.result(usuario,Duration.Inf)
     if (usuarioReal == None){ 
         false
     }else{
