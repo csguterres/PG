@@ -3,8 +3,9 @@
 # ~~~~
 
 # Home page
-GET     /                           br.ufes.scap.controllers.LoginController.login
-POST    /                           br.ufes.scap.controllers.LoginController.login
+GET     /                           br.ufes.scap.controllers.LoginController.menu
+GET	  /logout				br.ufes.scap.controllers.LoginController.logout
+GET     /menu                       br.ufes.scap.controllers.LoginController.menu
 GET	  /listUsers			br.ufes.scap.controllers.UsersController.index
 GET     /add                        br.ufes.scap.controllers.UsersController.addUser
 POST    /add                        br.ufes.scap.controllers.UsersController.addUser

@@ -11,11 +11,21 @@ import scala.concurrent.ExecutionContext.Implicits.global
 case class User(id: Long, nome: String, matricula: String, email: String, password : String, tipo: String)
 
 case class UserFormData(nome: String, matricula: String, email: String, password: String, tipo: String)
-
-case class UserLogin(matricula : String, password : String)
     
 case class UserLoginFormData(matricula : String, password : String)
 
+case class UserEditFormData(nome: String, email: String, password: String)
+
+object UserEditForm{
+  
+  val form = Form(
+      mapping(
+          "nome" -> nonEmptyText,
+          "email" -> nonEmptyText,
+          "password" -> nonEmptyText
+        )(UserEditFormData.apply)(UserEditFormData.unapply)
+        )
+}
 object UserLoginForm{
   
   val form = Form(
@@ -23,8 +33,8 @@ object UserLoginForm{
       "matricula" -> nonEmptyText,
       "password" -> nonEmptyText
       )(UserLoginFormData.apply)(UserLoginFormData.unapply)
-       .verifying("Matrícula ou senha inválidos",  s => UserService.checaMatriculaSenha(s.matricula, s.password)
-      ))
+       .verifying("Matrícula ou senha inválidos",  s => UserService.checaMatriculaSenha(s.matricula, s.password))
+       )
 }
 
 object UserForm {

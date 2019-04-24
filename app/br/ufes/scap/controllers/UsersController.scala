@@ -1,6 +1,6 @@
 package br.ufes.scap.controllers
 
-import br.ufes.scap.models.{User, UserForm, UserLoginForm, Global}
+import br.ufes.scap.models.{User, UserForm, UserEditForm, UserLoginForm, Global}
 import play.api.mvc._
 import br.ufes.scap.services.UserService
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -21,9 +21,8 @@ class UsersController extends Controller {
       }
   }
 
-  def addUser() = Action.async { implicit request =>
-    if(Global.isSecretario()){
-      UserForm.form.bindFromRequest.fold(
+  def addUserInterno() = Action.async { implicit request =>
+    UserForm.form.bindFromRequest.fold(
         // if any error in submitted data
         errorForm => Future.successful(BadRequest(br.ufes.scap.views.html.addUser(errorForm, Seq.empty[User]))),
         data => {
@@ -32,12 +31,20 @@ class UsersController extends Controller {
             Redirect(routes.UsersController.index())
           )
         })
+  }
+  
+    def notLoggedIn() = Action{
+      Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
+    }
+  
+  def addUser() = {
+    if(Global.isSecretario()){
+      this.addUserInterno()    
     }else{
-      UserService.listAllUsersByTipo("-").map( res =>
-        Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
-      )
+      this.notLoggedIn()
     }
   }
+    
 
   def deleteUser(id: Long) = Action { implicit request =>
     if (Global.isSecretario()){
@@ -51,20 +58,21 @@ class UsersController extends Controller {
   def editUser(id:Long) = Action { implicit request =>
     if (Global.isSecretario() || id == Global.SESSION_KEY){
       val user = Await.result(UserService.getUser(id),Duration.Inf)
-      Ok(br.ufes.scap.views.html.editUser(UserForm.form, user))
+      Ok(br.ufes.scap.views.html.editUser(UserEditForm.form, user))
     }else{
       Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
     }
   }
   
   def updateUser(id:Long) = Action.async { implicit request =>
-    UserForm.form.bindFromRequest.fold(
+    UserEditForm.form.bindFromRequest.fold(
       // if any error in submitted data
-      errorForm => Future.successful(BadRequest(br.ufes.scap.views.html.addUser(errorForm, Seq.empty[User]))),
+      errorForm => Future.successful(BadRequest(br.ufes.scap.views.html.editUser(errorForm, None))),
       data => {
-        val newUser = User(id, data.nome, data.matricula, data.email, data.password, data.tipo)
+        val user = Await.result(UserService.getUser(id),Duration.Inf)
+        val newUser = User(id, data.nome, user.get.matricula, data.email, data.password, user.get.tipo)
         UserService.update(newUser).map(res =>
-          Redirect(routes.UsersController.index())
+          Redirect(routes.LoginController.menu())
         )
       })
   }

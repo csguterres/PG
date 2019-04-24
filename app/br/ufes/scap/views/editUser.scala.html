@@ -1,8 +1,8 @@
-@(userForm: Form[br.ufes.scap.models.UserFormData],user : Option[br.ufes.scap.models.User])(implicit request: RequestHeader)
+@(userEditForm: Form[br.ufes.scap.models.UserEditFormData],user : Option[br.ufes.scap.models.User])(implicit request: RequestHeader)
 
 @main() {
 
-    @userForm.globalError.map { error =>
+    @userEditForm.globalError.map { error =>
         <p class="error">
             @error.message
         </p>
@@ -27,14 +27,6 @@
             </div>
 
 		<br>
-
-            <div class="input-group input-group-sm">
-                <span class="input-group-addon" id="sizing-addon2"><b>Matricula  </b></span>
-                <input type="text" class="form-control" id="matricula" name="matricula" value=@user.get.matricula placeholder="Matricula"
-                       aria-describedby="sizing-addon1" required>
-                <br>
-            </div>
-
 		<br>
 
             <div class="input-group input-group-sm">
@@ -45,6 +37,7 @@
             </div>
 
 		<br>
+		<br>
 
             <div class="input-group input-group-sm">
                 <span class="input-group-addon" id="sizing-addon2"><b>Senha  </b></span>
@@ -54,19 +47,6 @@
             </div>
 
 		<br> 
-
-            <div class="input-group input-group-sm">
-            <span class="input-group-addon" id="sizing-addon2"><b>Tipo  </b></span>
-		<select id=tipo name="tipo">
-    			<option value="@user.get.tipo">@user.get.tipo (A)</option>
-			@{
-				if (user.get.tipo == "PROFESSOR")
-					<option value="SECRETARIO">SECRETARIO(A)</option> 
-				else
-					<option value="PROFESSOR">PROFESSOR(A)</option>
-			}
-		</select>
-            </div>
 
     </ul>
   </div>
@@ -83,10 +63,10 @@
 <br>
 <br>
 
-<form id="user-list-form" role="form" action='@br.ufes.scap.controllers.routes.UsersController.index()' method="get"
+<form id="user-list-form" role="form" action='@br.ufes.scap.controllers.routes.LoginController.menu()' method="get"
       class="form-horizontal" align="center" autocomplete="off">
             <div class="form-actions controls ynt-btn-xlarge">
-                <button type="submit" class="btn btn-primary ynt-btn-orange">Listar Usuários</button>
+                <button type="submit" class="btn btn-primary ynt-btn-orange">Voltar ao Menu Principal</button>
             </div>
 </form>
 }
