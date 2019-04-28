@@ -68,32 +68,5 @@ class SolicitacoesController extends Controller {
       }
       })
   }
-  
-  /*  
-  def editSolicitacao(id:Long) = Action.async { implicit request =>
-    SolicitacaoService.getSolicitacao(id) map { solicitacao =>
-      Ok(br.ufes.scap.views.html.editSolicitacao(SolicitacaoForm.form, solicitacao))
-    }
-  }
-  
-  
-  def updateSolicitacao(id:Long) = Action.async { implicit request =>
-    SolicitacaoForm.form.bindFromRequest.fold(
-      // if any error in submitted data
-      errorForm => Future.successful(BadRequest(br.ufes.scap.views.html.addUser(errorForm, Seq.empty[User]))),
-      data => {
-      val iniAfast = new Timestamp(data.dataIniAfast.getTime())
-      val fimAfast = new Timestamp(data.dataFimAfast.getTime())
-      val iniEvento = new Timestamp(data.dataIniEvento.getTime())
-      val fimEvento = new Timestamp(data.dataFimEvento.getTime())
-      val newSolicitacao = Solicitacao(0, professorID,
-            iniAfast, fimAfast, iniEvento, fimEvento, 
-            data.nomeEvento, data.cidade, data.onus, data.tipoAfastamento,
-            "INICIADA", "", iniEvento)        
-      SolicitacaoService.update(newSolicitacao).map(res =>
-          Redirect(routes.SolicitacoesController.index())
-        )
-      })
-  }
-  */
+ 
 }

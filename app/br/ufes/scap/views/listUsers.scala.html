@@ -22,6 +22,7 @@ table, th, td {
                     <th>MATRICULA</th>
                     <th>E-MAIL</th>
                     <th>TIPO</th>
+			  <th>MANDATOS</th>
 			  <th>DELETAR</th>
 			  <th>EDITAR</th>
                 </tr>
@@ -32,6 +33,7 @@ table, th, td {
                     <td>@user.matricula</td>
                     <td>@user.email</td>
 			  <td>@user.tipo</td>
+                    <td><a href="@br.ufes.scap.controllers.routes.MandatosController.showMandatosByProfessor(user.id)">ver mandatos</a></td>
                     <td><a href="@br.ufes.scap.controllers.routes.UsersController.deleteUser(user.id)">deletar</a></td>
                     <td><a href="@br.ufes.scap.controllers.routes.UsersController.editUser(user.id)">editar</a></td>
                 </tr>

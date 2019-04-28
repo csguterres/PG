@@ -29,7 +29,19 @@ create table `solicitacao` (
 		ON DELETE CASCADE
 )
 
+create table `mandato` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `idProfessor` BIGINT NOT NULL,
+  `cargo` TEXT NOT NULL,
+  `dataIniMandato` DATETIME NOT NULL,
+  `dataFimMandato` DATETIME NOT NULL,
+	FOREIGN KEY (idProfessor)
+        REFERENCES user(id)
+		ON DELETE CASCADE
+)
+
 # --- !Downs
 drop table `solicitacao`
+drop table `mandato`
 drop table `user`
 

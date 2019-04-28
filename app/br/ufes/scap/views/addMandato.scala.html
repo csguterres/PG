@@ -1,0 +1,78 @@
+@(mandatoForm: Form[br.ufes.scap.models.MandatoFormData],mandatos : Seq[br.ufes.scap.models.Mandato], user : Option[br.ufes.scap.models.User])(implicit request: RequestHeader)
+@main() {
+
+    @mandatoForm.globalError.map { error =>
+        <p class="error">
+            @error.message
+        </p>
+	}
+
+<form id="mandato-data-form" role="form" action='@br.ufes.scap.controllers.routes.MandatosController.addMandato(user.get.id)' method="post"
+      class="form-horizontal" align="center" autocomplete="off">
+
+    <fieldset class="mandato-fieldset">
+        <div class="col-xs-4">
+            <div class="mandato-form">
+                <label class="form-title"
+                       style="color: #F8741B; font-size: 22px;font-weight: bold; text-decoration:none">
+				Mandato do Professor: @user.get.nome</label>
+            </div>
+            <br/>
+
+            <div class="input-group input-group-sm">
+            <span class="input-group-addon" id="sizing-addon2"><b>Tipo do Afastamento  </b></span>
+		<select id=tipoAfastamento name="tipoAfastamento" value="">
+    			<option value="PRESIDENTE">PRESIDENTE</option>
+    			<option value="VICE-PRESIDENTE">VICE-PRESIDENTE</option>
+		</select>
+            </div>
+
+		<br>
+		<br>
+
+
+            <div class="input-group input-group-sm">
+                <span class="input-group-addon" id="sizing-addon2"><b>Data de início do mandato</b></span>
+  			<input type="date" name="dataIniMandato" value="" 
+				placeholder="XX/XX/XXXX" aria-describedby="sizing-addon1" required> 
+  			<br>
+            </div>
+
+		<br>
+		<br>
+
+            <div class="input-group input-group-sm">
+                <span class="input-group-addon" id="sizing-addon2"><b>Data de fim do mandato</b></span>
+  			<input type="date" name="dataFimMandato" value="" 
+				placeholder="XX/XX/XXXX" aria-describedby="sizing-addon1" required> 
+  			<br>
+            </div>
+
+		<br>
+		<br>
+
+    </ul>
+  </div>
+
+
+            <br/>
+            <div class="form-actions controls ynt-btn-xlarge">
+                <button type="submit" class="btn btn-primary ynt-btn-orange">Adicionar Nova Solicitação</button>
+            </div>
+
+        </div>
+    </fieldset>
+</form>
+
+<br>
+<br>
+<br>
+
+<form id="user-add-form" role="form" action='@br.ufes.scap.controllers.routes.LoginController.menu()' method="get"
+      class="form-horizontal" align="center" autocomplete="off">
+            <div class="form-actions controls ynt-btn-xlarge">
+                <button type="submit" class="btn btn-primary ynt-btn-orange">Voltar ao Menu Principal</button>
+            </div>
+</form>
+
+}

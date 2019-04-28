@@ -1,0 +1,58 @@
+@(mandatoForm: Form[br.ufes.scap.models.MandatoFormData],mandatos : Seq[br.ufes.scap.models.Mandato], user : Option[br.ufes.scap.models.User])(implicit request: RequestHeader)
+@main() {
+
+<html>
+
+<head>
+<style>
+table, th, td {
+  border: 1px solid black;
+}
+</style>
+</head>
+
+<body>
+<h2>Mandatos exercidos pelo professor: @user.get.nome</h2>
+<table style="width:100%">
+
+                <tr>
+                    <th>CARGO</th>
+                    <th>DATA INICIO DO MANDATO</th>
+                    <th>DATA FIM DO MANDATO</th>
+			  <th>EDITAR</th>
+			  <th>DELETAR</th>
+                </tr>
+
+                @for(mandato <- mandatos){
+                <tr>
+                    <td>@mandato.cargo</td>
+                    <td>@mandato.dataIniMandato</td>
+			  <td>@mandato.dataFimMandato</td>
+                    <td><a href="@br.ufes.scap.controllers.routes.MandatosController.editMandato(mandato.id, user.get.id)">editar</a></td>
+                    <td><a href="@br.ufes.scap.controllers.routes.MandatosController.deleteMandato(mandato.id)">deletar</a></td>
+                </tr>
+                }
+</table>
+
+</body>
+
+
+<br>
+<br>
+
+<form id="user-add-form" role="form" action='@br.ufes.scap.controllers.routes.MandatosController.addMandato(user.get.id)' method="get"
+      class="form-horizontal" align="center" autocomplete="off">
+            <div class="form-actions controls ynt-btn-xlarge">
+                <button type="submit" class="btn btn-primary ynt-btn-orange">Adicionar Novo Mandato</button>
+            </div>
+</form>
+
+<form id="user-add-form" role="form" action='@br.ufes.scap.controllers.routes.LoginController.menu()' method="get"
+      class="form-horizontal" align="center" autocomplete="off">
+            <div class="form-actions controls ynt-btn-xlarge">
+                <button type="submit" class="btn btn-primary ynt-btn-orange">Voltar ao Menu Principal</button>
+            </div>
+</form>
+
+</html>
+}
