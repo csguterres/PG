@@ -29,9 +29,9 @@ class MandatosController extends Controller {
       val user = Await.result(UserService.getUser(idProfessor),Duration.Inf)
       val mandatos = Await.result(MandatoService.listAllMandatosByProfessor(idProfessor), Duration.Inf)
       if (Global.isSecretario()){
-        Ok(br.ufes.scap.views.html.listMandatos(MandatoForm.form, mandatos, user))
+        Ok(br.ufes.scap.views.html.listarMandatos(MandatoForm.form, mandatos))
       }else{
-        Ok(br.ufes.scap.views.html.listMandatos(MandatoForm.form, mandatos, user))
+        Ok(br.ufes.scap.views.html.listarMandatos(MandatoForm.form, mandatos))
       }
     }else{
       Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))

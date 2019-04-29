@@ -14,7 +14,7 @@ class UsersController extends Controller {
 
   def index = Action { implicit request =>
       if (Global.isSecretario()){
-        val users = Await.result(UserService.listAllUsers,Duration.Inf)
+        val users = Await.result(UserService.listAllUsersByTipo("PROFESSOR"),Duration.Inf)
         Ok(br.ufes.scap.views.html.listUsers(UserForm.form, users))
       }else{
           Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
