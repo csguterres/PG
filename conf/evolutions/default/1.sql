@@ -27,7 +27,7 @@ create table `solicitacao` (
 	FOREIGN KEY (idProfessor)
         REFERENCES user(id)
 		ON DELETE CASCADE
-)
+);
 
 create table `mandato` (
   `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
