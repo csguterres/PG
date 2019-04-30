@@ -1,4 +1,4 @@
-@(mandatoForm: Form[br.ufes.scap.models.MandatoFormData],mandatos : Seq[br.ufes.scap.models.Mandato], user : Option[br.ufes.scap.models.User])(implicit request: RequestHeader)
+@(mandatoForm: Form[br.ufes.scap.models.MandatoFormData],mandatos : Seq[br.ufes.scap.models.Mandato])(implicit request: RequestHeader)
 @main() {
 
     @mandatoForm.globalError.map { error =>
@@ -7,7 +7,7 @@
         </p>
 	}
 
-<form id="mandato-data-form" role="form" action='@br.ufes.scap.controllers.routes.MandatosController.addMandato(user.get.id)' method="post"
+<form id="mandato-data-form" role="form" action='@br.ufes.scap.controllers.routes.MandatosController.addMandato()' method="post"
       class="form-horizontal" align="center" autocomplete="off">
 
     <fieldset class="mandato-fieldset">
@@ -15,13 +15,13 @@
             <div class="mandato-form">
                 <label class="form-title"
                        style="color: #F8741B; font-size: 22px;font-weight: bold; text-decoration:none">
-				Mandato do Professor: @user.get.nome</label>
+				</label>
             </div>
             <br/>
 
             <div class="input-group input-group-sm">
-            <span class="input-group-addon" id="sizing-addon2"><b>Tipo do Afastamento  </b></span>
-		<select id=tipoAfastamento name="tipoAfastamento" value="">
+            <span class="input-group-addon" id="sizing-addon2"><b>Cargo  </b></span>
+		<select id=cargo name="cargo" value="">
     			<option value="PRESIDENTE">PRESIDENTE</option>
     			<option value="VICE-PRESIDENTE">VICE-PRESIDENTE</option>
 		</select>
@@ -55,9 +55,9 @@
   </div>
 
 
-            <br/>
+            <br>
             <div class="form-actions controls ynt-btn-xlarge">
-                <button type="submit" class="btn btn-primary ynt-btn-orange">Adicionar Nova Solicitação</button>
+                <button type="submit" class="btn btn-primary ynt-btn-orange">Adicionar Mandato</button>
             </div>
 
         </div>

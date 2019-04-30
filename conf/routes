@@ -18,9 +18,9 @@ GET	  /addSolicitacao						br.ufes.scap.controllers.SolicitacoesController.addSo
 POST	  /addSolicitacao						br.ufes.scap.controllers.SolicitacoesController.addSolicitacao
 GET	  /login							br.ufes.scap.controllers.LoginController.login
 POST	  /login							br.ufes.scap.controllers.LoginController.login
-GET     /user/:idProfessor/addMandato			br.ufes.scap.controllers.MandatosController.addMandato(idProfessor : Long)
-POST    /user/:idProfessor/addMandato			br.ufes.scap.controllers.MandatosController.addMandato(idProfessor : Long)
-GET     /user/:idProfessor/editMandato/:id            br.ufes.scap.controllers.MandatosController.editMandato(id : Long, idProfessor : Long)
-POST    /user/:idProfessor/updateMandato/:id/         br.ufes.scap.controllers.MandatosController.updateMandato(id : Long, idProfessor:Long)
+GET     /addMandato						br.ufes.scap.controllers.MandatosController.addMandato()
+POST    /addMandato						br.ufes.scap.controllers.MandatosController.addMandato()
+GET     /editMandato/:id            			br.ufes.scap.controllers.MandatosController.editMandato(id : Long)
+POST    /updateMandato/:id/         			br.ufes.scap.controllers.MandatosController.updateMandato(id : Long)
 GET     /deleteMandato/:id/         			br.ufes.scap.controllers.MandatosController.deleteMandato(id : Long)
 GET	  /user/:id/mandatos					br.ufes.scap.controllers.MandatosController.showMandatosByProfessor(id : Long)

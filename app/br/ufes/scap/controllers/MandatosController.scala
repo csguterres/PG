@@ -27,11 +27,12 @@ class MandatosController extends Controller {
   def showMandatosByProfessor(idProfessor : Long) = Action { implicit request =>
     if (Global.isLoggedIn()){
       val user = Await.result(UserService.getUser(idProfessor),Duration.Inf)
+      Global.CURRENT_USER = user
       val mandatos = Await.result(MandatoService.listAllMandatosByProfessor(idProfessor), Duration.Inf)
       if (Global.isSecretario()){
-        Ok(br.ufes.scap.views.html.listarMandatos(MandatoForm.form, mandatos))
+        Ok(br.ufes.scap.views.html.listMandatos(MandatoForm.form, mandatos, user))
       }else{
-        Ok(br.ufes.scap.views.html.listarMandatos(MandatoForm.form, mandatos))
+        Ok(br.ufes.scap.views.html.listMandatos(MandatoForm.form, mandatos, user))
       }
     }else{
       Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
@@ -42,22 +43,23 @@ class MandatosController extends Controller {
       Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
   }
   
-  def addMandato(idProfessor : Long) = {
+  def addMandato() = {
     if(Global.isSecretario()){
-      this.addMandatoInterno(idProfessor)    
+      this.addMandatoInterno()    
     }else{
       this.notLoggedIn()
     }
   }
   
-  def addMandatoInterno(idProfessor : Long) = Action.async { implicit request =>
+  def addMandatoInterno() = Action.async { implicit request =>
         MandatoForm.form.bindFromRequest.fold(
         // if any error in submitted data
-        errorForm => Future.successful(BadRequest(br.ufes.scap.views.html.addMandato(errorForm, Seq.empty[Mandato], None))),
+        errorForm => 
+          Future.successful(BadRequest(br.ufes.scap.views.html.addMandato(errorForm, Seq.empty[Mandato]))),
         data => {
           val iniMandato = new Timestamp(data.dataIniMandato.getTime())
           val fimMandato = new Timestamp(data.dataFimMandato.getTime())
-          val newMandato = Mandato(0, idProfessor, data.cargo, iniMandato, fimMandato)
+          val newMandato = Mandato(0, Global.CURRENT_USER.get.id, data.cargo, iniMandato, fimMandato)
           MandatoService.addMandato(newMandato).map(res =>
             Redirect(routes.LoginController.menu())
           )
@@ -73,25 +75,24 @@ class MandatosController extends Controller {
       }
   }
 
-  def editMandato(id:Long, idProfessor : Long) = Action { implicit request =>
+  def editMandato(id:Long) = Action { implicit request =>
     if (Global.isSecretario()){
-      val user = Await.result(UserService.getUser(idProfessor),Duration.Inf)
       val mandato = Await.result(MandatoService.getMandato(id), Duration.Inf)
-      Ok(br.ufes.scap.views.html.editMandato(MandatoForm.form, mandato, user))
+      Ok(br.ufes.scap.views.html.editMandato(MandatoForm.form, mandato))
     }else{
       Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
     }
   }
   
-  
-  def updateMandato(id:Long, idProfessor : Long) = Action.async { implicit request =>
+  def updateMandato(id:Long) = Action.async { implicit request =>
       MandatoForm.form.bindFromRequest.fold(
       // if any error in submitted data
-      errorForm => Future.successful(BadRequest(br.ufes.scap.views.html.editMandato(errorForm, None, None))),
+      errorForm => 
+        Future.successful(BadRequest(br.ufes.scap.views.html.editMandato(errorForm, None))),
       data => {
         val iniMandato = new Timestamp(data.dataIniMandato.getTime())
         val fimMandato = new Timestamp(data.dataFimMandato.getTime())
-        val newMandato = Mandato(id, idProfessor, data.cargo, iniMandato, fimMandato)
+        val newMandato = Mandato(id, Global.CURRENT_USER.get.id, data.cargo, iniMandato, fimMandato)
         MandatoService.update(newMandato).map(res =>
           Redirect(routes.LoginController.menu())
         )

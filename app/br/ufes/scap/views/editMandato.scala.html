@@ -1,4 +1,4 @@
-@(mandatoForm: Form[br.ufes.scap.models.MandatoFormData],mandato : Option[br.ufes.scap.models.Mandato], user : Option[br.ufes.scap.models.User])(implicit request: RequestHeader)
+@(mandatoForm: Form[br.ufes.scap.models.MandatoFormData],mandato : Option[br.ufes.scap.models.Mandato])(implicit request: RequestHeader)
 
 @main() {
 
@@ -8,7 +8,7 @@
         </p>
 	}
 
-<form id="user-data-form" role="form" action='@br.ufes.scap.controllers.routes.MandatosController.updateMandato(mandato.get.id,user.get.id)' method="post"
+<form id="user-data-form" role="form" action='@br.ufes.scap.controllers.routes.MandatosController.updateMandato(mandato.get.id)' method="post"
       class="form-horizontal" align="center" autocomplete="off">
 
     <fieldset class="mandato-fieldset">
@@ -16,13 +16,13 @@
             <div class="mandato-form">
                 <label class="form-title"
                        style="color: #F8741B; font-size: 22px;font-weight: bold; text-decoration:none">
-				Mandato do Professor: @user.get.nome</label>
+				</label>
             </div>
             <br/>
 
             <div class="input-group input-group-sm">
-            <span class="input-group-addon" id="sizing-addon2"><b>Tipo do Afastamento  </b></span>
-		<select id=tipoAfastamento name="tipoAfastamento" value="@mandato.get.cargo">
+            <span class="input-group-addon" id="sizing-addon2"><b>Cargo </b></span>
+		<select id=cargo name="cargo" value="@mandato.get.cargo">
 
 		<br>
 		<br>

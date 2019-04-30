@@ -27,7 +27,7 @@ object MandatoForm{
           "dataFimMandato" -> date
         )(MandatoFormData.apply)(MandatoFormData.unapply)
             .verifying("Erro: Data de inicio do mandato posterior a data de fim do mandato", 
-			      s => MandatoService.checaData(s.dataIniMandato, s.dataFimMandato))  
+			      s => Global.checaData(s.dataIniMandato, s.dataFimMandato))  
 			      .verifying("Erro: Já há outro professor exercendo mandato na data prevista", 
 			      s => MandatoService.checaDataOutros(s.dataIniMandato, s.dataFimMandato, s.cargo))  
 
@@ -37,7 +37,7 @@ object MandatoForm{
 class MandatoTableDef(tag: Tag) extends Table[Mandato](tag, "mandato") {
 
   def id = column[Long]("id", O.PrimaryKey,O.AutoInc)
-  def idProfessor = column[Long]("nome")
+  def idProfessor = column[Long]("idProfessor")
   def cargo = column[String]("cargo")
   def dataIniMandato = column[Timestamp]("dataIniMandato")
   def dataFimMandato = column[Timestamp]("dataFimMandato")

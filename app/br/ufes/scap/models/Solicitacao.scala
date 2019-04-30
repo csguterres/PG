@@ -38,18 +38,12 @@ object SolicitacaoForm {
       "tipoAfastamento" -> nonEmptyText
     )(SolicitacaoFormData.apply)(SolicitacaoFormData.unapply)      
 			  .verifying("Erro: Data de inicio do afastamento posterior a data de fim do afastamento",  
-			      s => checaData(s.dataIniAfast, s.dataFimAfast))
+			      s => Global.checaData(s.dataIniAfast, s.dataFimAfast))
 			  .verifying("Erro: Data de inicio do evento posterior a data de fim do evento", 
-			      s => checaData(s.dataIniEvento, s.dataFimEvento))
+			      s => Global.checaData(s.dataIniEvento, s.dataFimEvento))
   )
   
-  def checaData(dataInicio : Date, dataFim : Date): Boolean = {
-    if (dataInicio.after(dataFim)){
-      false
-    }else{
-      true
-    }
-  }
+
 }
 
 class SolicitacaoTableDef(tag: Tag) extends Table[Solicitacao](tag, "solicitacao") {
