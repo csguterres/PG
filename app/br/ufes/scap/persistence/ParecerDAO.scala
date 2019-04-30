@@ -1,6 +1,6 @@
 package br.ufes.scap.persistence
 
-import br.ufes.scap.models.{Parecer,ParecerForm,ParecerTableDef}
+import br.ufes.scap.models.{Parecer, ParecerForm, ParecerTableDef}
 import play.api.Play
 import play.api.mvc._
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -37,8 +37,8 @@ object Pareceres {
     }
   }
 
-  def findByProfessor(idProfessor : Long): Future[Seq[Parecer]] = {
-    dbConfig.db.run(pareceres.filter(_.idProfessor === idProfessor).result)
+  def findBySolicitacao(idSolicitacao : Long): Future[Seq[Parecer]] = {
+    dbConfig.db.run(pareceres.filter(_.idSolicitacao === idSolicitacao).result)
   }
   
   def listAll: Future[Seq[Parecer]] = {

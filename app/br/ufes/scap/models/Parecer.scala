@@ -1,4 +1,4 @@
-package br.ufes.scap.persistence
+package br.ufes.scap.models
 
 import play.api.mvc._
 import play.api.data.Form

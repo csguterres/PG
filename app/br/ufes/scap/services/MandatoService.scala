@@ -32,14 +32,6 @@ object MandatoService {
     Mandatos.update(mandato)
   }
   
-  def checaData(dataInicial : Date, dataFinal : Date): Boolean = {
-    if (dataFinal.before(dataInicial)){
-      false
-    }else{
-      true
-    }
-  }
-  
   def checaDataOutros(dataInicial : Date, dataFinal : Date, cargo : String): Boolean = {
     val mandatos = Await.result(this.listAllMandatos,Duration.Inf)
     for (m <- mandatos){
