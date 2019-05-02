@@ -41,6 +41,11 @@ object Pareceres {
     dbConfig.db.run(pareceres.filter(_.idSolicitacao === idSolicitacao).result)
   }
   
+  def findByProfessor(idProfessor : Long): Future[Seq[Parecer]] = {
+    dbConfig.db.run(pareceres.filter(_.idProfessor === idProfessor).result)
+  }
+  
+  
   def listAll: Future[Seq[Parecer]] = {
     dbConfig.db.run(pareceres.result)
   }

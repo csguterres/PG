@@ -13,6 +13,8 @@ create table `user` (
 create table `solicitacao` (
   `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `idProfessor` BIGINT NOT NULL,
+  `idRelator` BIGINT NOT NULL,
+  `dataSolicitacao` DATETIME NOT NULL,
   `dataIniAfast` DATETIME NOT NULL,
   `dataFimAfast` DATETIME NOT NULL,
   `dataIniEvento` DATETIME NOT NULL,
@@ -25,6 +27,18 @@ create table `solicitacao` (
   `motivoCancelamento` TEXT,
   `dataJulgamentoAfast` DATETIME,
 	FOREIGN KEY (idProfessor)
+        REFERENCES user(id)
+		ON DELETE CASCADE
+);
+
+create table `parentesco` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `idProfessor1` BIGINT NOT NULL,
+  `idProfessor2` BIGINT NOT NULL,
+	FOREIGN KEY (idProfessor1)
+        REFERENCES user(id)
+		ON DELETE CASCADE,
+	FOREIGN KEY (idProfessor2)
         REFERENCES user(id)
 		ON DELETE CASCADE
 );
@@ -43,5 +57,6 @@ create table `mandato` (
 # --- !Downs
 drop table `solicitacao`
 drop table `mandato`
+drop table `parentesco`
 drop table `user`
 

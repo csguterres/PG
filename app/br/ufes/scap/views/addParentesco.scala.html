@@ -1,0 +1,68 @@
+@(parentescoForm: Form[br.ufes.scap.models.ParentescoFormData],users : Seq[br.ufes.scap.models.User])(implicit request: RequestHeader)
+@main() {
+
+    @parentescoForm.globalError.map { error =>
+        <p class="error">
+            @error.message
+        </p>
+	}
+
+<form id="parentesco-data-form" role="form" action='@br.ufes.scap.controllers.routes.ParentescosController.addParentesco()' method="post"
+      class="form-horizontal" align="center" autocomplete="off">
+
+    <fieldset class="parentesco-fieldset">
+        <div class="col-xs-4">
+            <div class="parentesco-form">
+                <label class="form-title"
+                       style="color: #F8741B; font-size: 22px;font-weight: bold; text-decoration:none">Registro Novo Parentesco (Sanguíneo/Matrimonial)</label>
+            </div>
+            <br/>
+
+            <div class="input-group input-group-sm">
+            <span class="input-group-addon" id="sizing-addon2"><b>Professor  </b></span>
+		<select id=idProfessor1 name="idProfessor1" value="">
+		@for(user <- users){
+    			<option value=@user.id>@user.nome</option>
+		}
+		</select>
+            </div>
+
+		<br>
+		<br>
+
+            <div class="input-group input-group-sm">
+            <span class="input-group-addon" id="sizing-addon2"><b>Parente de  </b></span>
+		<select id=idProfessor2 name="idProfessor2" value="">
+		@for(user <- users){
+    			<option value=@user.id>@user.nome</option>
+		}
+		</select>
+            </div>
+
+		<br>
+		<br>
+    </ul>
+  </div>
+
+
+            <br/>
+            <div class="form-actions controls ynt-btn-xlarge">
+                <button type="submit" class="btn btn-primary ynt-btn-orange">Adicionar Novo Parentesco</button>
+            </div>
+
+        </div>
+    </fieldset>
+</form>
+
+<br>
+<br>
+<br>
+
+<form id="user-add-form" role="form" action='@br.ufes.scap.controllers.routes.LoginController.menu()' method="get"
+      class="form-horizontal" align="center" autocomplete="off">
+            <div class="form-actions controls ynt-btn-xlarge">
+                <button type="submit" class="btn btn-primary ynt-btn-orange">Voltar ao Menu Principal</button>
+            </div>
+</form>
+
+}

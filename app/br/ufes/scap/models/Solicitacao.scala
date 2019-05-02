@@ -11,6 +11,7 @@ import scala.concurrent.duration._
 import java.sql.Timestamp
 
 case class Solicitacao(id: Long, idProfessor : Long, 
+    idRelator : Long, dataSolicitacao : Timestamp, 
     dataIniAfast : Timestamp, dataFimAfast : Timestamp, 
     dataIniEvento: Timestamp, dataFimEvento : Timestamp, 
     nomeEvento : String, cidade : String, onus : String,
@@ -50,6 +51,8 @@ class SolicitacaoTableDef(tag: Tag) extends Table[Solicitacao](tag, "solicitacao
    
    def id = column[Long]("id", O.PrimaryKey,O.AutoInc)
    def idProfessor = column[Long]("idProfessor")
+   def idRelator = column[Long]("idRelator")
+   def dataSolicitacao = column[Timestamp]("dataSolicitacao")
    def dataIniAfast = column[Timestamp]("dataIniAfast")
    def dataFimAfast = column[Timestamp]("dataFimAfast")
    def dataIniEvento = column[Timestamp]("dataIniEvento")
@@ -63,7 +66,8 @@ class SolicitacaoTableDef(tag: Tag) extends Table[Solicitacao](tag, "solicitacao
    def dataJulgamentoAfast = column[Timestamp]("dataJulgamentoAfast")
 
    override def * =
-    (id, idProfessor, dataIniAfast, dataFimAfast, dataIniEvento, 
+    (id, idProfessor, idRelator, dataSolicitacao, 
+        dataIniAfast, dataFimAfast, dataIniEvento, 
         dataFimEvento, nomeEvento, cidade, onus, 
         tipoAfastamento, statusSolicitacao, 
         motivoCancelamento, dataJulgamentoAfast)<>(Solicitacao.tupled, Solicitacao.unapply)

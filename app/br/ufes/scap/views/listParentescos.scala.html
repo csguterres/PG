@@ -1,0 +1,56 @@
+@(Parentescos : Seq[br.ufes.scap.models.ParentescoFull])(implicit request: RequestHeader)
+@main() {
+
+<html>
+
+<a href="@br.ufes.scap.controllers.routes.LoginController.logout">Logout</a>
+
+<head>
+<style>
+table, th, td {
+  border: 1px solid black;
+}
+</style>
+</head>
+
+<body>
+<h2>Parentescos</h2>
+<table style="width:100%">
+                <tr>
+                    <th>ID</th>
+                    <th>PROFESSOR(A)</th>
+                    <th>PROFESSOR(A)</th>
+			  <th>DELETAR PARENTESCO</th>
+                </tr>
+                @for(p <- Parentescos){
+                <tr>
+                    <td>@p.id</td>
+                    <td>@p.professor1.get.nome</td>
+                    <td>@p.professor2.get.nome</td>
+                    <td><a href="@br.ufes.scap.controllers.routes.ParentescosController.deleteParentesco(p.id)">deletar</a></td>
+                </tr>
+                }
+</table>
+
+</body>
+
+
+<br>
+<br>
+<form id="parentesco-add-form" role="form" action='@br.ufes.scap.controllers.routes.ParentescosController.addParentesco()' method="get"
+      class="form-horizontal" align="center" autocomplete="off">
+            <div class="form-actions controls ynt-btn-xlarge">
+                <button type="submit" class="btn btn-primary ynt-btn-orange">Adicionar Novo Parentesco</button>
+            </div>
+</form>
+<br>
+<br>
+<form id="parentesco-add-form" role="form" action='@br.ufes.scap.controllers.routes.LoginController.menu()' method="get"
+      class="form-horizontal" align="center" autocomplete="off">
+            <div class="form-actions controls ynt-btn-xlarge">
+                <button type="submit" class="btn btn-primary ynt-btn-orange">Voltar ao Menu Principal</button>
+            </div>
+</form>
+
+</html>
+}

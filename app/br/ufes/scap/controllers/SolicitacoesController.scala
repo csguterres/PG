@@ -8,6 +8,7 @@ import javax.inject.Inject
 import scala.concurrent.Future
 import java.sql.Timestamp
 import java.sql.Date
+import java.util.Calendar
 import java.text.SimpleDateFormat
 import scala.concurrent.duration._
 import scala.concurrent._
@@ -53,8 +54,8 @@ class SolicitacoesController extends Controller {
         val fimAfast = new Timestamp(data.dataFimAfast.getTime())
         val iniEvento = new Timestamp(data.dataIniEvento.getTime())
         val fimEvento = new Timestamp(data.dataFimEvento.getTime())
-        
-        val newSolicitacao = Solicitacao(0, Global.SESSION_KEY,
+        val dataAtual = new Timestamp(Calendar.getInstance().getTime().getTime())
+        val newSolicitacao = Solicitacao(0, Global.SESSION_KEY, 0, dataAtual,
             iniAfast, fimAfast, iniEvento, fimEvento, 
             data.nomeEvento, data.cidade, data.onus, data.tipoAfastamento,
             "INICIADA", "", iniEvento)
