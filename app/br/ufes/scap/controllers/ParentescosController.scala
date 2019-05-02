@@ -1,6 +1,6 @@
 package br.ufes.scap.controllers
 
-import br.ufes.scap.models.{Global, Parentesco, ParentescoFull, User, UserLoginForm, ParentescoForm}
+import br.ufes.scap.models.{Global, Parentesco, ParentescoFull, User, UserForm, UserLoginForm, ParentescoForm}
 import play.api.mvc._
 import br.ufes.scap.services.{UserService, ParentescoService}
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -27,7 +27,7 @@ class ParentescosController extends Controller {
           var P = new ParentescoFull(p.id, user1, user2)
           Parentescos = Parentescos :+ P
         }
-        Ok(br.ufes.scap.views.html.listParentescos(Parentescos))
+        Ok(br.ufes.scap.views.html.listParentescos(ParentescoForm.form, Parentescos))
       }else{
     		Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
       }
@@ -54,15 +54,22 @@ class ParentescosController extends Controller {
   def addParentesco() = Action.async { implicit request =>
     ParentescoForm.form.bindFromRequest.fold(
       // if any error in submitted data
-      errorForm => Future.successful(BadRequest(br.ufes.scap.views.html.addParentesco(errorForm, Seq.empty[User]))),
+      errorForm => 
+        Future.successful
+        (BadRequest
+          (br.ufes.scap.views.html.addParentesco
+             (errorForm, 
+                (Await.result
+                  (UserService.listAllUsersByTipo("PROFESSOR"),Duration.Inf)
+                )
+             )
+           )
+        ),
       data => {
         val newParentesco = Parentesco(0, data.idProfessor1, data.idProfessor2)
         ParentescoService.addParentesco(newParentesco).map(res =>
-          Redirect(routes.LoginController.menu())
+          Redirect(routes.ParentescosController.index())
         )
-        ParentescoService.listAllParentescosByProfessor(0) map { parentescos =>
-          Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
-        } 
       })
   }
  

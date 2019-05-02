@@ -13,25 +13,25 @@ object Global {
     
     def isLoggedIn() : Boolean ={
       if (this.SESSION_KEY != 0){
-        true
+        return true
       }else{
-        false
+        return false
       }
     }
     
     def isSecretario() : Boolean ={ 
       if (this.SESSION_TIPO.equals("SECRETARIO")){
-        true
+        return true
       }else{
-        false
+        return false
       }
     }
     
     def checaData(dataInicio : Date, dataFim : Date): Boolean = {
     if (dataInicio.after(dataFim)){
-      false
+      return false
     }else{
-      true
+      return true
     }
   }
 }

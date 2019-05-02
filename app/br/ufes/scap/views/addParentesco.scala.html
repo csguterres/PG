@@ -1,4 +1,4 @@
-@(parentescoForm: Form[br.ufes.scap.models.ParentescoFormData],users : Seq[br.ufes.scap.models.User])(implicit request: RequestHeader)
+@(parentescoForm: Form[br.ufes.scap.models.ParentescoFormData], users : Seq[br.ufes.scap.models.User])(implicit request: RequestHeader)
 @main() {
 
     @parentescoForm.globalError.map { error =>
@@ -14,7 +14,7 @@
         <div class="col-xs-4">
             <div class="parentesco-form">
                 <label class="form-title"
-                       style="color: #F8741B; font-size: 22px;font-weight: bold; text-decoration:none">Registro Novo Parentesco (Sanguíneo/Matrimonial)</label>
+                       style="color: #F8741B; font-size: 22px;font-weight: bold; text-decoration:none">Registro Novo Parentesco</label>
             </div>
             <br/>
 
