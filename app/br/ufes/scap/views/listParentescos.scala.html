@@ -15,6 +15,9 @@ table, th, td {
 
 <body>
 <h2>Parentescos</h2>
+
+<p> * Parentescos podem ser sanguíneos ou matrimoniais.</p>
+ 
 <table style="width:100%">
                 <tr>
                     <th>ID</th>
@@ -27,7 +30,8 @@ table, th, td {
                     <td>@p.id</td>
                     <td>@p.professor1.get.nome</td>
                     <td>@p.professor2.get.nome</td>
-                    <td><a href="@br.ufes.scap.controllers.routes.ParentescosController.deleteParentesco(p.id)">deletar</a></td>
+                    <td><a href="@br.ufes.scap.controllers.routes.ParentescosController.deleteParentesco(p.id)" 
+   class="btn btn-danger" onclick="return confirm('Você tem certeza de que deseja excluir esse parentesco?');">Deletar</a></td>
                 </tr>
                 }
 </table>

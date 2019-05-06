@@ -52,11 +52,22 @@ create table `mandato` (
 	FOREIGN KEY (idProfessor)
         REFERENCES user(id)
 		ON DELETE CASCADE
+);
+
+create table `parecer` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `tipoParecer` TEXT NOT NULL,
+  `idProfessor` BIGINT,
+  `julgamento` TEXT NOT NULL,
+  `motivo` TEXT NOT NULL,
+  `dataParecer` DATETIME NOT NULL
+
 )
 
 # --- !Downs
 drop table `solicitacao`
 drop table `mandato`
 drop table `parentesco`
+drop table `parecer`
 drop table `user`
 

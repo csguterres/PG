@@ -1,4 +1,4 @@
-@(mandatoForm: Form[br.ufes.scap.models.MandatoFormData],mandatos : Seq[br.ufes.scap.models.Mandato])(implicit request: RequestHeader)
+@(mandatoForm: Form[br.ufes.scap.models.MandatoFormData],users : Seq[br.ufes.scap.models.User])(implicit request: RequestHeader)
 @main() {
 
     @mandatoForm.globalError.map { error =>
@@ -18,6 +18,18 @@
 				</label>
             </div>
             <br/>
+
+		<div class="input-group input-group-sm">
+            <span class="input-group-addon" id="sizing-addon2"><b>Professor  </b></span>
+		<select id=idProfessor name="idProfessor" value="">
+		@for(user <- users){
+    			<option value=@user.id>@user.nome</option>
+		}
+		</select>
+            </div>
+
+		<br>
+		<br>
 
             <div class="input-group input-group-sm">
             <span class="input-group-addon" id="sizing-addon2"><b>Cargo  </b></span>

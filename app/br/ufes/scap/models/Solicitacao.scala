@@ -19,11 +19,30 @@ case class Solicitacao(id: Long, idProfessor : Long,
     motivoCancelamento : String, dataJulgamentoAfast : Timestamp
     )
     
+case class SolicitacaoFull(id: Long, professor : Option[User], 
+    idRelator : Long, dataSolicitacao : Timestamp, 
+    dataIniAfast : Timestamp, dataFimAfast : Timestamp, 
+    dataIniEvento: Timestamp, dataFimEvento : Timestamp, 
+    nomeEvento : String, cidade : String, onus : String,
+    tipoAfastamento : String, statusSolicitacao : String,
+    motivoCancelamento : String, dataJulgamentoAfast : Timestamp
+    )
+
+case class EncaminhamentoFormData(idRelator : Long)
+
 case class SolicitacaoFormData(dataIniAfast : Date, dataFimAfast : 
     Date, dataIniEvento: Date, dataFimEvento : Date, 
     nomeEvento : String, cidade : String, onus : String,
     tipoAfastamento : String
     )
+
+object EncaminhamentoForm {
+  val form = Form(
+      mapping(
+          "idRelator" -> longNumber
+      )(EncaminhamentoFormData.apply)(EncaminhamentoFormData.unapply)
+  )
+}
 
 object SolicitacaoForm {
 

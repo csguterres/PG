@@ -1,4 +1,4 @@
-@(solicitacaoForm: Form[br.ufes.scap.models.SolicitacaoFormData],solicitacoes : Seq[br.ufes.scap.models.Solicitacao])(implicit request: RequestHeader)
+@(solicitacaoForm: Form[br.ufes.scap.models.SolicitacaoFormData],solicitacoes : Seq[br.ufes.scap.models.Solicitacao], userTipo : String)(implicit request: RequestHeader)
 @main() {
 
 <html>
@@ -18,11 +18,9 @@ table, th, td {
                     <th>ID</th>
                     <th>ID DO PROFESSOR</th>
                     <th>NOME DO EVENTO</th>
-                    <th>DATA INICIO DO EVENTO</th>
-                    <th>DATA FIM DO EVENTO</th>
 			  <th>DATA INICIO DO AFASTAMENTO</th>
 			  <th>DATA FIM DO AFASTAMENTO</th>
-			  <th>DELETAR</th>
+		        <th>VER MAIS DETALHES</th>
                 </tr>
 
                 @for(solicitacao <- solicitacoes){
@@ -30,11 +28,9 @@ table, th, td {
                     <td>@solicitacao.id</td>
                     <td>@solicitacao.idProfessor</td>
                     <td>@solicitacao.nomeEvento</td>
-                    <td>@solicitacao.dataIniEvento</td>
-			  <td>@solicitacao.dataFimEvento</td>
 			  <td>@solicitacao.dataIniAfast</td>
 			  <td>@solicitacao.dataFimAfast</td>
-                    <td><a href="@br.ufes.scap.controllers.routes.SolicitacoesController.deleteSolicitacao(solicitacao.id)">deletar</a></td>
+                    <td><a href="@br.ufes.scap.controllers.routes.SolicitacoesController.verSolicitacao(solicitacao.id)">VER</a></td>
                 </tr>
                 }
 </table>

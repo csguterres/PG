@@ -14,7 +14,7 @@ import br.ufes.scap.services.MandatoService
 case class Mandato(id: Long, idProfessor: Long, cargo : String,
     dataIniMandato: Timestamp, dataFimMandato : Timestamp)
     
-case class MandatoFormData(cargo : String, 
+case class MandatoFormData(idProfessor : Long, cargo : String, 
     dataIniMandato : Date, dataFimMandato : Date)
     
 
@@ -22,6 +22,7 @@ object MandatoForm{
   
   val form = Form(
       mapping(
+          "idProfessor" -> longNumber,
           "cargo" -> nonEmptyText,
           "dataIniMandato" -> date,
           "dataFimMandato" -> date

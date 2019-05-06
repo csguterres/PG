@@ -10,22 +10,35 @@ import scala.concurrent._
 import scala.concurrent.duration._
 import java.sql.Timestamp
 
-case class Parecer(id: Long, idProfessor: Long, idSolicitacao : Long,
-    julgamento: String, motivoIndeferimento : String, dataParecer : Timestamp)
-    
-case class ParecerFormData(dataParecer : Date,
-    julgamento: String, motivoIndeferimento : String)
-    
+case class Parecer(id: Long, tipoParecer : String,
+    idSolicitacao : Long, idProfessor: Long, 
+    julgamento: String, motivo : String, dataParecer : Timestamp)
+
+case class ManifestacaoFormData(motivo : String)
+
+case class ParecerFormData(tipoParecer : String, 
+    julgamento: String, motivo : String)
+
+object ManifestacaoForm {
+
+  val form = Form(
+    mapping(
+      "motivo" -> text
+    )(ManifestacaoFormData.apply)(ManifestacaoFormData.unapply)      
+			  .verifying("Erro: Necessário apresentar um motivo para se manifestar contra o afastamento",  
+			      s => Global.preenchido(s.motivo))
+  )
+  
+}
+
 object ParecerForm {
   
   val form = Form(
     mapping(
-      "dataParecer" -> date,
+      "tipoParecer" -> nonEmptyText,
       "julgamento" -> nonEmptyText,
-      "motivoIndeferimento" -> text
+      "motivo" -> text
     )(ParecerFormData.apply)(ParecerFormData.unapply)      
-			  .verifying("Erro: Data de inicio do afastamento posterior a data de fim do afastamento",  
-			      s => motivo(s.julgamento, s.motivoIndeferimento))
   )
   
   def motivo(julgamento : String, motivoIndeferimento : String): Boolean = {
@@ -40,14 +53,15 @@ object ParecerForm {
 
 class ParecerTableDef(tag: Tag) extends Table[Parecer](tag, "parecer") {
 
+  def tipoParecer = column[String]("tipoParecer")
   def id = column[Long]("id", O.PrimaryKey,O.AutoInc)
   def idProfessor = column[Long]("idProfessor")
   def idSolicitacao = column[Long]("idSolicitacao")
   def dataParecer = column[Timestamp]("dataParacer")
   def julgamento = column[String]("julgamento")
-  def motivoIndeferimento = column[String]("motivoIndeferimento")
+  def motivo = column[String]("motivo")
 
   override def * =
-    (id, idProfessor, idSolicitacao,  julgamento, 
-        motivoIndeferimento, dataParecer)<>(Parecer.tupled, Parecer.unapply)
+    (id, tipoParecer, idSolicitacao, idProfessor, julgamento, 
+        motivo, dataParecer)<>(Parecer.tupled, Parecer.unapply)
 }
