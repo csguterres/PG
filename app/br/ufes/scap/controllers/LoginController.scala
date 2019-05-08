@@ -22,15 +22,10 @@ class LoginController extends Controller {
         Global.SESSION_KEY = user.get.id 
         Global.SESSION_TIPO = user.get.tipo
         Global.SESSION_MATRICULA = user.get.matricula
-        if(Global.SESSION_TIPO.equals("SECRETARIO")){
-          UserService.getUserByMatricula(data.matricula).map(res =>
-            Ok(br.ufes.scap.views.html.menuSecretario(UserForm.form, user))
+        Global.isPresidenteOuVice()
+        UserService.getUserByMatricula(data.matricula).map(res =>
+            Ok(br.ufes.scap.views.html.menu(UserForm.form, user))
           )
-        }else{
-          UserService.getUserByMatricula(data.matricula).map(res =>
-            Ok(br.ufes.scap.views.html.menuUsuario(UserForm.form, user))
-          )
-        }
       })
   }
     
@@ -44,11 +39,7 @@ class LoginController extends Controller {
     def menu() = Action{ implicit request =>
       if (Global.isLoggedIn()){
         val user = Await.result(UserService.getUser(Global.SESSION_KEY),Duration.Inf)
-        if (Global.isSecretario()){
-          Ok(br.ufes.scap.views.html.menuSecretario(UserForm.form, user))
-        }else{
-          Ok(br.ufes.scap.views.html.menuUsuario(UserForm.form, user))
-        }
+        Ok(br.ufes.scap.views.html.menu(UserForm.form, user))
       }else{
         Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
       }

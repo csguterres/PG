@@ -24,6 +24,7 @@ class MandatosController extends Controller {
      }
   }
   */
+  
   def showMandatosByProfessor(idProfessor : Long) = Action { implicit request =>
     if (Global.isSecretario()){
       val user = Await.result(UserService.getUser(idProfessor),Duration.Inf)

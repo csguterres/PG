@@ -12,11 +12,16 @@ POST    /addUser                    			br.ufes.scap.controllers.UsersController.
 GET     /deleteUser/:id             			br.ufes.scap.controllers.UsersController.deleteUser(id : Long)
 GET     /editUser/:id               			br.ufes.scap.controllers.UsersController.editUser(id : Long)
 POST    /updateUser/:id             			br.ufes.scap.controllers.UsersController.updateUser(id : Long)
-GET	  /erro							br.ufes.scap.controllers.SolicitacoesController.index
+GET	  /solicitacoes						br.ufes.scap.controllers.SolicitacoesController.index
+GET	  /minhasSolicitacoes	      			br.ufes.scap.controllers.SolicitacoesController.minhasSolicitacoes
 GET	  /addSolicitacao						br.ufes.scap.controllers.SolicitacoesController.addSolicitacao
 POST	  /addSolicitacao						br.ufes.scap.controllers.SolicitacoesController.addSolicitacao
 GET	  /solicitacao/:id					br.ufes.scap.controllers.SolicitacoesController.verSolicitacao(id: Long)
 GET     /solicitacao/:id/delete     			br.ufes.scap.controllers.SolicitacoesController.deleteSolicitacao(id : Long)
+POST    /solicitacao/:id/delete     			br.ufes.scap.controllers.SolicitacoesController.deleteSolicitacao(id : Long)
+GET	  /solicitacao/:id/encaminhar				br.ufes.scap.controllers.SolicitacoesController.encaminharSolicitacao(id : Long)
+POST	  /solicitacao/:id/encaminhar				br.ufes.scap.controllers.SolicitacoesController.encaminharSolicitacao(id : Long)
+POST	  /solicitacao/:id/mudaStatus/:status	      br.ufes.scap.controllers.SolicitacoesController.mudaStatus(id : Long, status: String)
 GET	  /login							br.ufes.scap.controllers.LoginController.login
 POST	  /login							br.ufes.scap.controllers.LoginController.login
 GET     /addMandatoPre						br.ufes.scap.controllers.MandatosController.addMandatoPre()
@@ -30,3 +35,6 @@ POST	  /addParentesco						br.ufes.scap.controllers.ParentescosController.addPar
 GET	  /listParentescos					br.ufes.scap.controllers.ParentescosController.index
 GET	  /deleteParentesco/:id					br.ufes.scap.controllers.ParentescosController.deleteParentesco(id: Long)
 GET	  /solicitacao/:id/manifestar				br.ufes.scap.controllers.PareceresController.manifestarContraPre(id : Long)
+POST	  /solicitacao/:id/manifestar				br.ufes.scap.controllers.PareceresController.manifestarContra(id : Long)
+GET	  /solicitacao/:id/registrarParecer		      br.ufes.scap.controllers.PareceresController.registrarParecerPre(id : Long)
+POST	  /solicitacao/:id/registrarParecer		      br.ufes.scap.controllers.PareceresController.registrarParecer(id : Long)

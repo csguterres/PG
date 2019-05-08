@@ -41,6 +41,10 @@ object Solicitacoes {
     dbConfig.db.run(solicitacoes.filter(_.idProfessor === idProfessor).result)
   }
   
+  def findByStatus(status : String): Future[Seq[Solicitacao]] = {
+    dbConfig.db.run(solicitacoes.filter(_.statusSolicitacao === status).result)
+  }
+  
   def listAll: Future[Seq[Solicitacao]] = {
     dbConfig.db.run(solicitacoes.result)
   }

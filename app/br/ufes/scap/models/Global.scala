@@ -10,6 +10,7 @@ object Global {
     var SESSION_KEY : Long = 0
     var SESSION_TIPO : String = ""
     var SESSION_MATRICULA: String = ""
+    var SESSION_CHEFE : Boolean = false
     
     def isLoggedIn() : Boolean ={
       if (this.SESSION_KEY != 0){
@@ -27,14 +28,24 @@ object Global {
       }
     }
     
-    def isPresidenteOuVice(id : Long): Boolean ={
+    def isRelator(idRelator : Long): Boolean ={
+      if (this.SESSION_KEY == idRelator){
+        return true
+      }else{
+        return false
+      }
+    }
+    
+    def isPresidenteOuVice(): Int ={
       val mandatos = MandatoService.getMandatoAtual()
       for (m <- mandatos){
-        if (id == m.idProfessor){
-          return true
+        if (SESSION_KEY == m.idProfessor){
+          SESSION_CHEFE = true
+          return 0
         }
       }
-      return false
+      SESSION_CHEFE = false
+      return 0
     }
         
     def isProfessor() : Boolean ={ 
@@ -51,10 +62,6 @@ object Global {
       }else{
         return true
       }
-    }
-    
-    def preenchido(motivo : String): Boolean = {
-      return !(motivo.trim.equals(""))
     }
   
 }

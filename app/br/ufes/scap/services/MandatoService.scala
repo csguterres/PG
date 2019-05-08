@@ -41,7 +41,7 @@ object MandatoService {
     var mandatosList : Seq[Mandato] = Seq()
     for (m <- mandatos){
       if(dataAtual.after(m.dataIniMandato) && dataAtual.before(m.dataFimMandato)){
-        mandatosList :+ m
+        mandatosList = mandatosList :+ m
       }
     }
     return mandatosList

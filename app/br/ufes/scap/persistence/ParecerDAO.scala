@@ -16,10 +16,12 @@ object Pareceres {
 
   val pareceres = TableQuery[ParecerTableDef]
   
-  def add(Parecer: Parecer): Future[String] = {
-    dbConfig.db.run(pareceres += Parecer).map(res => 
+  def add(parecer: Parecer): Future[String] = {
+    dbConfig.db.run(pareceres += parecer).map(res => 
       "Parecer successfully added").recover {
-      case ex: Exception => ex.getCause.getMessage
+      case ex: Exception => 
+        println(ex.printStackTrace())
+        ex.getClass().getName()
     }
   }
 

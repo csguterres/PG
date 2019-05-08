@@ -1,0 +1,36 @@
+@(manifestacaoForm: Form[br.ufes.scap.models.ManifestacaoFormData], solicitacao : Option[br.ufes.scap.models.Solicitacao])(implicit request: RequestHeader)
+@main() {
+
+    @manifestacaoForm.globalError.map { error =>
+        <p class="error">
+            @error.message
+        </p>
+	}
+
+<body>
+      <form action = "@br.ufes.scap.controllers.routes.PareceresController.manifestarContra(solicitacao.get.id)" align="center"
+	method = "post">
+         <br />
+         
+         <textarea id="motivo"  name="motivo" rows = "5" cols = "50" name = "description">
+		Escreva o motivo de se posicionar contrário a essa solicitação
+         </textarea>
+         
+<br>
+         <input type = "submit" value = "Registrar">
+      </form>
+</body>
+
+
+<br>
+<br>
+<br>
+
+		
+<form id="user-add-form" role="form" action='@br.ufes.scap.controllers.routes.LoginController.menu()' method="get"
+      class="form-horizontal" align="center" autocomplete="off">
+            <div class="form-actions controls ynt-btn-xlarge">
+                <button type="submit" class="btn btn-primary ynt-btn-orange">Voltar ao Menu Principal</button>
+            </div>
+</form>
+}

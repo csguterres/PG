@@ -1,4 +1,4 @@
-@(encaminhamentoForm: Form[br.ufes.scap.models.EncaminhamentoFormData], users : Seq[br.ufes.scap.models.User], solicitacao : Option[br.ufes.scap.models.Solicitacao], user : Option[br.ufes.scap.models.User])(implicit request: RequestHeader)
+@(encaminhamentoForm: Form[br.ufes.scap.models.EncaminhamentoFormData], users : Seq[br.ufes.scap.models.User], solicitacao : br.ufes.scap.models.SolicitacaoFull)(implicit request: RequestHeader)
 @main() {
 
     @encaminhamentoForm.globalError.map { error =>
@@ -7,7 +7,7 @@
         </p>
 	}
 
-<form id="solicitacao-data-form" role="form" action='@br.ufes.scap.controllers.routes.SolicitacoesController.addSolicitacao()' method="post"
+<form id="solicitacao-data-form" role="form" action='@br.ufes.scap.controllers.routes.SolicitacoesController.encaminharSolicitacao(solicitacao.id)' method="post"
       class="form-horizontal" align="center" autocomplete="off">
 
     <fieldset class="solicitacao-fieldset">
@@ -18,11 +18,13 @@
             </div>
             <br/>
 
-<p>Designar relator para a solicitacao do professor @user.get.id para o evento @solicitacao.get.nomeEvento</p>
+<p>Designar relator para a solicitacao do professor @solicitacao.professor.get.id para o evento @solicitacao.nomeEvento</p>
 
-            <div class="input-group input-group-sm">
-            <span class="input-group-addon" id="sizing-addon2"><b>Relator:  </b></span>
-		<select id=idProfessor1 name="idProfessor1" value="">
+            <input type="hidden" id="idProfessor" name="idProfessor" value="@solicitacao.professor.get.id">
+
+		<br>
+		<b>Relator:  </b></span>
+		<select id=idRelator name="idRelator" value="">
 		@for(user <- users){
     			<option value=@user.id>@user.nome</option>
 		}
@@ -38,7 +40,7 @@
 
             <br/>
             <div class="form-actions controls ynt-btn-xlarge">
-                <button type="submit" class="btn btn-primary ynt-btn-orange">Adicionar Nova Solicitacao</button>
+                <button type="submit" class="btn btn-primary ynt-btn-orange">Encaminhar Solicitação</button>
             </div>
 
         </div>

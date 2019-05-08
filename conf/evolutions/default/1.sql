@@ -56,12 +56,17 @@ create table `mandato` (
 
 create table `parecer` (
   `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `tipoParecer` TEXT NOT NULL,
+  `idSolicitacao` BIGINT NOT NULL,
   `idProfessor` BIGINT,
   `julgamento` TEXT NOT NULL,
   `motivo` TEXT NOT NULL,
-  `dataParecer` DATETIME NOT NULL
-
+  `dataParecer` DATETIME NOT NULL,
+	FOREIGN KEY (idSolicitacao)
+        REFERENCES solicitacao(id)
+		ON DELETE CASCADE,
+	FOREIGN KEY (idProfessor)
+        REFERENCES user(id)
+		ON DELETE CASCADE
 )
 
 # --- !Downs

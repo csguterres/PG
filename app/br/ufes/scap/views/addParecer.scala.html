@@ -1,0 +1,49 @@
+@(parecerForm: Form[br.ufes.scap.models.ParecerFormData], solicitacao : Option[br.ufes.scap.models.Solicitacao])(implicit request: RequestHeader)
+@main() {
+
+    @parecerForm.globalError.map { error =>
+        <p class="error">
+            @error.message
+        </p>
+	}
+
+<body>
+      <form action = "@br.ufes.scap.controllers.routes.PareceresController.manifestarContra(solicitacao.get.id)" align="center"
+	method = "post">
+         <br />
+         
+<select>
+
+</select>
+            <b>Relator:  </b></span>
+		<select id=julgamento name="julgamento" value="">
+  			<option value="DESFAVORAVEL">DESFAVORÁVEL</option>
+  			<option value="FAVORAVEL">FAVORÁVEL</option>
+		</select>
+            </div>
+
+		<br>
+		<br>
+         <textarea id="motivo"  name="motivo" rows = "5" cols = "50" name = "description">
+		Escreva o motivo de se posicionar contrário a essa solicitação
+         </textarea>
+		
+         
+<br>
+         <input type = "submit" value = "Registrar">
+      </form>
+</body>
+
+
+<br>
+<br>
+<br>
+
+		
+<form id="user-add-form" role="form" action='@br.ufes.scap.controllers.routes.LoginController.menu()' method="get"
+      class="form-horizontal" align="center" autocomplete="off">
+            <div class="form-actions controls ynt-btn-xlarge">
+                <button type="submit" class="btn btn-primary ynt-btn-orange">Voltar ao Menu Principal</button>
+            </div>
+</form>
+}

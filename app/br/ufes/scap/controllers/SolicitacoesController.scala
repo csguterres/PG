@@ -16,20 +16,32 @@ import scala.concurrent._
 class SolicitacoesController extends Controller { 
   
   def index = Action { implicit request =>
-      val solicitacoes = Await.result(SolicitacaoService.listAllSolicitacoes, Duration.Inf)
-      if (Global.isLoggedIn()){
+      if (Global.isProfessor()){
+        val solicitacoesIniciadas = Await.result(SolicitacaoService.listAllSolicitacoesByStatus("INICIADA"), Duration.Inf)
+        val solicitacoesLiberadas = Await.result(SolicitacaoService.listAllSolicitacoesByStatus("LIBERADA"), Duration.Inf)
+        val solicitacoes = SolicitacaoService.mergeListas(solicitacoesIniciadas, solicitacoesLiberadas)
          val userTipo = Global.SESSION_TIPO
-         Ok(br.ufes.scap.views.html.listSolicitacoes(SolicitacaoForm.form, solicitacoes, userTipo))
+         Ok(br.ufes.scap.views.html.listSolicitacoes(SolicitacaoForm.form, solicitacoes))
+      
       }else{
-          Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
+        if (Global.isSecretario()){
+            val solicitacoes = Await.result(SolicitacaoService.listAllSolicitacoes, Duration.Inf)
+            Ok(br.ufes.scap.views.html.listSolicitacoes(SolicitacaoForm.form, solicitacoes))
+        }else{
+           Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
+        }
       }
+  }
+  
+  def minhasSolicitacoes = Action {
+     val solicitacoes = Await.result(SolicitacaoService.listAllSolicitacoesBySolicitante(Global.SESSION_KEY), Duration.Inf)
+     Ok(br.ufes.scap.views.html.listSolicitacoes(SolicitacaoForm.form, solicitacoes))
   }
 
   def deleteSolicitacao(id: Long) = Action.async { implicit request =>
       val sol = Await.result(SolicitacaoService.getSolicitacao(id),Duration.Inf)
       if (sol.get.idProfessor == Global.SESSION_KEY){
         val newSolicitacao = SolicitacaoService.cancelaSolicitacao(sol)
-        SolicitacaoService.deleteSolicitacao(id)
         SolicitacaoService.update(newSolicitacao).map(res =>
             Redirect(routes.LoginController.menu())
         )
@@ -46,8 +58,22 @@ class SolicitacoesController extends Controller {
     if(oldSolicitacao.get.idProfessor == Global.SESSION_KEY){
       userTipo = "AUTOR"
     }
+    if(Global.isRelator(oldSolicitacao.get.idRelator)){
+      userTipo = "RELATOR"
+    }
     val solicitacaoFull = SolicitacaoService.turnSolicitacaoIntoSolicitacaoFull(oldSolicitacao)
-    Ok(br.ufes.scap.views.html.verSolicitacao(solicitacaoFull, userTipo))
+    Ok(br.ufes.scap.views.html.verSolicitacao(solicitacaoFull, userTipo, Global.SESSION_CHEFE))
+  }
+  
+  def mudaStatus(id : Long, status : String) = Action { 
+    val oldSolicitacao = Await.result(SolicitacaoService.getSolicitacao(id), Duration.Inf)
+    if(Global.isRelator(oldSolicitacao.get.idRelator)){
+      val solicitacao = SolicitacaoService.mudaStatus(oldSolicitacao, status)
+      SolicitacaoService.update(solicitacao)
+      Redirect(routes.LoginController.menu())
+    }else{
+       Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
+    }
   }
   
   def addSolicitacao() = Action.async { implicit request =>
@@ -77,11 +103,10 @@ class SolicitacoesController extends Controller {
   }
   
   def encaminharSolicitacaoPre(idSolicitacao : Long) = Action { implicit request =>
-    if (Global.isPresidenteOuVice(Global.SESSION_KEY)){
+    if (Global.SESSION_CHEFE == true){
         val users = Await.result(UserService.listAllUsersByTipo("PROFESSOR"), Duration.Inf)
-        val solicitacao = Await.result(SolicitacaoService.getSolicitacao(idSolicitacao),Duration.Inf)
-        val user = Await.result(UserService.getUser(solicitacao.get.idProfessor),Duration.Inf)
-        Ok(br.ufes.scap.views.html.encaminharSolicitacao(EncaminhamentoForm.form, users, solicitacao, user))
+        val solicitacao = SolicitacaoService.turnSolicitacaoIntoSolicitacaoFull(Await.result(SolicitacaoService.getSolicitacao(idSolicitacao),Duration.Inf))
+        Ok(br.ufes.scap.views.html.encaminharSolicitacao(EncaminhamentoForm.form, users, solicitacao))
     }else{
         Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
     }
@@ -90,13 +115,21 @@ class SolicitacoesController extends Controller {
   def encaminharSolicitacao(idSolicitacao : Long) = Action.async { implicit request =>
       EncaminhamentoForm.form.bindFromRequest.fold(
         // if any error in submitted data
-        errorForm => Future.successful(BadRequest(br.ufes.scap.views.html.encaminharSolicitacao(errorForm, Seq.empty[User], None, None))),
+        errorForm => 
+          Future.successful
+          (BadRequest
+              (br.ufes.scap.views.html.encaminharSolicitacao
+                  (errorForm, Await.result(UserService.listAllUsersByTipo("PROFESSOR"), Duration.Inf),
+SolicitacaoService.turnSolicitacaoIntoSolicitacaoFull(Await.result(SolicitacaoService.getSolicitacao(idSolicitacao),Duration.Inf))
+                  )
+              )
+          ),
         data => {
-        if (Global.isPresidenteOuVice(Global.SESSION_KEY)){
+        if (Global.SESSION_CHEFE == true){
           val oldSolicitacao = Await.result(SolicitacaoService.getSolicitacao(idSolicitacao),Duration.Inf)
           val newSolicitacao = SolicitacaoService.addRelator(oldSolicitacao, data.idRelator)
           SolicitacaoService.update(newSolicitacao).map(res =>
-            Redirect(routes.SolicitacoesController.index())
+            Redirect(routes.SolicitacoesController.mudaStatus(newSolicitacao.id,"LIBERADA"))
           )
         }else{
           SolicitacaoService.listAllSolicitacoesBySolicitante(0) map { solicitacoes =>

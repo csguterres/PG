@@ -1,0 +1,47 @@
+@(solicitacao : br.ufes.scap.models.SolicitacaoFull, userTipo : String, chefe : Boolean)(implicit request: RequestHeader)
+
+@main() {
+
+<p>Solicitacao para o evento "@solicitacao.nomeEvento" feita pelo Professor @solicitacao.professor.get.nome</p>
+
+<br>
+<br>
+<br>
+
+@if(chefe == true){
+<form action="@br.ufes.scap.controllers.routes.SolicitacoesController.encaminharSolicitacao(solicitacao.id)" align="center" method="get">
+  <input type="submit" value="Designar Relator">
+</form>
+<br>
+<br>
+}
+
+@if(userTipo.equals("AUTOR")){
+<form action="@br.ufes.scap.controllers.routes.SolicitacoesController.deleteSolicitacao(solicitacao.id)" align="center" method="get">
+  <input type="submit" value="Deletar">
+</form>
+}
+
+@if(userTipo.equals("PROFESSOR")){
+<form action="@br.ufes.scap.controllers.routes.PareceresController.manifestarContraPre(solicitacao.id)" align="center" method="get">
+  <input type="submit" value="Manifestar-se Contra">
+</form>
+}
+
+@if(userTipo.equals("RELATOR")){
+<form action="@br.ufes.scap.controllers.routes.PareceresController.registrarParecer(solicitacao.id)" align="center" method="get">
+  <input type="submit" value="Registrar Parecer">
+</form>
+}
+
+<br>
+<br>
+<br>
+<form id="user-list-form" role="form" action='@br.ufes.scap.controllers.routes.LoginController.menu()' method="get"
+      class="form-horizontal" align="center" autocomplete="off">
+            <div class="form-actions controls ynt-btn-xlarge">
+                <button type="submit" class="btn btn-primary ynt-btn-orange">Voltar ao Menu Principal</button>
+            </div>
+</form>
+
+}

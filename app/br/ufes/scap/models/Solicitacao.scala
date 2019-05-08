@@ -9,6 +9,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent._
 import scala.concurrent.duration._
 import java.sql.Timestamp
+import br.ufes.scap.services.ParentescoService
 
 case class Solicitacao(id: Long, idProfessor : Long, 
     idRelator : Long, dataSolicitacao : Timestamp, 
@@ -28,7 +29,7 @@ case class SolicitacaoFull(id: Long, professor : Option[User],
     motivoCancelamento : String, dataJulgamentoAfast : Timestamp
     )
 
-case class EncaminhamentoFormData(idRelator : Long)
+case class EncaminhamentoFormData(idProfessor : Long, idRelator : Long)
 
 case class SolicitacaoFormData(dataIniAfast : Date, dataFimAfast : 
     Date, dataIniEvento: Date, dataFimEvento : Date, 
@@ -37,10 +38,16 @@ case class SolicitacaoFormData(dataIniAfast : Date, dataFimAfast :
     )
 
 object EncaminhamentoForm {
+  
   val form = Form(
       mapping(
+          "idProfessor" -> longNumber,
           "idRelator" -> longNumber
       )(EncaminhamentoFormData.apply)(EncaminhamentoFormData.unapply)
+      .verifying("Erro: Você não pode designar o próprio solicitante como relator", 
+          s => ParentescoService.checaDiferente(s.idProfessor,s.idRelator))
+      .verifying("Erro: Você não pode designar um membro da família do solicitante como relator", 
+          s => ParentescoService.naoExisteParentesco(s.idProfessor,s.idRelator))
   )
 }
 
