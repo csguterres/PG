@@ -33,8 +33,8 @@ object Pareceres {
     dbConfig.db.run(pareceres.filter(_.id === id).result.headOption)
   }
     
-  def update(mandato: Parecer) : Future[String] = {
-    dbConfig.db.run(pareceres.filter(_.id === mandato.id).update(mandato)).map(res => "Parecer successfully added").recover {
+  def update(parecer: Parecer) : Future[String] = {
+    dbConfig.db.run(pareceres.filter(_.id === parecer.id).update(parecer)).map(res => "Parecer successfully added").recover {
       case ex: Exception => ex.getCause.getMessage
     }
   }

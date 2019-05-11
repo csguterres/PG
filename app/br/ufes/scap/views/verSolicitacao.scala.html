@@ -1,14 +1,38 @@
-@(solicitacao : br.ufes.scap.models.SolicitacaoFull, userTipo : String, chefe : Boolean)(implicit request: RequestHeader)
+@(solicitacao : br.ufes.scap.models.SolicitacaoFull, userTipo : String)(implicit request: RequestHeader)
 
 @main() {
 
-<p>Solicitacao para o evento "@solicitacao.nomeEvento" feita pelo Professor @solicitacao.professor.get.nome</p>
-
+<p>Solicitacao para o evento "@solicitacao.nomeEvento"</p> 
+<p>Professor: @solicitacao.professor.get.nome</p>
+<p>Status Atual: @solicitacao.status
+@if(solicitacao.relator != None){
+<p>Relator: @solicitacao.relator.get.nome</p>
+}else{
+<p>Relator: Não designado</p>
+}
+<p> Tipo Afastamento : @solicitacao.tipoAfastamento</p>
 <br>
 <br>
 <br>
 
-@if(chefe == true){
+
+@if(userTipo.equals("SECRETARIO") && (solicitacao.status.equals("REPROVADA") || solicitacao.status.equals("APROVADA-PRPPG"))){
+<form action="@br.ufes.scap.controllers.routes.SolicitacoesController.arquivar(solicitacao.id)" align="center" method="get">
+  <input type="submit" value="Arquivar">
+</form>
+<br>
+<br>
+}
+
+@if(userTipo.equals("SECRETARIO") && (solicitacao.status.equals("APROVADA-DI") || solicitacao.status.equals("APROVADA-CT"))){
+<form action="@br.ufes.scap.controllers.routes.PareceresController.registrarParecerDocumentoPre(solicitacao.id)" align="center" method="get">
+  <input type="submit" value="Registrar Parecer">
+</form>
+<br>
+<br>
+}
+
+@if(userTipo.equals("CHEFE") && solicitacao.status.equals("INICIADA")){
 <form action="@br.ufes.scap.controllers.routes.SolicitacoesController.encaminharSolicitacao(solicitacao.id)" align="center" method="get">
   <input type="submit" value="Designar Relator">
 </form>
@@ -16,19 +40,19 @@
 <br>
 }
 
-@if(userTipo.equals("AUTOR")){
+@if(userTipo.equals("AUTOR") && !solicitacao.status.equals("CANCELADA")){
 <form action="@br.ufes.scap.controllers.routes.SolicitacoesController.deleteSolicitacao(solicitacao.id)" align="center" method="get">
-  <input type="submit" value="Deletar">
+  <input type="submit" onclick="return confirm('Você tem certeza de que deseja cancelar essa solicitação?');" value="Deletar">
 </form>
 }
 
-@if(userTipo.equals("PROFESSOR")){
+@if(userTipo.equals("PROFESSOR") && (solicitacao.status.equals("INICIADA") || solicitacao.status.equals("LIBERADA")) ){
 <form action="@br.ufes.scap.controllers.routes.PareceresController.manifestarContraPre(solicitacao.id)" align="center" method="get">
   <input type="submit" value="Manifestar-se Contra">
 </form>
 }
 
-@if(userTipo.equals("RELATOR")){
+@if(userTipo.equals("RELATOR") && solicitacao.status.equals("LIBERADA")){
 <form action="@br.ufes.scap.controllers.routes.PareceresController.registrarParecer(solicitacao.id)" align="center" method="get">
   <input type="submit" value="Registrar Parecer">
 </form>
@@ -43,5 +67,4 @@
                 <button type="submit" class="btn btn-primary ynt-btn-orange">Voltar ao Menu Principal</button>
             </div>
 </form>
-
 }

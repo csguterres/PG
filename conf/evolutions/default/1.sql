@@ -23,7 +23,7 @@ create table `solicitacao` (
   `cidade` TEXT NOT NULL,
   `onus` TEXT NOT NULL,
   `tipoAfastamento` TEXT NOT NULL,
-  `statusSolicitacao` TEXT NOT NULL,
+  `status` TEXT NOT NULL,
   `motivoCancelamento` TEXT,
   `dataJulgamentoAfast` DATETIME,
 	FOREIGN KEY (idProfessor)
@@ -59,7 +59,7 @@ create table `parecer` (
   `idSolicitacao` BIGINT NOT NULL,
   `idProfessor` BIGINT,
   `julgamento` TEXT NOT NULL,
-  `motivo` TEXT NOT NULL,
+  `motivo` MEDIUMTEXT NOT NULL,
   `dataParecer` DATETIME NOT NULL,
 	FOREIGN KEY (idSolicitacao)
         REFERENCES solicitacao(id)
@@ -67,12 +67,26 @@ create table `parecer` (
 	FOREIGN KEY (idProfessor)
         REFERENCES user(id)
 		ON DELETE CASCADE
+);
+
+
+create table `parecer_documento` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `idSolicitacao` BIGINT NOT NULL,
+  `tipo` TEXT NOT NULL,
+  `julgamento` TEXT NOT NULL,
+  `fileData` BLOB,
+  `dataParecer` DATETIME NOT NULL,
+	FOREIGN KEY (idSolicitacao)
+        REFERENCES solicitacao(id)
+		ON DELETE CASCADE
 )
 
 # --- !Downs
-drop table `solicitacao`
 drop table `mandato`
 drop table `parentesco`
 drop table `parecer`
+drop table `parecer_documento`
+drop table `solicitacao`
 drop table `user`
 

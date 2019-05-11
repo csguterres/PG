@@ -3,38 +3,42 @@
 # ~~~~
 
 # Home page
-GET     /                           			br.ufes.scap.controllers.LoginController.menu
-GET	  /logout							br.ufes.scap.controllers.LoginController.logout
-GET     /menu                       			br.ufes.scap.controllers.LoginController.menu
-GET	  /listUsers						br.ufes.scap.controllers.UsersController.index
-GET     /addUser                    			br.ufes.scap.controllers.UsersController.addUser
-POST    /addUser                    			br.ufes.scap.controllers.UsersController.addUser
-GET     /deleteUser/:id             			br.ufes.scap.controllers.UsersController.deleteUser(id : Long)
-GET     /editUser/:id               			br.ufes.scap.controllers.UsersController.editUser(id : Long)
-POST    /updateUser/:id             			br.ufes.scap.controllers.UsersController.updateUser(id : Long)
-GET	  /solicitacoes						br.ufes.scap.controllers.SolicitacoesController.index
-GET	  /minhasSolicitacoes	      			br.ufes.scap.controllers.SolicitacoesController.minhasSolicitacoes
-GET	  /addSolicitacao						br.ufes.scap.controllers.SolicitacoesController.addSolicitacao
-POST	  /addSolicitacao						br.ufes.scap.controllers.SolicitacoesController.addSolicitacao
-GET	  /solicitacao/:id					br.ufes.scap.controllers.SolicitacoesController.verSolicitacao(id: Long)
-GET     /solicitacao/:id/delete     			br.ufes.scap.controllers.SolicitacoesController.deleteSolicitacao(id : Long)
-POST    /solicitacao/:id/delete     			br.ufes.scap.controllers.SolicitacoesController.deleteSolicitacao(id : Long)
-GET	  /solicitacao/:id/encaminhar				br.ufes.scap.controllers.SolicitacoesController.encaminharSolicitacao(id : Long)
-POST	  /solicitacao/:id/encaminhar				br.ufes.scap.controllers.SolicitacoesController.encaminharSolicitacao(id : Long)
-POST	  /solicitacao/:id/mudaStatus/:status	      br.ufes.scap.controllers.SolicitacoesController.mudaStatus(id : Long, status: String)
-GET	  /login							br.ufes.scap.controllers.LoginController.login
-POST	  /login							br.ufes.scap.controllers.LoginController.login
-GET     /addMandatoPre						br.ufes.scap.controllers.MandatosController.addMandatoPre()
-POST    /addMandato						br.ufes.scap.controllers.MandatosController.addMandato()
-GET     /editMandato/:id            			br.ufes.scap.controllers.MandatosController.editMandato(id : Long)
-POST    /updateMandato/:id/         			br.ufes.scap.controllers.MandatosController.updateMandato(id : Long)
-GET     /deleteMandato/:id/         			br.ufes.scap.controllers.MandatosController.deleteMandato(id : Long)
-GET	  /user/:id/mandatos					br.ufes.scap.controllers.MandatosController.showMandatosByProfessor(id : Long)
-GET	  /addParentesco						br.ufes.scap.controllers.ParentescosController.addParentescoPre
-POST	  /addParentesco						br.ufes.scap.controllers.ParentescosController.addParentesco
-GET	  /listParentescos					br.ufes.scap.controllers.ParentescosController.index
-GET	  /deleteParentesco/:id					br.ufes.scap.controllers.ParentescosController.deleteParentesco(id: Long)
-GET	  /solicitacao/:id/manifestar				br.ufes.scap.controllers.PareceresController.manifestarContraPre(id : Long)
-POST	  /solicitacao/:id/manifestar				br.ufes.scap.controllers.PareceresController.manifestarContra(id : Long)
-GET	  /solicitacao/:id/registrarParecer		      br.ufes.scap.controllers.PareceresController.registrarParecerPre(id : Long)
-POST	  /solicitacao/:id/registrarParecer		      br.ufes.scap.controllers.PareceresController.registrarParecer(id : Long)
+GET     /                           		br.ufes.scap.controllers.LoginController.menu
+GET	  /logout						br.ufes.scap.controllers.LoginController.logout
+GET     /menu                       		br.ufes.scap.controllers.LoginController.menu
+GET	  /listUsers					br.ufes.scap.controllers.UsersController.index
+GET     /addUser                    		br.ufes.scap.controllers.UsersController.addUser
+POST    /addUser                    		br.ufes.scap.controllers.UsersController.addUser
+GET     /deleteUser/:id             		br.ufes.scap.controllers.UsersController.deleteUser(id : Long)
+GET     /editUser/:id               		br.ufes.scap.controllers.UsersController.editUser(id : Long)
+POST    /updateUser/:id             		br.ufes.scap.controllers.UsersController.updateUser(id : Long)
+GET	  /solicitacoes					br.ufes.scap.controllers.SolicitacoesController.index
+GET	  /minhasSolicitacoes	      		br.ufes.scap.controllers.SolicitacoesController.minhasSolicitacoes
+GET	  /addSolicitacao					br.ufes.scap.controllers.SolicitacoesController.addSolicitacao
+POST	  /addSolicitacao					br.ufes.scap.controllers.SolicitacoesController.addSolicitacao
+GET	  /solicitacao/:id				br.ufes.scap.controllers.SolicitacoesController.verSolicitacao(id: Long)
+GET     /solicitacao/:id/delete     		br.ufes.scap.controllers.SolicitacoesController.deleteSolicitacao(id : Long)
+POST    /solicitacao/:id/delete     		br.ufes.scap.controllers.SolicitacoesController.deleteSolicitacao(id : Long)
+GET	  /solicitacao/:id/encaminhar			br.ufes.scap.controllers.SolicitacoesController.encaminharSolicitacao(id : Long)
+POST	  /solicitacao/:id/encaminhar			br.ufes.scap.controllers.SolicitacoesController.encaminharSolicitacao(id : Long)
+POST	  /solicitacao/:id/muda/:status	      br.ufes.scap.controllers.SolicitacoesController.mudaStatus(id : Long, status: String)
+GET	  /solicitacao/:id/muda/:status	      br.ufes.scap.controllers.SolicitacoesController.mudaStatus(id : Long, status: String)
+GET	  /login						br.ufes.scap.controllers.LoginController.login
+POST	  /login						br.ufes.scap.controllers.LoginController.login
+GET     /addMandatoPre					br.ufes.scap.controllers.MandatosController.addMandatoPre()
+POST    /addMandato					br.ufes.scap.controllers.MandatosController.addMandato()
+GET     /editMandato/:id            		br.ufes.scap.controllers.MandatosController.editMandato(id : Long)
+POST    /updateMandato/:id/         		br.ufes.scap.controllers.MandatosController.updateMandato(id : Long)
+GET     /deleteMandato/:id/         		br.ufes.scap.controllers.MandatosController.deleteMandato(id : Long)
+GET	  /user/:id/mandatos				br.ufes.scap.controllers.MandatosController.showMandatosByProfessor(id : Long)
+GET	  /addParentesco					br.ufes.scap.controllers.ParentescosController.addParentescoPre
+POST	  /addParentesco					br.ufes.scap.controllers.ParentescosController.addParentesco
+GET	  /listParentescos				br.ufes.scap.controllers.ParentescosController.index
+GET	  /deleteParentesco/:id				br.ufes.scap.controllers.ParentescosController.deleteParentesco(id: Long)
+GET	  /solicitacao/:id/manifestar			br.ufes.scap.controllers.PareceresController.manifestarContraPre(id : Long)
+POST	  /solicitacao/:id/manifestar			br.ufes.scap.controllers.PareceresController.manifestarContra(id : Long)
+GET	  /solicitacao/:id/regParecer		      br.ufes.scap.controllers.PareceresController.registrarParecerPre(id : Long)
+POST	  /solicitacao/:id/regParecer		      br.ufes.scap.controllers.PareceresController.registrarParecer(id : Long)
+GET	  /solicitacao/:id/regParecerDoc		br.ufes.scap.controllers.PareceresDocumentoController.registrarParecerDocumentoPre(id : Long)
+POST	  /solicitacao/:id/regParecerDoc		br.ufes.scap.controllers.PareceresDocumentoController.registrarParecerDocumento(id : Long)
+GET	  /solicitacao/:id/arquivar			br.ufes.scap.controllers.SolicitacoesController.arquivar(id : Long)

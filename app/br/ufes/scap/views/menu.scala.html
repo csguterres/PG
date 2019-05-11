@@ -11,7 +11,10 @@
 <a href="@br.ufes.scap.controllers.routes.UsersController.editUser(user.get.id)">Editar seu perfil</a>
 <br>
 <br>
-<a href="@br.ufes.scap.controllers.routes.SolicitacoesController.index">Listar todas as solicitações abertas</a>
+<a href="@br.ufes.scap.controllers.routes.SolicitacoesController.index">Listar todas as solicitações
+@if(!(user.get.tipo.equals("SECRETARIO"))){
+ abertas</a>
+}
 <br>
 <br>
 @if(user.get.tipo.equals("PROFESSOR")){

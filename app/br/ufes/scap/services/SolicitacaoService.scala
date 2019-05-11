@@ -1,7 +1,7 @@
 package br.ufes.scap.services
 
 import br.ufes.scap.persistence.Solicitacoes
-import br.ufes.scap.models.{Solicitacao, SolicitacaoFull}
+import br.ufes.scap.models.{Solicitacao, SolicitacaoFull, User}
 import scala.concurrent.Future
 import scala.concurrent.duration._
 import scala.concurrent._
@@ -48,7 +48,7 @@ object SolicitacaoService {
   }
   
   def mudaStatus(oldSolicitacao : Option[Solicitacao], status : String): Solicitacao = {
-    val solicitacao = Solicitacao(oldSolicitacao.get.id, oldSolicitacao.get.idRelator,
+    val solicitacao = Solicitacao(oldSolicitacao.get.id, oldSolicitacao.get.idProfessor,
               oldSolicitacao.get.idRelator, oldSolicitacao.get.dataSolicitacao, 
               oldSolicitacao.get.dataIniAfast, oldSolicitacao.get.dataFimAfast, 
               oldSolicitacao.get.dataIniEvento, oldSolicitacao.get.dataFimEvento, 
@@ -61,14 +61,20 @@ object SolicitacaoService {
   
   def turnSolicitacaoIntoSolicitacaoFull
   (oldSolicitacao : Option[Solicitacao]): SolicitacaoFull = {
-    val user = Await.result(UserService.getUser(oldSolicitacao.get.idProfessor),Duration.Inf)
-    val solicitacao = SolicitacaoFull(oldSolicitacao.get.id, user,
-              oldSolicitacao.get.idRelator, oldSolicitacao.get.dataSolicitacao, 
+    val professor = Await.result(UserService.getUser(oldSolicitacao.get.idProfessor),Duration.Inf)
+    var relator : Option[User] = None
+    if (oldSolicitacao.get.idRelator == 0){
+      relator = None
+    }else{
+      relator = Await.result(UserService.getUser(oldSolicitacao.get.idRelator),Duration.Inf)
+    }
+    val solicitacao = SolicitacaoFull(oldSolicitacao.get.id, professor,
+              relator, oldSolicitacao.get.dataSolicitacao, 
               oldSolicitacao.get.dataIniAfast, oldSolicitacao.get.dataFimAfast, 
               oldSolicitacao.get.dataIniEvento, oldSolicitacao.get.dataFimEvento, 
               oldSolicitacao.get.nomeEvento, oldSolicitacao.get.cidade, 
               oldSolicitacao.get.onus, oldSolicitacao.get.tipoAfastamento, 
-              oldSolicitacao.get.statusSolicitacao,oldSolicitacao.get.motivoCancelamento, 
+              oldSolicitacao.get.status,oldSolicitacao.get.motivoCancelamento, 
               oldSolicitacao.get.dataJulgamentoAfast)
     return solicitacao
   }
@@ -81,7 +87,7 @@ object SolicitacaoService {
       oldSolicitacao.get.dataIniEvento, oldSolicitacao.get.dataFimEvento, 
       oldSolicitacao.get.nomeEvento, oldSolicitacao.get.cidade, 
       oldSolicitacao.get.onus, oldSolicitacao.get.tipoAfastamento, 
-      oldSolicitacao.get.statusSolicitacao,oldSolicitacao.get.motivoCancelamento, 
+      oldSolicitacao.get.status,oldSolicitacao.get.motivoCancelamento, 
       oldSolicitacao.get.dataJulgamentoAfast)
     return solicitacao
   }
@@ -94,7 +100,7 @@ object SolicitacaoService {
       oldSolicitacao.get.dataIniEvento, oldSolicitacao.get.dataFimEvento, 
       oldSolicitacao.get.nomeEvento, oldSolicitacao.get.cidade, 
       oldSolicitacao.get.onus, oldSolicitacao.get.tipoAfastamento, 
-      "CANCELADA",oldSolicitacao.get.motivoCancelamento, 
+      "CANCELADO",oldSolicitacao.get.motivoCancelamento, 
       oldSolicitacao.get.dataJulgamentoAfast)
     return solicitacao
   }

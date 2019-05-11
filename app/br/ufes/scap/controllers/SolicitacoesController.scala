@@ -33,22 +33,19 @@ class SolicitacoesController extends Controller {
       }
   }
   
-  def minhasSolicitacoes = Action {
+  def minhasSolicitacoes = Action { implicit request =>
      val solicitacoes = Await.result(SolicitacaoService.listAllSolicitacoesBySolicitante(Global.SESSION_KEY), Duration.Inf)
      Ok(br.ufes.scap.views.html.listSolicitacoes(SolicitacaoForm.form, solicitacoes))
   }
 
-  def deleteSolicitacao(id: Long) = Action.async { implicit request =>
+  def deleteSolicitacao(id: Long) = Action { implicit request =>
       val sol = Await.result(SolicitacaoService.getSolicitacao(id),Duration.Inf)
       if (sol.get.idProfessor == Global.SESSION_KEY){
         val newSolicitacao = SolicitacaoService.cancelaSolicitacao(sol)
-        SolicitacaoService.update(newSolicitacao).map(res =>
+        SolicitacaoService.update(newSolicitacao)
             Redirect(routes.LoginController.menu())
-        )
       }else{
-          SolicitacaoService.listAllSolicitacoesBySolicitante(0) map { solicitacoes =>
             Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
-          }       
       }
   }
   
@@ -58,22 +55,30 @@ class SolicitacoesController extends Controller {
     if(oldSolicitacao.get.idProfessor == Global.SESSION_KEY){
       userTipo = "AUTOR"
     }
-    if(Global.isRelator(oldSolicitacao.get.idRelator)){
+    if(Global.isRelator(oldSolicitacao.get.idRelator) 
+        && oldSolicitacao.get.tipoAfastamento.equals("INTERNACIONAL")){
       userTipo = "RELATOR"
     }
+    if(Global.SESSION_CHEFE 
+        && oldSolicitacao.get.tipoAfastamento.equals("INTERNACIONAL")){
+      userTipo = "CHEFE"
+    }
     val solicitacaoFull = SolicitacaoService.turnSolicitacaoIntoSolicitacaoFull(oldSolicitacao)
-    Ok(br.ufes.scap.views.html.verSolicitacao(solicitacaoFull, userTipo, Global.SESSION_CHEFE))
+    Ok(br.ufes.scap.views.html.verSolicitacao(solicitacaoFull, userTipo))
+  }
+  
+  def arquivar(id : Long)  = Action { 
+    val oldSolicitacao = Await.result(SolicitacaoService.getSolicitacao(id), Duration.Inf)
+    val solicitacao = SolicitacaoService.mudaStatus(oldSolicitacao, "ARQUIVADO")
+    SolicitacaoService.update(solicitacao)
+    Redirect(routes.LoginController.menu())
   }
   
   def mudaStatus(id : Long, status : String) = Action { 
     val oldSolicitacao = Await.result(SolicitacaoService.getSolicitacao(id), Duration.Inf)
-    if(Global.isRelator(oldSolicitacao.get.idRelator)){
-      val solicitacao = SolicitacaoService.mudaStatus(oldSolicitacao, status)
-      SolicitacaoService.update(solicitacao)
-      Redirect(routes.LoginController.menu())
-    }else{
-       Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
-    }
+    val solicitacao = SolicitacaoService.mudaStatus(oldSolicitacao, status)
+    SolicitacaoService.update(solicitacao)
+    Redirect(routes.LoginController.menu())
   }
   
   def addSolicitacao() = Action.async { implicit request =>

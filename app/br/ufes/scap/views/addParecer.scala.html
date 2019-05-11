@@ -8,14 +8,10 @@
 	}
 
 <body>
-      <form action = "@br.ufes.scap.controllers.routes.PareceresController.manifestarContra(solicitacao.get.id)" align="center"
+      <form action = "@br.ufes.scap.controllers.routes.PareceresController.registrarParecer(solicitacao.get.id)" 
 	method = "post">
-         <br />
-         
-<select>
-
-</select>
-            <b>Relator:  </b></span>
+         <br>
+         	<p>Determinar o parecer
 		<select id=julgamento name="julgamento" value="">
   			<option value="DESFAVORAVEL">DESFAVORÁVEL</option>
   			<option value="FAVORAVEL">FAVORÁVEL</option>
@@ -24,13 +20,13 @@
 
 		<br>
 		<br>
-         <textarea id="motivo"  name="motivo" rows = "5" cols = "50" name = "description">
-		Escreva o motivo de se posicionar contrário a essa solicitação
+         <textarea id="motivo"  align="center" name="motivo" rows = "5" cols = "50" name = "description">
+		Escreva o motivo
          </textarea>
 		
          
 <br>
-         <input type = "submit" value = "Registrar">
+         <input type = "submit" onclick="return confirm('Você tem certeza de que deseja registrar esse parecer?');" value = "Registrar">
       </form>
 </body>
 

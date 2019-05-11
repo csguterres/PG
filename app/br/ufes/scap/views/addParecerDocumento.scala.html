@@ -1,0 +1,61 @@
+@(parecerDocumentoForm: Form[br.ufes.scap.models.ParecerDocumentoFormData], solicitacao : Option[br.ufes.scap.models.Solicitacao])(implicit request: RequestHeader)
+@main() {
+
+    @parecerDocumentoForm.globalError.map { error =>
+        <p class="error">
+            @error.message
+        </p>
+	}
+
+<body>
+      <form action = "@br.ufes.scap.controllers.routes.PareceresController.registrarParecerDocumento(solicitacao.get.id)" align="center"
+	method = "post">
+         <br>
+
+		Parecer: 
+
+		@if(solicitacao.get.status.equals("APROVADA-CT")){
+		<input type="text" readonly="readonly" name="tipo" id="tipo" value="PRPPG">
+		}else{
+		<input type="text" readonly="readonly" name="tipo" id="tipo" value="CT">	
+		}
+		<br> 
+		<br>
+		<br> 
+		<br>
+
+    		Escolha o documento para anexar:
+    		<input type="file" name="filePath" id="filePath">
+
+		<br> 
+		<br>
+		<br> 
+		<br>
+
+		<select id=julgamento name="julgamento" value="">
+  			<option value="FAVORAVEL">FAVORÁVEL</option>
+  			<option value="DESFAVORAVEL">DESFAVORÁVEL</option>
+		</select>
+            </div>
+		<br> 
+		<br>
+		
+         
+<br>
+         <input type = "submit" align="center" onclick="return confirm('Você tem certeza de que deseja registrar esse parecer?');" value = "Registrar">
+      </form>
+</body>
+
+
+<br>
+<br>
+<br>
+
+		
+<form id="user-add-form" role="form" action='@br.ufes.scap.controllers.routes.LoginController.menu()' method="get"
+      class="form-horizontal" align="center" autocomplete="off">
+            <div class="form-actions controls ynt-btn-xlarge">
+                <button type="submit" class="btn btn-primary ynt-btn-orange">Voltar ao Menu Principal</button>
+            </div>
+</form>
+}

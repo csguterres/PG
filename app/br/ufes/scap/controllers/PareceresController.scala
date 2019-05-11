@@ -1,8 +1,9 @@
 package br.ufes.scap.controllers
 
-import br.ufes.scap.models.{Global, User, Mandato, Parecer, UserLoginForm, ManifestacaoForm, ParecerForm}
+import br.ufes.scap.models.{Global, User, Mandato, Parecer, 
+  UserLoginForm, ManifestacaoForm, ParecerForm}
 import play.api.mvc._
-import br.ufes.scap.services.{ParecerService, SolicitacaoService}
+import br.ufes.scap.services.{ParecerService, ParecerDocumentoService, SolicitacaoService}
 import scala.concurrent.ExecutionContext.Implicits.global
 import javax.inject.Inject
 import scala.concurrent.Future
@@ -24,6 +25,7 @@ class PareceresController extends Controller {
       }
   }
   */
+  
   def registrarParecerPre(idSolicitacao : Long) = Action { implicit request =>
     val solicitacao = Await.result(SolicitacaoService.getSolicitacao(idSolicitacao),Duration.Inf)
     if (Global.isRelator(solicitacao.get.idRelator)){
@@ -55,10 +57,10 @@ class PareceresController extends Controller {
           val solicitacao = Await.result(SolicitacaoService.getSolicitacao(idSolicitacao), Duration.Inf)
           if (Global.isRelator(solicitacao.get.idRelator)){
               val dataAtual = new Timestamp(Calendar.getInstance().getTime().getTime())
-              val newParecer = Parecer(0, idSolicitacao, 0, data.julgamento, data.motivo, dataAtual)   
-              var status : String = "REPROVADO-DI"
+              val newParecer = Parecer(0, idSolicitacao, Global.SESSION_KEY, data.julgamento, data.motivo, dataAtual)   
+              var status : String = "REPROVADA"
               if (data.julgamento.equals("FAVORAVEL")){
-                status = "APROVADO-DI"
+                status = "APROVADA-DI"
               }
               ParecerService.addParecer(newParecer).map(res =>
                 Redirect(routes.SolicitacoesController.mudaStatus(solicitacao.get.id,status))

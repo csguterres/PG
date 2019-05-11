@@ -16,16 +16,16 @@ case class Solicitacao(id: Long, idProfessor : Long,
     dataIniAfast : Timestamp, dataFimAfast : Timestamp, 
     dataIniEvento: Timestamp, dataFimEvento : Timestamp, 
     nomeEvento : String, cidade : String, onus : String,
-    tipoAfastamento : String, statusSolicitacao : String,
+    tipoAfastamento : String, status : String,
     motivoCancelamento : String, dataJulgamentoAfast : Timestamp
     )
     
 case class SolicitacaoFull(id: Long, professor : Option[User], 
-    idRelator : Long, dataSolicitacao : Timestamp, 
+    relator : Option[User], dataSolicitacao : Timestamp, 
     dataIniAfast : Timestamp, dataFimAfast : Timestamp, 
     dataIniEvento: Timestamp, dataFimEvento : Timestamp, 
     nomeEvento : String, cidade : String, onus : String,
-    tipoAfastamento : String, statusSolicitacao : String,
+    tipoAfastamento : String, status : String,
     motivoCancelamento : String, dataJulgamentoAfast : Timestamp
     )
 
@@ -87,7 +87,7 @@ class SolicitacaoTableDef(tag: Tag) extends Table[Solicitacao](tag, "solicitacao
    def cidade = column[String]("cidade")
    def onus = column[String]("onus")
    def tipoAfastamento = column[String]("tipoAfastamento")
-   def statusSolicitacao = column[String]("statusSolicitacao")
+   def status = column[String]("status")
    def motivoCancelamento = column[String]("motivoCancelamento")
    def dataJulgamentoAfast = column[Timestamp]("dataJulgamentoAfast")
 
@@ -95,6 +95,6 @@ class SolicitacaoTableDef(tag: Tag) extends Table[Solicitacao](tag, "solicitacao
     (id, idProfessor, idRelator, dataSolicitacao, 
         dataIniAfast, dataFimAfast, dataIniEvento, 
         dataFimEvento, nomeEvento, cidade, onus, 
-        tipoAfastamento, statusSolicitacao, 
+        tipoAfastamento, status, 
         motivoCancelamento, dataJulgamentoAfast)<>(Solicitacao.tupled, Solicitacao.unapply)
 }

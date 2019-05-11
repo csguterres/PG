@@ -32,7 +32,7 @@ table, th, td {
                     <td>@mandato.dataIniMandato</td>
 			  <td>@mandato.dataFimMandato</td>
                     <td><a href="@br.ufes.scap.controllers.routes.MandatosController.editMandato(mandato.id)">editar</a></td>
-                    <td><a href="@br.ufes.scap.controllers.routes.MandatosController.deleteMandato(mandato.id)">deletar</a></td>
+                    <td><a onclick="return confirm('Você tem certeza de que deseja deletar esse mandato?');" href="@br.ufes.scap.controllers.routes.MandatosController.deleteMandato(mandato.id)">deletar</a></td>
                 </tr>
                 }
 </table>
