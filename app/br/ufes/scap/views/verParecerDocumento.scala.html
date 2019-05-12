@@ -1,0 +1,24 @@
+@(parecerDocumento : Option[br.ufes.scap.models.ParecerDocumento])
+
+@main() {
+
+<p>Julgamento: @parecerDocumento.get.julgamento</p>
+<br>
+<p>Origem: @parecerDocumento.get.tipo</p>
+<br>
+<p>Documento: (O download será feito para a pasta "Pareceres" na raiz de instalação do sistema)</p>
+<br>
+<form action="@br.ufes.scap.controllers.routes.PareceresDocumentoController.DownloadFile(parecerDocumento.get.id)" align="center" method="get">
+  <input type="submit" value="Download">
+</form>
+<br>
+<br>
+<br>
+<br>
+<form id="user-list-form" role="form" action='@br.ufes.scap.controllers.routes.LoginController.menu()' method="get"
+      class="form-horizontal" align="center" autocomplete="off">
+            <div class="form-actions controls ynt-btn-xlarge">
+                <button type="submit" class="btn btn-primary ynt-btn-orange">Voltar ao Menu Principal</button>
+            </div>
+</form>
+}

@@ -16,15 +16,15 @@ object ParecerDocumentoService {
     PareceresDocumento.delete(id)
   }
 
-  def getParecerDocumento(id: Long): Future[Option[ParecerDocumento]] = {
+  def getParecer(id: Long): Future[Option[ParecerDocumento]] = {
     PareceresDocumento.get(id)
   }
 
-  def listAllPareceresDocumento: Future[Seq[ParecerDocumento]] = {
+  def listAllPareceres: Future[Seq[ParecerDocumento]] = {
     PareceresDocumento.listAll
   }
   
-  def listAllPareceresDocumentoBySolicitacao(idSolicitacao : Long): Future[Seq[ParecerDocumento]] = {
+  def listAllPareceresBySolicitacao(idSolicitacao : Long): Future[Seq[ParecerDocumento]] = {
     PareceresDocumento.findBySolicitacao(idSolicitacao)
   }
     

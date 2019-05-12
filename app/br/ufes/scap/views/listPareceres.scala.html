@@ -1,0 +1,71 @@
+@(Pareceres : Seq[br.ufes.scap.models.Parecer], PareceresDocumento : Seq [br.ufes.scap.models.ParecerDocumento])
+@main() {
+
+<html>
+
+<a href="@br.ufes.scap.controllers.routes.LoginController.logout">Logout</a>
+
+<head>
+<style>
+table, th, td {
+  border: 1px solid black;
+}
+</style>
+</head>
+
+<body>
+<h2>Parentescos</h2>
+
+<h1> Pareceres internos do DI </h1>
+ 
+<table style="width:100%">
+                <tr>
+                    <th>PROFESSOR</th>
+                    <th>JULGAMENTO</th>
+			  <th>VER MAIS DETALHES</th>
+                </tr>
+                @for(p <- Pareceres){
+                <tr>
+                    <td>@p.idProfessor</td>
+                    <td>@p.julgamento</td>
+                    <td><a href="@br.ufes.scap.controllers.routes.PareceresController.verParecer(p.id)">Ver mais detalhes</a></td>
+                </tr>
+                }
+</table>
+<br>
+<br>
+<br>
+
+<h1> Pareceres externos </h1>
+
+<table style="width:100%">
+                <tr>
+                    <th>TIPO</th>
+                    <th>JULGAMENTO</th>
+			  <th>VER MAIS DETALHES</th>
+                </tr>
+                @for(p <- PareceresDocumento){
+                <tr>
+                    <td>@p.tipo</td>
+                    <td>@p.julgamento</td>
+                    <td><a href="@br.ufes.scap.controllers.routes.PareceresDocumentoController.verParecer(p.id)">Ver mais detalhes</a></td>
+                </tr>
+                }
+</table>
+
+</body>
+
+
+<br>
+<br>
+
+<br>
+<form id="parentesco-add-form" role="form" action='@br.ufes.scap.controllers.routes.LoginController.menu()' method="get"
+      class="form-horizontal" align="center" autocomplete="off">
+            <div class="form-actions controls ynt-btn-xlarge">
+                <button type="submit" class="btn btn-primary ynt-btn-orange">Voltar ao Menu Principal</button>
+            </div>
+</form>
+
+</html>
+}

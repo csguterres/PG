@@ -42,7 +42,7 @@ class PareceresDocumentoController extends Controller {
           if (Global.isSecretario()){
               val dataAtual = new Timestamp(Calendar.getInstance().getTime().getTime())
               val byteArray = Files.readAllBytes(Paths.get(data.filePath))
-              val newParecerDocumento = ParecerDocumento(0, idSolicitacao, data.julgamento, data.tipo, byteArray, dataAtual)   
+              val newParecerDocumento = ParecerDocumento(0, idSolicitacao, data.tipo, data.julgamento, byteArray, dataAtual)   
               var status : String = "REPROVADA"
               if (data.julgamento.equals("FAVORAVEL")){
                 status = "APROVADA-" + data.tipo
@@ -60,15 +60,20 @@ class PareceresDocumentoController extends Controller {
     )
     }
   
-    def DownloadFile(id : Long){
-          val parecerDocumento = Await.result(ParecerDocumentoService.getParecerDocumento(id),Duration.Inf)
-          val output = new FileOutputStream(new File("/Pareceres/PARECER-" + parecerDocumento.get.tipo));
+    def verParecer(idParecer: Long) = Action{
+      val parecer = Await.result(ParecerDocumentoService.getParecer(idParecer),Duration.Inf)
+      Ok(br.ufes.scap.views.html.verParecerDocumento(parecer))
+    }
+  
+    def DownloadFile(id : Long) = Action {
+          val parecerDocumento = Await.result(ParecerDocumentoService.getParecer(id),Duration.Inf)
+          val output = new FileOutputStream(new File("/Pareceres/"));
           System.out.println("Getting file please be patient..");
     
           output.write(parecerDocumento.get.fileData);
           
           println("File writing complete !")
-  
+          Ok(br.ufes.scap.views.html.verParecerDocumento(parecerDocumento))
       }
   
   }

@@ -15,16 +15,12 @@ import scala.concurrent._
 import java.util.Calendar
 
 class PareceresController extends Controller { 
-/*
-  def index = Action { implicit request =>
-      if (Global.isSecretario()){
-        val pareceres = Await.result(ParecerService.listAllPareceres, Duration.Inf)
-        Ok(br.ufes.scap.views.html.listPareceres(ParecerForm.form, pareceres))
-      }else{
-    		Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
-      }
+
+  def index(idSolicitacao : Long) = Action { 
+      val pareceres1 = Await.result(ParecerService.listAllPareceresBySolicitacao(idSolicitacao), Duration.Inf)
+      val pareceres2 = Await.result(ParecerDocumentoService.listAllPareceresBySolicitacao(idSolicitacao), Duration.Inf)
+      Ok(br.ufes.scap.views.html.listPareceres(pareceres1, pareceres2))
   }
-  */
   
   def registrarParecerPre(idSolicitacao : Long) = Action { implicit request =>
     val solicitacao = Await.result(SolicitacaoService.getSolicitacao(idSolicitacao),Duration.Inf)
@@ -33,6 +29,11 @@ class PareceresController extends Controller {
     }else{
       Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
     }
+  }
+  
+  def verParecer(idParecer: Long) = Action{
+    val parecer = Await.result(ParecerService.getParecer(idParecer),Duration.Inf)
+    Ok(br.ufes.scap.views.html.verParecer(parecer))
   }
   
   def manifestarContraPre(idSolicitacao : Long) = Action { implicit request =>

@@ -42,3 +42,9 @@ POST	  /solicitacao/:id/regParecer		      br.ufes.scap.controllers.PareceresCont
 GET	  /solicitacao/:id/regParecerDoc		br.ufes.scap.controllers.PareceresDocumentoController.registrarParecerDocumentoPre(id : Long)
 POST	  /solicitacao/:id/regParecerDoc		br.ufes.scap.controllers.PareceresDocumentoController.registrarParecerDocumento(id : Long)
 GET	  /solicitacao/:id/arquivar			br.ufes.scap.controllers.SolicitacoesController.arquivar(id : Long)
+GET	  /solicitacao/:id/pareceres			br.ufes.scap.controllers.PareceresController.index(id : Long)
+GET	  /parecerDocumento/:id				br.ufes.scap.controllers.PareceresDocumentoController.verParecer(id : Long)
+POST	  /parecer/:id					br.ufes.scap.controllers.PareceresController.verParecer(id : Long)
+GET	  /parecer/:id/download				br.ufes.scap.controllers.PareceresDocumentoController.DownloadFile(id : Long)
+POST	  /parecer/:id/download				br.ufes.scap.controllers.PareceresDocumentoController.DownloadFile(id : Long)
+
