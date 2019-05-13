@@ -67,7 +67,8 @@ class PareceresDocumentoController extends Controller {
   
     def DownloadFile(id : Long) = Action {
           val parecerDocumento = Await.result(ParecerDocumentoService.getParecer(id),Duration.Inf)
-          val output = new FileOutputStream(new File("/Pareceres/"));
+          val currentDirectory = new java.io.File(".").getCanonicalPath
+          val output = new FileOutputStream(new File(currentDirectory + "/Pareceres/" + "PARECER-" + parecerDocumento.get.tipo));
           System.out.println("Getting file please be patient..");
     
           output.write(parecerDocumento.get.fileData);
