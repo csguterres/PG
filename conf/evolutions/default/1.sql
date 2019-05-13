@@ -75,7 +75,7 @@ create table `parecer_documento` (
   `idSolicitacao` BIGINT NOT NULL,
   `tipo` TEXT NOT NULL,
   `julgamento` TEXT NOT NULL,
-  `fileData` BLOB,
+  `fileData` LONGBLOB,
   `dataParecer` DATETIME NOT NULL,
 	FOREIGN KEY (idSolicitacao)
         REFERENCES solicitacao(id)
