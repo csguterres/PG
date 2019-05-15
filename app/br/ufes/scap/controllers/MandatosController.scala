@@ -36,7 +36,7 @@ class MandatosController extends Controller {
   }
 
   
-  def addMandatoPre() = Action { implicit request =>
+  def addMandatoForm() = Action { implicit request =>
     if(Global.isSecretario()){
       val users = Await.result(UserService.listAllUsersByTipo("PROFESSOR"), Duration.Inf)
       Ok(br.ufes.scap.views.html.addMandato(MandatoForm.form, users))

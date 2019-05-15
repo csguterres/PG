@@ -19,7 +19,7 @@ import java.io.File;
 
 class PareceresDocumentoController extends Controller { 
 
-  def registrarParecerDocumentoPre(idSolicitacao : Long) = Action { implicit request =>
+  def registrarParecerDocumentoForm(idSolicitacao : Long) = Action { implicit request =>
     val solicitacao = Await.result(SolicitacaoService.getSolicitacao(idSolicitacao),Duration.Inf)
     if (Global.isSecretario()){
       Ok(br.ufes.scap.views.html.addParecerDocumento(ParecerDocumentoForm.form, solicitacao))
@@ -65,8 +65,8 @@ class PareceresDocumentoController extends Controller {
       Ok(br.ufes.scap.views.html.verParecerDocumento(parecer))
     }
   
-    def DownloadFile(id : Long) = Action {
-          val parecerDocumento = Await.result(ParecerDocumentoService.getParecer(id),Duration.Inf)
+    def DownloadFile(idParecer : Long) = Action {
+          val parecerDocumento = Await.result(ParecerDocumentoService.getParecer(idParecer),Duration.Inf)
           val currentDirectory = new java.io.File(".").getCanonicalPath
           val output = new FileOutputStream(new File(currentDirectory + "/Pareceres/" + "PARECER-" + parecerDocumento.get.tipo));
           System.out.println("Getting file please be patient..");

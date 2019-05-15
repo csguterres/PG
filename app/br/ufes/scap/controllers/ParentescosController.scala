@@ -42,7 +42,7 @@ class ParentescosController extends Controller {
     }
   }
   
-  def addParentescoPre() = Action { implicit request =>
+  def addParentescoForm() = Action { implicit request =>
     if (Global.isSecretario()){
       val users = Await.result(UserService.listAllUsersByTipo("PROFESSOR"),Duration.Inf)
       Ok(br.ufes.scap.views.html.addParentesco(ParentescoForm.form,users))    

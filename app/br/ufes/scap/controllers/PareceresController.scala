@@ -22,7 +22,7 @@ class PareceresController extends Controller {
       Ok(br.ufes.scap.views.html.listPareceres(pareceres1, pareceres2))
   }
   
-  def registrarParecerPre(idSolicitacao : Long) = Action { implicit request =>
+  def registrarParecerForm(idSolicitacao : Long) = Action { implicit request =>
     val solicitacao = Await.result(SolicitacaoService.getSolicitacao(idSolicitacao),Duration.Inf)
     if (Global.isRelator(solicitacao.get.idRelator)){
       Ok(br.ufes.scap.views.html.addParecer(ParecerForm.form, solicitacao))
@@ -36,7 +36,7 @@ class PareceresController extends Controller {
     Ok(br.ufes.scap.views.html.verParecer(parecer))
   }
   
-  def manifestarContraPre(idSolicitacao : Long) = Action { implicit request =>
+  def manifestarContraForm(idSolicitacao : Long) = Action { implicit request =>
     if (Global.isProfessor()){
       val solicitacao = Await.result(SolicitacaoService.getSolicitacao(idSolicitacao),Duration.Inf)
       Ok(br.ufes.scap.views.html.addParecerContra(ManifestacaoForm.form, solicitacao))

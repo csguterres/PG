@@ -15,7 +15,7 @@ import scala.concurrent._
 
 class SolicitacoesController extends Controller { 
   
-  def index = Action { implicit request =>
+  def listarSolicitacoes = Action { implicit request =>
       if (Global.isProfessor()){
         val solicitacoesIniciadas = Await.result(SolicitacaoService.listAllSolicitacoesByStatus("INICIADA"), Duration.Inf)
         val solicitacoesLiberadas = Await.result(SolicitacaoService.listAllSolicitacoesByStatus("LIBERADA"), Duration.Inf)
@@ -107,7 +107,7 @@ class SolicitacoesController extends Controller {
       })
   }
   
-  def encaminharSolicitacaoPre(idSolicitacao : Long) = Action { implicit request =>
+  def encaminharSolicitacaoForm(idSolicitacao : Long) = Action { implicit request =>
     if (Global.SESSION_CHEFE == true){
         val users = Await.result(UserService.listAllUsersByTipo("PROFESSOR"), Duration.Inf)
         val solicitacao = SolicitacaoService.turnSolicitacaoIntoSolicitacaoFull(Await.result(SolicitacaoService.getSolicitacao(idSolicitacao),Duration.Inf))
