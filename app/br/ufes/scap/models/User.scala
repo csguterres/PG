@@ -21,7 +21,7 @@ object UserEditForm{
   val form = Form(
       mapping(
           "nome" -> nonEmptyText,
-          "email" -> nonEmptyText,
+          "email" -> email,
           "password" -> nonEmptyText
         )(UserEditFormData.apply)(UserEditFormData.unapply)
         )

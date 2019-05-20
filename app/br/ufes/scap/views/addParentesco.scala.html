@@ -18,26 +18,22 @@
             </div>
             <br/>
 
-            <div class="input-group input-group-sm">
-            <span class="input-group-addon" id="sizing-addon2"><b>Professor  </b></span>
+            Professor 
 		<select id=idProfessor1 name="idProfessor1" value="">
 		@for(user <- users){
     			<option value=@user.id>@user.nome</option>
 		}
 		</select>
-            </div>
 
 		<br>
 		<br>
 
-            <div class="input-group input-group-sm">
-            <span class="input-group-addon" id="sizing-addon2"><b>Parente de  </b></span>
+            Parente de
 		<select id=idProfessor2 name="idProfessor2" value="">
 		@for(user <- users){
     			<option value=@user.id>@user.nome</option>
 		}
 		</select>
-            </div>
 
 		<br>
 		<br>

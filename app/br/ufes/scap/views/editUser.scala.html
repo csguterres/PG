@@ -8,65 +8,46 @@
         </p>
 	}
 
-<form id="user-data-form" role="form" action='@br.ufes.scap.controllers.routes.UsersController.updateUser(user.get.id)' method="post"
-      class="form-horizontal" align="center" autocomplete="off">
+      <form action = "@br.ufes.scap.controllers.routes.UsersController.updateUser(user.get.id)" align="center"
+	method = "post">
 
-    <fieldset class="user-fieldset">
-        <div class="col-xs-4">
-            <div class="user-form">
-                <label class="form-title"
-                       style="color: #F8741B; font-size: 22px;font-weight: bold; text-decoration:none">title</label>
-            </div>
-            <br/>
-
-            <div class="input-group input-group-sm">
-                <span class="input-group-addon" id="sizing-addon2"><b>Nome  </b></span>
-                <input type="text" class="form-control" id="nome" name="nome" value=@user.get.nome
-                       placeholder="Nome" aria-describedby="sizing-addon1" required>
-                <br>
-            </div>
+		Nome
+            <input type="text" class="form-control" id="nome" name="nome" value=@user.get.nome
+            placeholder="Nome" required>
 
 		<br>
 		<br>
 
-            <div class="input-group input-group-sm">
-                <span class="input-group-addon" id="sizing-addon2"><b>Email  </b></span>
-                <input type="text" class="form-control" id="email" name="email" value="@user.get.email" placeholder="Email"
-                       aria-describedby="sizing-addon1" required>
+             Email 
+             <input type="text" class="form-control" id="email" name="email" value="@user.get.email" placeholder="Email" required>
 
             </div>
 
 		<br>
 		<br>
 
-            <div class="input-group input-group-sm">
-                <span class="input-group-addon" id="sizing-addon2"><b>Senha  </b></span>
-                <input type="password" class="form-control" id="password" name="password" value="@user.get.password" placeholder="Senha"
-                       aria-describedby="sizing-addon1" required>
-                <br>
-            </div>
+		Senha 
+            <input type="password" class="form-control" id="password" name="password" value="@user.get.password" placeholder="Senha"
+		required>
+            <br>
+
 
 		<br> 
+            <br>
 
-    </ul>
-  </div>
+         <input type = "submit" align="center" onclick="return confirm('Você tem certeza de que deseja confirmar essas mudanças?');" value = "Editar">
 
-            <br/>
-            <div class="form-actions controls ynt-btn-xlarge">
-                <button type="submit" class="btn btn-primary ynt-btn-orange">Update</button>
-            </div>
-        </div>
-    </fieldset>
+           
+
+
 </form>
 
 <br>
 <br>
 <br>
 
-<form id="user-list-form" role="form" action='@br.ufes.scap.controllers.routes.LoginController.menu()' method="get"
-      class="form-horizontal" align="center" autocomplete="off">
-            <div class="form-actions controls ynt-btn-xlarge">
-                <button type="submit" class="btn btn-primary ynt-btn-orange">Voltar ao Menu Principal</button>
-            </div>
+<form id="menu" role="form" action='@br.ufes.scap.controllers.routes.LoginController.menu()' method="get"
+      align="center">
+      <button type="submit">Voltar ao Menu Principal</button>
 </form>
 }

@@ -4,7 +4,6 @@ import br.ufes.scap.models.{Global, User, Solicitacao, ManifestacaoForm, Encamin
 import play.api.mvc._
 import br.ufes.scap.services.{SolicitacaoService, UserService}
 import scala.concurrent.ExecutionContext.Implicits.global
-import javax.inject.Inject
 import scala.concurrent.Future
 import java.sql.Timestamp
 import java.sql.Date
@@ -97,7 +96,7 @@ class SolicitacoesController extends Controller {
             data.nomeEvento, data.cidade, data.onus, data.tipoAfastamento,
             "INICIADA", "", iniEvento)
         SolicitacaoService.addSolicitacao(newSolicitacao).map(res =>
-          Redirect(routes.SolicitacoesController.index())
+          Redirect(routes.SolicitacoesController.listarSolicitacoes())
         )
       }else{
         SolicitacaoService.listAllSolicitacoesBySolicitante(0) map { solicitacoes =>
@@ -118,7 +117,7 @@ class SolicitacoesController extends Controller {
   }
   
   def encaminharSolicitacao(idSolicitacao : Long) = Action.async { implicit request =>
-      EncaminhamentoForm.form.bindFromRequest.fold(
+    EncaminhamentoForm.form.bindFromRequest.fold(
         // if any error in submitted data
         errorForm => 
           Future.successful

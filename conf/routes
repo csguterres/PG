@@ -6,7 +6,7 @@
 GET     /                           		br.ufes.scap.controllers.LoginController.menu
 GET	  /logout						br.ufes.scap.controllers.LoginController.logout
 GET     /menu                       		br.ufes.scap.controllers.LoginController.menu
-GET	  /listUsers					br.ufes.scap.controllers.UsersController.index
+GET	  /listUsers					br.ufes.scap.controllers.UsersController.listarUsuarios
 GET     /addUser                    		br.ufes.scap.controllers.UsersController.addUser
 POST    /addUser                    		br.ufes.scap.controllers.UsersController.addUser
 GET     /deleteUser/:id             		br.ufes.scap.controllers.UsersController.deleteUser(id : Long)

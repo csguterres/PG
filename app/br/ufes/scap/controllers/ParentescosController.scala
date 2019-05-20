@@ -17,7 +17,7 @@ import scala.concurrent._
 
 class ParentescosController extends Controller { 
   
-  def index = Action { implicit request =>
+  def listarParentescos = Action { implicit request =>
       if (Global.isSecretario()){
         val parentescos = Await.result(ParentescoService.listAllParentescos, Duration.Inf)
         var Parentescos : Seq[ParentescoFull] = Seq()

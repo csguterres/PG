@@ -12,7 +12,7 @@ import scala.concurrent._
 
 class UsersController extends Controller { 
 
-  def index = Action { implicit request =>
+  def listarUsuarios = Action { implicit request =>
       if (Global.isSecretario()){
         val users = Await.result(UserService.listAllUsersByTipo("PROFESSOR"),Duration.Inf)
         Ok(br.ufes.scap.views.html.listUsers(UserForm.form, users))
@@ -20,36 +20,29 @@ class UsersController extends Controller {
           Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
       }
   }
-
-  def addUserInterno() = Action.async { implicit request =>
-    UserForm.form.bindFromRequest.fold(
+  
+  def addUser() =  Action.async { implicit request =>
+    if(Global.isSecretario()){
+      UserForm.form.bindFromRequest.fold(
         // if any error in submitted data
         errorForm => Future.successful(BadRequest(br.ufes.scap.views.html.addUser(errorForm, Seq.empty[User]))),
         data => {
           val newUser = User(0, data.nome, data.matricula, data.email, data.password, data.tipo)
           UserService.addUser(newUser).map(res =>
-            Redirect(routes.UsersController.index())
+            Redirect(routes.UsersController.listarUsuarios())
           )
-        })
-  }
-  
-    def notLoggedIn() = Action{
+        })    
+        }else{
+          UserService.getUser(0) map(res =>
       Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
-    }
-  
-  def addUser() = {
-    if(Global.isSecretario()){
-      this.addUserInterno()    
-    }else{
-      this.notLoggedIn()
-    }
+    )}
   }
     
 
   def deleteUser(id: Long) = Action { implicit request =>
     if (Global.isSecretario()){
       UserService.deleteUser(id) 
-      Redirect(routes.UsersController.index())
+      Redirect(routes.UsersController.listarUsuarios())
     }else{
       Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
     }
