@@ -10,7 +10,10 @@ object Global {
     var SESSION_KEY : Long = 0
     var SESSION_TIPO : String = ""
     var SESSION_MATRICULA: String = ""
+    var SESSION_EMAIL : String = ""
+    var SESSION_PASS : String = ""
     var SESSION_CHEFE : Boolean = false
+    var CHEFE_ID : Long = 0
     
     def isLoggedIn() : Boolean ={
       if (this.SESSION_KEY != 0){
@@ -39,6 +42,7 @@ object Global {
     def isPresidenteOuVice(): Int ={
       val mandatos = MandatoService.getMandatoAtual()
       for (m <- mandatos){
+        Global.CHEFE_ID = m.idProfessor
         if (SESSION_KEY == m.idProfessor){
           SESSION_CHEFE = true
           return 0

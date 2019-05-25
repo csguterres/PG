@@ -22,6 +22,8 @@ class LoginController extends Controller {
         Global.SESSION_KEY = user.get.id 
         Global.SESSION_TIPO = user.get.tipo
         Global.SESSION_MATRICULA = user.get.matricula
+        Global.SESSION_EMAIL = user.get.email
+        Global.SESSION_PASS = user.get.password
         Global.isPresidenteOuVice()
         UserService.getUserByMatricula(data.matricula).map(res =>
             Ok(br.ufes.scap.views.html.menu(UserForm.form, user))
@@ -33,6 +35,8 @@ class LoginController extends Controller {
         Global.SESSION_KEY = 0
         Global.SESSION_TIPO = ""
         Global.SESSION_MATRICULA = ""
+        Global.SESSION_EMAIL = ""
+        Global.SESSION_PASS = ""
         Redirect(routes.LoginController.login)
     }
     

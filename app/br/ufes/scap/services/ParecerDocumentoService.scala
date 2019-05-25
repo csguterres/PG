@@ -32,4 +32,10 @@ object ParecerDocumentoService {
     PareceresDocumento.update(parecer)
   }
   
+   def enviarEmailParaSolicitante(idRelator : Long) = {
+      val mensagem = "Você foi designado como relator de uma solicitacao. \nAcesse o SCAP na seção 'Listar Solicitações em que sou Relator' para deferir seu parecer." 
+      val assunto = "Relatoria"
+      EmailService.sendEmail(idRelator, assunto, mensagem)
+    }
+  
 }

@@ -15,7 +15,9 @@ libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play-slick" % "1.1.0",
   "com.typesafe.play" %% "play-slick-evolutions" % "1.1.0",
   "com.typesafe.play" %% "anorm" % "2.5.3",
+  "org.apache.commons" % "commons-email" % "1.5",
   "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2" % Test
+
 )
 
 resolvers += "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"

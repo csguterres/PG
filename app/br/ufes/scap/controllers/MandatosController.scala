@@ -13,17 +13,6 @@ import scala.concurrent.duration._
 import scala.concurrent._
 
 class MandatosController extends Controller {
-    
-  /*
-  def index = Action { implicit request =>
-      if (Global.isSecretario()){
-        val mandatos = Await.result(MandatoService.listAllMandatos, Duration.Inf)
-        Ok(br.ufes.scap.views.html.listMandatos(MandatoForm.form, mandatos))
-      }else{
-       Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
-     }
-  }
-  */
   
   def showMandatosByProfessor(idProfessor : Long) = Action { implicit request =>
     if (Global.isSecretario()){

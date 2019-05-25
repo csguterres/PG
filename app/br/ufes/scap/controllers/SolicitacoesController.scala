@@ -2,7 +2,7 @@ package br.ufes.scap.controllers
 
 import br.ufes.scap.models.{Global, User, Solicitacao, ManifestacaoForm, EncaminhamentoForm, UserLoginForm, SolicitacaoForm}
 import play.api.mvc._
-import br.ufes.scap.services.{SolicitacaoService, UserService}
+import br.ufes.scap.services.{SolicitacaoService, UserService, EmailService}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import java.sql.Timestamp
@@ -42,6 +42,7 @@ class SolicitacoesController extends Controller {
       if (sol.get.idProfessor == Global.SESSION_KEY){
         val newSolicitacao = SolicitacaoService.cancelaSolicitacao(sol)
         SolicitacaoService.update(newSolicitacao)
+        EmailService.enviarEmailParaChefeCancelamento(id)
             Redirect(routes.LoginController.menu())
       }else{
             Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
@@ -95,6 +96,7 @@ class SolicitacoesController extends Controller {
             iniAfast, fimAfast, iniEvento, fimEvento, 
             data.nomeEvento, data.cidade, data.onus, data.tipoAfastamento,
             "INICIADA", "", iniEvento)
+        EmailService.enviarEmailParaTodos(data.nomeEvento)
         SolicitacaoService.addSolicitacao(newSolicitacao).map(res =>
           Redirect(routes.SolicitacoesController.listarSolicitacoes())
         )
@@ -132,6 +134,7 @@ SolicitacaoService.turnSolicitacaoIntoSolicitacaoFull(Await.result(SolicitacaoSe
         if (Global.SESSION_CHEFE == true){
           val oldSolicitacao = Await.result(SolicitacaoService.getSolicitacao(idSolicitacao),Duration.Inf)
           val newSolicitacao = SolicitacaoService.addRelator(oldSolicitacao, data.idRelator)
+          EmailService.enviarEmailParaRelator(idSolicitacao, data.idRelator)
           SolicitacaoService.update(newSolicitacao).map(res =>
             Redirect(routes.SolicitacoesController.mudaStatus(newSolicitacao.id,"LIBERADA"))
           )

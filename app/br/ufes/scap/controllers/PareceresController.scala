@@ -3,7 +3,7 @@ package br.ufes.scap.controllers
 import br.ufes.scap.models.{Global, User, Mandato, Parecer, 
   UserLoginForm, ManifestacaoForm, ParecerForm}
 import play.api.mvc._
-import br.ufes.scap.services.{ParecerService, ParecerDocumentoService, SolicitacaoService}
+import br.ufes.scap.services.{ParecerService, ParecerDocumentoService, SolicitacaoService, EmailService}
 import scala.concurrent.ExecutionContext.Implicits.global
 import javax.inject.Inject
 import scala.concurrent.Future
@@ -63,6 +63,7 @@ class PareceresController extends Controller {
               if (data.julgamento.equals("FAVORAVEL")){
                 status = "APROVADA-DI"
               }
+              EmailService.enviarEmailParaSolicitante(idSolicitacao, solicitacao.get.idProfessor, status)
               ParecerService.addParecer(newParecer).map(res =>
                 Redirect(routes.SolicitacoesController.mudaStatus(solicitacao.get.id,status))
               )
@@ -88,7 +89,9 @@ class PareceresController extends Controller {
         data => {
           if (Global.isProfessor()){
               val dataAtual = new Timestamp(Calendar.getInstance().getTime().getTime())
-              val newParecer = Parecer(0, idSolicitacao, Global.SESSION_KEY, "DESFAVORAVEL", data.motivo, dataAtual)   
+              val newParecer = Parecer(0, idSolicitacao, Global.SESSION_KEY, "DESFAVORAVEL", data.motivo, dataAtual)
+             val solicitacao = Await.result(SolicitacaoService.getSolicitacao(idSolicitacao), Duration.Inf)
+              EmailService.enviarEmailParaSolicitante(idSolicitacao, solicitacao.get.idProfessor, "Manifestação Contrária")
               ParecerService.addParecer(newParecer).map(res =>
                 Redirect(routes.LoginController.menu())
               )

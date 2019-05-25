@@ -36,7 +36,7 @@ class ParentescosController extends Controller {
   def deleteParentesco(id: Long) = Action { implicit request =>
     if(Global.isSecretario()){
       ParentescoService.deleteParentesco(id)
-      Redirect(routes.ParentescosController.index())
+      Redirect(routes.ParentescosController.listarParentescos())
     }else{
     	Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
     }
@@ -68,7 +68,7 @@ class ParentescosController extends Controller {
       data => {
         val newParentesco = Parentesco(0, data.idProfessor1, data.idProfessor2)
         ParentescoService.addParentesco(newParentesco).map(res =>
-          Redirect(routes.ParentescosController.index())
+          Redirect(routes.ParentescosController.listarParentescos())
         )
       })
   }

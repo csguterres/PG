@@ -10,70 +10,45 @@
 <form id="mandato-data-form" role="form" action='@br.ufes.scap.controllers.routes.MandatosController.addMandato()' method="post"
       class="form-horizontal" align="center" autocomplete="off">
 
-    <fieldset class="mandato-fieldset">
-        <div class="col-xs-4">
-            <div class="mandato-form">
-                <label class="form-title"
-                       style="color: #F8741B; font-size: 22px;font-weight: bold; text-decoration:none">
-				</label>
-            </div>
             <br/>
 
-		<div class="input-group input-group-sm">
-            <span class="input-group-addon" id="sizing-addon2"><b>Professor  </b></span>
+		Professor  
 		<select id=idProfessor name="idProfessor" value="">
 		@for(user <- users){
     			<option value=@user.id>@user.nome</option>
 		}
 		</select>
-            </div>
 
 		<br>
 		<br>
 
-            <div class="input-group input-group-sm">
-            <span class="input-group-addon" id="sizing-addon2"><b>Cargo  </b></span>
+            Cargo
 		<select id=cargo name="cargo" value="">
     			<option value="PRESIDENTE">PRESIDENTE</option>
     			<option value="VICE-PRESIDENTE">VICE-PRESIDENTE</option>
 		</select>
-            </div>
 
 		<br>
 		<br>
 
-
-            <div class="input-group input-group-sm">
-                <span class="input-group-addon" id="sizing-addon2"><b>Data de início do mandato</b></span>
+			Data de início do mandato
   			<input type="date" name="dataIniMandato" value="" 
 				placeholder="XX/XX/XXXX" aria-describedby="sizing-addon1" required> 
-  			<br>
-            </div>
 
+  		<br>
 		<br>
 		<br>
 
-            <div class="input-group input-group-sm">
-                <span class="input-group-addon" id="sizing-addon2"><b>Data de fim do mandato</b></span>
+			Data de fim do mandato
   			<input type="date" name="dataFimMandato" value="" 
 				placeholder="XX/XX/XXXX" aria-describedby="sizing-addon1" required> 
-  			<br>
-            </div>
-
+  		
 		<br>
 		<br>
+		<br>
 
-    </ul>
-  </div>
+            <button type="submit" class="btn btn-primary ynt-btn-orange">Adicionar Mandato</button>
 
-
-            <br>
-            <div class="form-actions controls ynt-btn-xlarge">
-                <button type="submit" class="btn btn-primary ynt-btn-orange">Adicionar Mandato</button>
-            </div>
-
-        </div>
-    </fieldset>
 </form>
 
 <br>

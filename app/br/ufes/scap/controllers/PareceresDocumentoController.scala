@@ -3,7 +3,7 @@ package br.ufes.scap.controllers
 import br.ufes.scap.models.{Global, ParecerDocumento, 
   UserLoginForm, ParecerDocumentoForm}
 import play.api.mvc._
-import br.ufes.scap.services.{ParecerDocumentoService, SolicitacaoService}
+import br.ufes.scap.services.{ParecerDocumentoService, SolicitacaoService, EmailService}
 import scala.concurrent.ExecutionContext.Implicits.global
 import javax.inject.Inject
 import scala.concurrent.Future
@@ -47,6 +47,7 @@ class PareceresDocumentoController extends Controller {
               if (data.julgamento.equals("FAVORAVEL")){
                 status = "APROVADA-" + data.tipo
               }
+              EmailService.enviarEmailParaSolicitante(idSolicitacao, solicitacao.get.idProfessor, status)
               ParecerDocumentoService.addParecerDocumento(newParecerDocumento).map(res =>
                 Redirect(routes.SolicitacoesController.mudaStatus(solicitacao.get.id,status))
               )
