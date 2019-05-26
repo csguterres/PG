@@ -9,6 +9,4 @@ trait SolicitacaoDAO extends BaseDAO {
   
   def findByStatus(status : String): Future[Seq[Solicitacao]] 
   
-  def listAll: Future[Seq[Solicitacao]] 
-
 }

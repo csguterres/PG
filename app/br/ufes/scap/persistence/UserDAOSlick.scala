@@ -43,9 +43,6 @@ object Users extends UserDAO {
     }
   }
 
-
-  //, user.email, user.password, user.tipo
-//,"email","password","tipo")
   def listAll: Future[Seq[User]] = {
     dbConfig.db.run(users.result)
   }

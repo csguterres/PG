@@ -1,7 +1,6 @@
 package br.ufes.scap.persistence
 
 import scala.concurrent.Future
-import java.lang.Object
 
 trait BaseDAO{
   
@@ -13,4 +12,5 @@ trait BaseDAO{
 	
 	def update(T: Any): Future[String]
 	
+	def listAll(): Future[Seq[Any]]
 }
