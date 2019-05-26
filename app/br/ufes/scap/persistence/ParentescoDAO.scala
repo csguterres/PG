@@ -11,27 +11,33 @@ import play.api.db.slick.DatabaseConfigProvider
 import play.api.data.Form
 import play.api.data.Forms._
 
-object Parentescos {
+object Parentescos extends BaseDAO {
   val dbConfig = DatabaseConfigProvider.get[JdbcProfile](Play.current)
 
   val parentescos = TableQuery[ParentescoTableDef]
   
-  def add(Parentesco: Parentesco): Future[String] = {
-    dbConfig.db.run(parentescos += Parentesco).map(res => 
+  @Override
+  def  save(p: Any): Future[String] = {
+    val parentesco = p.asInstanceOf[Parentesco]
+    dbConfig.db.run(parentescos += parentesco).map(res => 
       "Parentesco successfully added").recover {
       case ex: Exception => ex.getCause.getMessage
     }
   }
 
+  @Override
   def delete(id: Long): Future[Int] = {
     dbConfig.db.run(parentescos.filter(_.id === id).delete)
   }
 
+  @Override
   def get(id: Long): Future[Option[Parentesco]] = {
     dbConfig.db.run(parentescos.filter(_.id === id).result.headOption)
   }
-    
-  def update(parentesco: Parentesco) : Future[String] = {
+  
+  @Override
+  def update(p: Any) : Future[String] = {
+    val parentesco = p.asInstanceOf[Parentesco]
     dbConfig.db.run(parentescos.filter(_.id === parentesco.id).update(parentesco)).map(res => "Parentesco successfully added").recover {
       case ex: Exception => ex.getCause.getMessage
     }

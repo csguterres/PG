@@ -8,7 +8,7 @@ import scala.concurrent.duration._
 object UserService {
 
   def addUser(user: User): Future[String] = {
-    Users.add(user)
+    Users.save(user)
   }
 
   def deleteUser(id: Long): Future[Int] = {

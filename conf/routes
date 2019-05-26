@@ -23,7 +23,7 @@ GET	  /solicitacao/:id/encaminhar			br.ufes.scap.controllers.SolicitacoesControl
 POST	  /solicitacao/:id/encaminhar			br.ufes.scap.controllers.SolicitacoesController.encaminharSolicitacao(id : Long)
 POST	  /solicitacao/:id/muda/:status	      br.ufes.scap.controllers.SolicitacoesController.mudaStatus(id : Long, status: String)
 GET	  /solicitacao/:id/muda/:status	      br.ufes.scap.controllers.SolicitacoesController.mudaStatus(id : Long, status: String)
-GET	  /login						br.ufes.scap.controllers.LoginController.login
+GET	  /login						br.ufes.scap.controllers.LoginController.loginForm
 POST	  /login						br.ufes.scap.controllers.LoginController.login
 GET     /addMandatoForm					br.ufes.scap.controllers.MandatosController.addMandatoForm()
 POST    /addMandato					br.ufes.scap.controllers.MandatosController.addMandato()

@@ -12,7 +12,7 @@ import java.sql.Timestamp
 object MandatoService {
 
   def addMandato(mandato: Mandato): Future[String] = {
-    Mandatos.add(mandato)
+    Mandatos.save(mandato)
   }
 
   def deleteMandato(id: Long): Future[Int] = {

@@ -2,7 +2,7 @@ package br.ufes.scap.controllers
 
 import br.ufes.scap.models.{User, UserForm, UserLoginForm, Global}
 import play.api.mvc._
-import br.ufes.scap.services.UserService
+import br.ufes.scap.services.{UserService, AuthenticatorService}
 import scala.concurrent.ExecutionContext.Implicits.global
 import javax.inject.Inject
 import scala.concurrent._
@@ -13,6 +13,10 @@ import scala.concurrent.Future
 
 class LoginController extends Controller {
 
+    def loginForm() = Action {
+        Ok(br.ufes.scap.views.html.userLogin(UserLoginForm.form))
+    }
+    
     def login() = Action.async { implicit request =>
     UserLoginForm.form.bindFromRequest.fold(
       // if any error in submitted data
@@ -41,7 +45,7 @@ class LoginController extends Controller {
     }
     
     def menu() = Action{ implicit request =>
-      if (Global.isLoggedIn()){
+      if (AuthenticatorService.isLoggedIn()){
         val user = Await.result(UserService.getUser(Global.SESSION_KEY),Duration.Inf)
         Ok(br.ufes.scap.views.html.menu(UserForm.form, user))
       }else{

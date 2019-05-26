@@ -3,7 +3,7 @@ package br.ufes.scap.controllers
 import br.ufes.scap.models.{Global, ParecerDocumento, 
   UserLoginForm, ParecerDocumentoForm}
 import play.api.mvc._
-import br.ufes.scap.services.{ParecerDocumentoService, SolicitacaoService, EmailService}
+import br.ufes.scap.services.{ParecerDocumentoService, SolicitacaoService, EmailService, AuthenticatorService}
 import scala.concurrent.ExecutionContext.Implicits.global
 import javax.inject.Inject
 import scala.concurrent.Future
@@ -21,7 +21,7 @@ class PareceresDocumentoController extends Controller {
 
   def registrarParecerDocumentoForm(idSolicitacao : Long) = Action { implicit request =>
     val solicitacao = Await.result(SolicitacaoService.getSolicitacao(idSolicitacao),Duration.Inf)
-    if (Global.isSecretario()){
+    if (AuthenticatorService.isSecretario()){
       Ok(br.ufes.scap.views.html.addParecerDocumento(ParecerDocumentoForm.form, solicitacao))
     }else{
       Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
@@ -39,7 +39,7 @@ class PareceresDocumentoController extends Controller {
         ),
         data => {
           val solicitacao = Await.result(SolicitacaoService.getSolicitacao(idSolicitacao), Duration.Inf)
-          if (Global.isSecretario()){
+          if (AuthenticatorService.isSecretario()){
               val dataAtual = new Timestamp(Calendar.getInstance().getTime().getTime())
               val byteArray = Files.readAllBytes(Paths.get(data.filePath))
               val newParecerDocumento = ParecerDocumento(0, idSolicitacao, data.tipo, data.julgamento, byteArray, dataAtual)   

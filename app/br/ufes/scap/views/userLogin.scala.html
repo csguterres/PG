@@ -1,4 +1,4 @@
-@(userLoginForm: Form[br.ufes.scap.models.UserLoginFormData])(implicit request: RequestHeader)
+@(userLoginForm: Form[br.ufes.scap.models.UserLoginFormData])
 @main(){
 
     @userLoginForm.globalError.map { error =>

@@ -9,7 +9,7 @@ import java.util.Date
 object ParecerService {
 
   def addParecer(parecer: Parecer): Future[String] = {
-    Pareceres.add(parecer)
+    Pareceres.save(parecer)
   }
 
   def deleteParecer(id: Long): Future[Int] = {

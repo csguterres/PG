@@ -11,12 +11,14 @@ import play.api.db.slick.DatabaseConfigProvider
 import play.api.data.Form
 import play.api.data.Forms._
 
-object PareceresDocumento {
+object PareceresDocumento extends BaseDAO {
   val dbConfig = DatabaseConfigProvider.get[JdbcProfile](Play.current)
 
   val pareceresDocumento = TableQuery[ParecerDocumentoTableDef]
   
-  def add(parecerDocumento: ParecerDocumento): Future[String] = {
+  @Override
+  def  save(p: Any): Future[String] = {
+        val parecerDocumento = p.asInstanceOf[ParecerDocumento]
     dbConfig.db.run(pareceresDocumento += parecerDocumento).map(res => 
       "Parecer successfully added").recover {
       case ex: Exception => 
@@ -25,15 +27,19 @@ object PareceresDocumento {
     }
   }
 
+  @Override
   def delete(id: Long): Future[Int] = {
     dbConfig.db.run(pareceresDocumento.filter(_.id === id).delete)
   }
 
+  @Override
   def get(id: Long): Future[Option[ParecerDocumento]] = {
     dbConfig.db.run(pareceresDocumento.filter(_.id === id).result.headOption)
   }
     
-  def update(parecerDocumento: ParecerDocumento) : Future[String] = {
+  @Override
+  def update(p: Any) : Future[String] = {
+    val parecerDocumento = p.asInstanceOf[ParecerDocumento]
     dbConfig.db.run(pareceresDocumento.filter(_.id === parecerDocumento.id).update(parecerDocumento)).map(res => "Parecer successfully added").recover {
       case ex: Exception => ex.getCause.getMessage
     }

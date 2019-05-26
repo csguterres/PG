@@ -10,8 +10,9 @@ import scala.concurrent.duration._
 import java.sql.Timestamp
 import java.util.Date
 import br.ufes.scap.services.MandatoService
+import java.lang.Object 
 
-case class Mandato(id: Long, idProfessor: Long, cargo : String,
+case class Mandato (id: Long, idProfessor: Long, cargo : String,
     dataIniMandato: Timestamp, dataFimMandato : Timestamp)
     
 case class MandatoFormData(idProfessor : Long, cargo : String, 

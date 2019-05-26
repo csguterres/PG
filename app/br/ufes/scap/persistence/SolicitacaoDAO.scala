@@ -16,7 +16,8 @@ object Solicitacoes {
 
   val solicitacoes = TableQuery[SolicitacaoTableDef]
   
-  def add(solicitacao: Solicitacao): Future[String] = {
+  def  save(s: Any): Future[String] = {
+    val solicitacao = s.asInstanceOf[Solicitacao]  
     dbConfig.db.run(solicitacoes += solicitacao).map(res => 
       "Solicitacao successfully added").recover {
       case ex: Exception => ex.getCause.getMessage
@@ -31,7 +32,8 @@ object Solicitacoes {
     dbConfig.db.run(solicitacoes.filter(_.id === id).result.headOption)
   }
     
-  def update(solicitacao: Solicitacao) : Future[String] = {
+  def update(s: Any) : Future[String] = {
+    val solicitacao = s.asInstanceOf[Solicitacao]  
     dbConfig.db.run(solicitacoes.filter(_.id === solicitacao.id).update(solicitacao)).map(res => "Solicitacao successfully added").recover {
       case ex: Exception => ex.getCause.getMessage
     }

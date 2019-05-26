@@ -2,7 +2,7 @@ package br.ufes.scap.controllers
 
 import br.ufes.scap.models.{Global, Parentesco, ParentescoFull, User, UserForm, UserLoginForm, ParentescoForm}
 import play.api.mvc._
-import br.ufes.scap.services.{UserService, ParentescoService}
+import br.ufes.scap.services.{UserService, ParentescoService, AuthenticatorService}
 import scala.concurrent.ExecutionContext.Implicits.global
 import javax.inject.Inject
 import scala.concurrent.Future
@@ -18,7 +18,7 @@ import scala.concurrent._
 class ParentescosController extends Controller { 
   
   def listarParentescos = Action { implicit request =>
-      if (Global.isSecretario()){
+      if (AuthenticatorService.isSecretario()){
         val parentescos = Await.result(ParentescoService.listAllParentescos, Duration.Inf)
         var Parentescos : Seq[ParentescoFull] = Seq()
         for (p <- parentescos){
@@ -34,7 +34,7 @@ class ParentescosController extends Controller {
   }
 
   def deleteParentesco(id: Long) = Action { implicit request =>
-    if(Global.isSecretario()){
+    if(AuthenticatorService.isSecretario()){
       ParentescoService.deleteParentesco(id)
       Redirect(routes.ParentescosController.listarParentescos())
     }else{
@@ -43,7 +43,7 @@ class ParentescosController extends Controller {
   }
   
   def addParentescoForm() = Action { implicit request =>
-    if (Global.isSecretario()){
+    if (AuthenticatorService.isSecretario()){
       val users = Await.result(UserService.listAllUsersByTipo("PROFESSOR"),Duration.Inf)
       Ok(br.ufes.scap.views.html.addParentesco(ParentescoForm.form,users))    
     }else{

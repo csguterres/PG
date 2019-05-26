@@ -11,7 +11,7 @@ import play.api.db.slick.DatabaseConfigProvider
 import play.api.data.Form
 import play.api.data.Forms._
 
-object Users {
+object Users extends BaseDAO {
 
   val dbConfig = DatabaseConfigProvider.get[JdbcProfile](Play.current)
 
@@ -21,25 +21,30 @@ object Users {
       dbConfig.db.run(users.filter(_.matricula === matricula).result.headOption)
   }
   
-  def add(user: User): Future[String] = {
+  def save(u: Any): Future[String] = {
+    val user = u.asInstanceOf[User]  
     dbConfig.db.run(users += user).map(res => "User successfully added").recover {
       case ex: Exception => ex.getCause.getMessage
     }
   }
 
+  @Override
   def delete(id: Long): Future[Int] = {
     dbConfig.db.run(users.filter(_.id === id).delete)
   }
 
+  @Override
   def get(id: Long): Future[Option[User]] = {
     dbConfig.db.run(users.filter(_.id === id).result.headOption)
   }
-    
-def update(user: User) : Future[String] = {
-  dbConfig.db.run(users.filter(_.id === user.id).update(user)).map(res => "User successfully added").recover {
-      case ex: Exception => ex.getCause.getMessage
+
+  @Override
+  def update(u : Any) : Future[String] = {
+    val user = u.asInstanceOf[User]  
+    dbConfig.db.run(users.filter(_.id === user.id).update(user)).map(res => "User successfully added").recover {
+        case ex: Exception => ex.getCause.getMessage
+    }
   }
-}
 
 
   //, user.email, user.password, user.tipo

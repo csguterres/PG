@@ -11,32 +11,38 @@ import play.api.db.slick.DatabaseConfigProvider
 import play.api.data.Form
 import play.api.data.Forms._
 
-object Mandatos {
+object Mandatos extends BaseDAO {
   val dbConfig = DatabaseConfigProvider.get[JdbcProfile](Play.current)
 
   val mandatos = TableQuery[MandatoTableDef]
   
-  def add(Mandato: Mandato): Future[String] = {
-    dbConfig.db.run(mandatos += Mandato).map(res => 
+  @Override
+  def save(m: Any): Future[String] = {
+    val mandato = m.asInstanceOf[Mandato]
+    dbConfig.db.run(mandatos += mandato).map(res => 
       "Mandato successfully added").recover {
       case ex: Exception => ex.getCause.getMessage
     }
   }
 
+  @Override
   def delete(id: Long): Future[Int] = {
     dbConfig.db.run(mandatos.filter(_.id === id).delete)
   }
 
+  @Override
   def get(id: Long): Future[Option[Mandato]] = {
     dbConfig.db.run(mandatos.filter(_.id === id).result.headOption)
   }
-    
-  def update(mandato: Mandato) : Future[String] = {
+
+  @Override
+  def update(m: Any) : Future[String] = {
+    val mandato = m.asInstanceOf[Mandato]
     dbConfig.db.run(mandatos.filter(_.id === mandato.id).update(mandato)).map(res => "Mandato successfully added").recover {
       case ex: Exception => ex.getCause.getMessage
     }
   }
-
+  
   def findByProfessor(idProfessor : Long): Future[Seq[Mandato]] = {
     dbConfig.db.run(mandatos.filter(_.idProfessor === idProfessor).result)
   }

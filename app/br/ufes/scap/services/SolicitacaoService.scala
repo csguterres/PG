@@ -9,7 +9,7 @@ import scala.concurrent._
 object SolicitacaoService {
 
   def addSolicitacao(solicitacao: Solicitacao): Future[String] = {
-    Solicitacoes.add(solicitacao)
+    Solicitacoes.save(solicitacao)
   }
 
   def deleteSolicitacao(id: Long): Future[Int] = {

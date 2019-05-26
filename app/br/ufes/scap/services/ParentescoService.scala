@@ -9,7 +9,7 @@ import java.util.Date
 object ParentescoService {
 
   def addParentesco(parentesco: Parentesco): Future[String] = {
-    Parentescos.add(parentesco)
+    Parentescos.save(parentesco)
   }
 
   def deleteParentesco(id: Long): Future[Int] = {

@@ -3,7 +3,7 @@ package br.ufes.scap.controllers
 import br.ufes.scap.models.{Global, User, Mandato, Parecer, 
   UserLoginForm, ManifestacaoForm, ParecerForm}
 import play.api.mvc._
-import br.ufes.scap.services.{ParecerService, ParecerDocumentoService, SolicitacaoService, EmailService}
+import br.ufes.scap.services.{ParecerService, AuthenticatorService, ParecerDocumentoService, SolicitacaoService, EmailService}
 import scala.concurrent.ExecutionContext.Implicits.global
 import javax.inject.Inject
 import scala.concurrent.Future
@@ -24,7 +24,7 @@ class PareceresController extends Controller {
   
   def registrarParecerForm(idSolicitacao : Long) = Action { implicit request =>
     val solicitacao = Await.result(SolicitacaoService.getSolicitacao(idSolicitacao),Duration.Inf)
-    if (Global.isRelator(solicitacao.get.idRelator)){
+    if (AuthenticatorService.isRelator(solicitacao.get.idRelator)){
       Ok(br.ufes.scap.views.html.addParecer(ParecerForm.form, solicitacao))
     }else{
       Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
@@ -37,7 +37,7 @@ class PareceresController extends Controller {
   }
   
   def manifestarContraForm(idSolicitacao : Long) = Action { implicit request =>
-    if (Global.isProfessor()){
+    if (AuthenticatorService.isProfessor()){
       val solicitacao = Await.result(SolicitacaoService.getSolicitacao(idSolicitacao),Duration.Inf)
       Ok(br.ufes.scap.views.html.addParecerContra(ManifestacaoForm.form, solicitacao))
     }else{
@@ -56,7 +56,6 @@ class PareceresController extends Controller {
         ),
         data => {
           val solicitacao = Await.result(SolicitacaoService.getSolicitacao(idSolicitacao), Duration.Inf)
-          if (Global.isRelator(solicitacao.get.idRelator)){
               val dataAtual = new Timestamp(Calendar.getInstance().getTime().getTime())
               val newParecer = Parecer(0, idSolicitacao, Global.SESSION_KEY, data.julgamento, data.motivo, dataAtual)   
               var status : String = "REPROVADA"
@@ -67,12 +66,6 @@ class PareceresController extends Controller {
               ParecerService.addParecer(newParecer).map(res =>
                 Redirect(routes.SolicitacoesController.mudaStatus(solicitacao.get.id,status))
               )
-          }else{
-              SolicitacaoService.listAllSolicitacoesBySolicitante(0) map { solicitacoes =>
-                Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
-              } 
-          }
-    
         }
     )
     }
@@ -87,7 +80,6 @@ class PareceresController extends Controller {
             )
         ),
         data => {
-          if (Global.isProfessor()){
               val dataAtual = new Timestamp(Calendar.getInstance().getTime().getTime())
               val newParecer = Parecer(0, idSolicitacao, Global.SESSION_KEY, "DESFAVORAVEL", data.motivo, dataAtual)
              val solicitacao = Await.result(SolicitacaoService.getSolicitacao(idSolicitacao), Duration.Inf)
@@ -95,11 +87,6 @@ class PareceresController extends Controller {
               ParecerService.addParecer(newParecer).map(res =>
                 Redirect(routes.LoginController.menu())
               )
-          }else{
-              SolicitacaoService.listAllSolicitacoesBySolicitante(0) map { solicitacoes =>
-                Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
-              } 
-          }
     
         }
     )

@@ -2,7 +2,7 @@ package br.ufes.scap.controllers
 
 import br.ufes.scap.models.{Global, User, Solicitacao, ManifestacaoForm, EncaminhamentoForm, UserLoginForm, SolicitacaoForm}
 import play.api.mvc._
-import br.ufes.scap.services.{SolicitacaoService, UserService, EmailService}
+import br.ufes.scap.services.{SolicitacaoService, UserService, EmailService, AuthenticatorService}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import java.sql.Timestamp
@@ -15,7 +15,7 @@ import scala.concurrent._
 class SolicitacoesController extends Controller { 
   
   def listarSolicitacoes = Action { implicit request =>
-      if (Global.isProfessor()){
+      if (AuthenticatorService.isProfessor()){
         val solicitacoesIniciadas = Await.result(SolicitacaoService.listAllSolicitacoesByStatus("INICIADA"), Duration.Inf)
         val solicitacoesLiberadas = Await.result(SolicitacaoService.listAllSolicitacoesByStatus("LIBERADA"), Duration.Inf)
         val solicitacoes = SolicitacaoService.mergeListas(solicitacoesIniciadas, solicitacoesLiberadas)
@@ -23,7 +23,7 @@ class SolicitacoesController extends Controller {
          Ok(br.ufes.scap.views.html.listSolicitacoes(SolicitacaoForm.form, solicitacoes))
       
       }else{
-        if (Global.isSecretario()){
+        if (AuthenticatorService.isSecretario()){
             val solicitacoes = Await.result(SolicitacaoService.listAllSolicitacoes, Duration.Inf)
             Ok(br.ufes.scap.views.html.listSolicitacoes(SolicitacaoForm.form, solicitacoes))
         }else{
@@ -55,7 +55,7 @@ class SolicitacoesController extends Controller {
     if(oldSolicitacao.get.idProfessor == Global.SESSION_KEY){
       userTipo = "AUTOR"
     }
-    if(Global.isRelator(oldSolicitacao.get.idRelator) 
+    if(AuthenticatorService.isRelator(oldSolicitacao.get.idRelator) 
         && oldSolicitacao.get.tipoAfastamento.equals("INTERNACIONAL")){
       userTipo = "RELATOR"
     }
@@ -86,7 +86,7 @@ class SolicitacoesController extends Controller {
       // if any error in submitted data
       errorForm => Future.successful(BadRequest(br.ufes.scap.views.html.addSolicitacao(errorForm, Seq.empty[Solicitacao]))),
       data => {
-      if (Global.isProfessor()){
+      if (AuthenticatorService.isProfessor()){
         val iniAfast = new Timestamp(data.dataIniAfast.getTime())
         val fimAfast = new Timestamp(data.dataFimAfast.getTime())
         val iniEvento = new Timestamp(data.dataIniEvento.getTime())
