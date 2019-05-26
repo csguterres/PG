@@ -1,55 +1,14 @@
 package br.ufes.scap.persistence
 
-import br.ufes.scap.models.{Solicitacao,SolicitacaoForm, SolicitacaoTableDef}
-import play.api.Play
-import play.api.mvc._
-import scala.concurrent.ExecutionContext.Implicits.global
+import br.ufes.scap.models.{Solicitacao}
 import scala.concurrent.Future
-import slick.driver.JdbcProfile
-import slick.driver.MySQLDriver.api._
-import play.api.db.slick.DatabaseConfigProvider
-import play.api.data.Form
-import play.api.data.Forms._
 
-object Solicitacoes {
-  val dbConfig = DatabaseConfigProvider.get[JdbcProfile](Play.current)
+trait SolicitacaoDAO extends BaseDAO {
 
-  val solicitacoes = TableQuery[SolicitacaoTableDef]
+  def findBySolicitante(idProfessor : Long): Future[Seq[Solicitacao]] 
   
-  def  save(s: Any): Future[String] = {
-    val solicitacao = s.asInstanceOf[Solicitacao]  
-    dbConfig.db.run(solicitacoes += solicitacao).map(res => 
-      "Solicitacao successfully added").recover {
-      case ex: Exception => ex.getCause.getMessage
-    }
-  }
-
-  def delete(id: Long): Future[Int] = {
-    dbConfig.db.run(solicitacoes.filter(_.id === id).delete)
-  }
-
-  def get(id: Long): Future[Option[Solicitacao]] = {
-    dbConfig.db.run(solicitacoes.filter(_.id === id).result.headOption)
-  }
-    
-  def update(s: Any) : Future[String] = {
-    val solicitacao = s.asInstanceOf[Solicitacao]  
-    dbConfig.db.run(solicitacoes.filter(_.id === solicitacao.id).update(solicitacao)).map(res => "Solicitacao successfully added").recover {
-      case ex: Exception => ex.getCause.getMessage
-    }
-  }
-
-  def findBySolicitante(idProfessor : Long): Future[Seq[Solicitacao]] = {
-    dbConfig.db.run(solicitacoes.filter(_.idProfessor === idProfessor).result)
-  }
+  def findByStatus(status : String): Future[Seq[Solicitacao]] 
   
-  def findByStatus(status : String): Future[Seq[Solicitacao]] = {
-    dbConfig.db.run(solicitacoes.filter(_.status === status).result)
-  }
-  
-  def listAll: Future[Seq[Solicitacao]] = {
-    dbConfig.db.run(solicitacoes.result)
-  }
-
+  def listAll: Future[Seq[Solicitacao]] 
 
 }
