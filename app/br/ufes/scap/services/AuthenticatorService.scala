@@ -1,6 +1,6 @@
 package br.ufes.scap.services
 
-import br.ufes.scap.models.Global
+import br.ufes.scap.models.{Global, User}
 
 object AuthenticatorService {
 
@@ -20,8 +20,15 @@ object AuthenticatorService {
       }
     }
     
-    def isRelator(idRelator : Long): Boolean ={
-      if (Global.SESSION_KEY == idRelator){
+    def isChefe(): Boolean = {
+      return Global.SESSION_CHEFE   
+    }
+    
+    def isRelator(relator : Option[User]): Boolean ={
+      if (relator == None){
+        return false
+      }
+      if (Global.SESSION_KEY == relator.get.id){
         return true
       }else{
         return false

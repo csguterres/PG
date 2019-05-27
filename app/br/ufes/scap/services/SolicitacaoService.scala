@@ -1,39 +1,57 @@
 package br.ufes.scap.services
 
-import br.ufes.scap.persistence.Solicitacoes
+import br.ufes.scap.persistence.SolicitacaoDAOSlick
 import br.ufes.scap.models.{Solicitacao, SolicitacaoFull, User}
-import scala.concurrent.Future
-import scala.concurrent.duration._
-import scala.concurrent._
 
 object SolicitacaoService {
 
-  def addSolicitacao(solicitacao: Solicitacao): Future[String] = {
-    Solicitacoes.save(solicitacao)
+  def addSolicitacao(solicitacao: Solicitacao) = {
+    SolicitacaoDAOSlick.save(solicitacao)
   }
 
-  def deleteSolicitacao(id: Long): Future[Int] = {
-    Solicitacoes.delete(id)
+  def deleteSolicitacao(id: Long) = {
+    SolicitacaoDAOSlick.delete(id)
   }
 
-  def getSolicitacao(id: Long): Future[Option[Solicitacao]] = {
-    Solicitacoes.get(id)
+  def getSolicitacao(id: Long): SolicitacaoFull = {
+    this.turnSolicitacaoIntoSolicitacaoFull(SolicitacaoDAOSlick.get(id))
+  }
+  
+  def getSolicitacaoNormal(id: Long): Option[Solicitacao] = {
+    SolicitacaoDAOSlick.get(id)
   }
 
-  def listAllSolicitacoes: Future[Seq[Solicitacao]] = {
-    Solicitacoes.listAll
+  def listAllSolicitacoes: Seq[SolicitacaoFull] = {
+    val solicitacoes = SolicitacaoDAOSlick.listAll
+    return turnSeqSolIntoSeqSolFull(solicitacoes) 
   }
   
-  def listAllSolicitacoesBySolicitante(idProfessor : Long): Future[Seq[Solicitacao]] = {
-    Solicitacoes.findBySolicitante(idProfessor)
+  def turnSeqSolIntoSeqSolFull(solicitacoes : Seq[Solicitacao]): Seq[SolicitacaoFull] = {
+    var solicitacoesFull : Seq[SolicitacaoFull] = Seq()
+    for (s <- solicitacoes){
+      solicitacoesFull = solicitacoesFull :+ this.turnSolicitacaoIntoSolicitacaoFull(Some(s))
+    }
+    return solicitacoesFull
   }
   
-  def listAllSolicitacoesByStatus(status : String): Future[Seq[Solicitacao]] = {
-    Solicitacoes.findByStatus(status)
+  def listAllSolicitacoesBySolicitante(idProfessor : Long): Seq[SolicitacaoFull] = {
+    val solicitacoes = SolicitacaoDAOSlick.findBySolicitante(idProfessor)
+    return turnSeqSolIntoSeqSolFull(solicitacoes) 
   }
   
-  def update(solicitacao : Solicitacao): Future[String] = { 
-    Solicitacoes.update(solicitacao)
+  def listAllSolicitacoesByRelator(idRelator : Long): Seq[SolicitacaoFull] = {
+    val solicitacoes = SolicitacaoDAOSlick.findByRelator(idRelator)
+    return turnSeqSolIntoSeqSolFull(solicitacoes) 
+  }
+  
+  def listAllSolicitacoesByStatus(status : String): Seq[SolicitacaoFull] = {
+    val solicitacoes = SolicitacaoDAOSlick.findByStatus(status)
+    return turnSeqSolIntoSeqSolFull(solicitacoes) 
+  }
+  
+  def update(solicitacao : SolicitacaoFull) = { 
+    val sol = this.turnSolicitacaoFullIntoSolicitacao(Some(solicitacao))
+    SolicitacaoDAOSlick.update(Some(sol))
   }
   
   def mergeListas(listSolicitacao1 : Seq[Solicitacao], listSolicitacao2 : Seq[Solicitacao]) : Seq[Solicitacao] = {
@@ -47,9 +65,9 @@ object SolicitacaoService {
       return solicitacoes
   }
   
-  def mudaStatus(oldSolicitacao : Option[Solicitacao], status : String): Solicitacao = {
-    val solicitacao = Solicitacao(oldSolicitacao.get.id, oldSolicitacao.get.idProfessor,
-              oldSolicitacao.get.idRelator, oldSolicitacao.get.dataSolicitacao, 
+  def mudaStatus(oldSolicitacao : Option[SolicitacaoFull], status : String): SolicitacaoFull = {
+    val solicitacao = SolicitacaoFull(oldSolicitacao.get.id, oldSolicitacao.get.professor,
+              oldSolicitacao.get.relator, oldSolicitacao.get.dataSolicitacao, 
               oldSolicitacao.get.dataIniAfast, oldSolicitacao.get.dataFimAfast, 
               oldSolicitacao.get.dataIniEvento, oldSolicitacao.get.dataFimEvento, 
               oldSolicitacao.get.nomeEvento, oldSolicitacao.get.cidade, 
@@ -61,12 +79,12 @@ object SolicitacaoService {
   
   def turnSolicitacaoIntoSolicitacaoFull
   (oldSolicitacao : Option[Solicitacao]): SolicitacaoFull = {
-    val professor = Await.result(UserService.getUser(oldSolicitacao.get.idProfessor),Duration.Inf)
+    val professor = UserService.getUser(oldSolicitacao.get.idProfessor)
     var relator : Option[User] = None
     if (oldSolicitacao.get.idRelator == 0){
       relator = None
     }else{
-      relator = Await.result(UserService.getUser(oldSolicitacao.get.idRelator),Duration.Inf)
+      relator = UserService.getUser(oldSolicitacao.get.idRelator)
     }
     val solicitacao = SolicitacaoFull(oldSolicitacao.get.id, professor,
               relator, oldSolicitacao.get.dataSolicitacao, 
@@ -79,10 +97,32 @@ object SolicitacaoService {
     return solicitacao
   }
   
-  def addRelator(oldSolicitacao : Option[Solicitacao], idRelator : Long): Solicitacao = {
-    val solicitacao = Solicitacao(oldSolicitacao.get.id, 
-      oldSolicitacao.get.idProfessor,
-      idRelator, oldSolicitacao.get.dataSolicitacao, 
+  
+  def turnSolicitacaoFullIntoSolicitacao
+  (oldSolicitacao : Option[SolicitacaoFull]): Solicitacao = {
+    val idProfessor = oldSolicitacao.get.professor.get.id
+    var idRelator : Long = 0
+    if (oldSolicitacao.get.relator == None){
+      idRelator = 0
+    }else{
+      idRelator = oldSolicitacao.get.relator.get.id
+    }
+    val solicitacao = Solicitacao(oldSolicitacao.get.id, idProfessor,
+              idRelator, oldSolicitacao.get.dataSolicitacao, 
+              oldSolicitacao.get.dataIniAfast, oldSolicitacao.get.dataFimAfast, 
+              oldSolicitacao.get.dataIniEvento, oldSolicitacao.get.dataFimEvento, 
+              oldSolicitacao.get.nomeEvento, oldSolicitacao.get.cidade, 
+              oldSolicitacao.get.onus, oldSolicitacao.get.tipoAfastamento, 
+              oldSolicitacao.get.status,oldSolicitacao.get.motivoCancelamento, 
+              oldSolicitacao.get.dataJulgamentoAfast)
+    return solicitacao
+  }
+  
+  def addRelator(oldSolicitacao : Option[SolicitacaoFull], idRelator : Long): SolicitacaoFull = {
+    val relator = UserService.getUser(idRelator)
+    val solicitacao = SolicitacaoFull(oldSolicitacao.get.id, 
+      oldSolicitacao.get.professor,
+      relator, oldSolicitacao.get.dataSolicitacao, 
       oldSolicitacao.get.dataIniAfast, oldSolicitacao.get.dataFimAfast, 
       oldSolicitacao.get.dataIniEvento, oldSolicitacao.get.dataFimEvento, 
       oldSolicitacao.get.nomeEvento, oldSolicitacao.get.cidade, 
@@ -92,10 +132,10 @@ object SolicitacaoService {
     return solicitacao
   }
   
-    def cancelaSolicitacao(oldSolicitacao : Option[Solicitacao]): Solicitacao = {
-    val solicitacao = Solicitacao(oldSolicitacao.get.id, 
-      oldSolicitacao.get.idProfessor,
-      oldSolicitacao.get.idRelator, oldSolicitacao.get.dataSolicitacao, 
+    def cancelaSolicitacao(oldSolicitacao : Option[SolicitacaoFull]): SolicitacaoFull = {
+    val solicitacao = SolicitacaoFull(oldSolicitacao.get.id, 
+      oldSolicitacao.get.professor,
+      oldSolicitacao.get.relator, oldSolicitacao.get.dataSolicitacao, 
       oldSolicitacao.get.dataIniAfast, oldSolicitacao.get.dataFimAfast, 
       oldSolicitacao.get.dataIniEvento, oldSolicitacao.get.dataFimEvento, 
       oldSolicitacao.get.nomeEvento, oldSolicitacao.get.cidade, 

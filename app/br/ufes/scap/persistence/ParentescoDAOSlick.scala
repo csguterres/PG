@@ -10,14 +10,15 @@ import slick.driver.MySQLDriver.api._
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.data.Form
 import play.api.data.Forms._
+import scala.concurrent._
+import scala.concurrent.duration._
 
-object Parentescos extends BaseDAO {
+object ParentescoDAOSlick extends BaseDAO {
   val dbConfig = DatabaseConfigProvider.get[JdbcProfile](Play.current)
 
   val parentescos = TableQuery[ParentescoTableDef]
   
-  @Override
-  def  save(p: Any): Future[String] = {
+  def  save(p: Any) = {
     val parentesco = p.asInstanceOf[Parentesco]
     dbConfig.db.run(parentescos += parentesco).map(res => 
       "Parentesco successfully added").recover {
@@ -25,31 +26,28 @@ object Parentescos extends BaseDAO {
     }
   }
 
-  @Override
-  def delete(id: Long): Future[Int] = {
+  def delete(id: Long) = {
     dbConfig.db.run(parentescos.filter(_.id === id).delete)
   }
 
-  @Override
-  def get(id: Long): Future[Option[Parentesco]] = {
-    dbConfig.db.run(parentescos.filter(_.id === id).result.headOption)
+  def get(id: Long) : Option[Parentesco] = {
+    Await.result(dbConfig.db.run(parentescos.filter(_.id === id).result.headOption),Duration.Inf)
   }
   
-  @Override
-  def update(p: Any) : Future[String] = {
+  def update(p: Any)  = {
     val parentesco = p.asInstanceOf[Parentesco]
     dbConfig.db.run(parentescos.filter(_.id === parentesco.id).update(parentesco)).map(res => "Parentesco successfully added").recover {
       case ex: Exception => ex.getCause.getMessage
     }
   }
 
-  def findByProfessor(idProfessor : Long): Future[Seq[Parentesco]] = {
-    dbConfig.db.run(parentescos.filter(parentesco => parentesco.idProfessor1 === idProfessor || parentesco.idProfessor2 === idProfessor).result)
+  def findByProfessor(idProfessor : Long): Seq[Parentesco] = {
+    Await.result(dbConfig.db.run(parentescos.filter(parentesco => parentesco.idProfessor1 === idProfessor || parentesco.idProfessor2 === idProfessor).result),Duration.Inf)
   }
   
   
-  def listAll: Future[Seq[Parentesco]] = {
-    dbConfig.db.run(parentescos.result)
+  def listAll: Seq[Parentesco] = {
+    Await.result(dbConfig.db.run(parentescos.result),Duration.Inf)
   }
 
 

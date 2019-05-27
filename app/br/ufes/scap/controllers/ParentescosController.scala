@@ -11,19 +11,17 @@ import java.sql.Date
 import scala.collection.Seq
 import java.util.Calendar
 import java.text.SimpleDateFormat
-import scala.concurrent.duration._
-import scala.concurrent._
 
 
 class ParentescosController extends Controller { 
   
   def listarParentescos = Action { implicit request =>
       if (AuthenticatorService.isSecretario()){
-        val parentescos = Await.result(ParentescoService.listAllParentescos, Duration.Inf)
+        val parentescos = ParentescoService.listAllParentescos
         var Parentescos : Seq[ParentescoFull] = Seq()
         for (p <- parentescos){
-          var user1 = Await.result(UserService.getUser(p.idProfessor1),Duration.Inf)
-          var user2 = Await.result(UserService.getUser(p.idProfessor2),Duration.Inf)
+          var user1 = UserService.getUser(p.idProfessor1)
+          var user2 = UserService.getUser(p.idProfessor2)
           var P = new ParentescoFull(p.id, user1, user2)
           Parentescos = Parentescos :+ P
         }
@@ -44,7 +42,7 @@ class ParentescosController extends Controller {
   
   def addParentescoForm() = Action { implicit request =>
     if (AuthenticatorService.isSecretario()){
-      val users = Await.result(UserService.listAllUsersByTipo("PROFESSOR"),Duration.Inf)
+      val users = UserService.listAllUsersByTipo("PROFESSOR")
       Ok(br.ufes.scap.views.html.addParentesco(ParentescoForm.form,users))    
     }else{
       Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
@@ -59,17 +57,14 @@ class ParentescosController extends Controller {
         (BadRequest
           (br.ufes.scap.views.html.addParentesco
              (errorForm, 
-                (Await.result
-                  (UserService.listAllUsersByTipo("PROFESSOR"),Duration.Inf)
-                )
+                UserService.listAllUsersByTipo("PROFESSOR")
              )
            )
         ),
       data => {
         val newParentesco = Parentesco(0, data.idProfessor1, data.idProfessor2)
-        ParentescoService.addParentesco(newParentesco).map(res =>
-          Redirect(routes.ParentescosController.listarParentescos())
-        )
+        ParentescoService.addParentesco(newParentesco)
+        Future.successful(Redirect(routes.ParentescosController.listarParentescos()))
       })
   }
  

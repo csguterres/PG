@@ -1,9 +1,7 @@
 package br.ufes.scap.services
 
-import br.ufes.scap.persistence.Mandatos
+import br.ufes.scap.persistence.MandatoDAOSlick
 import br.ufes.scap.models.Mandato
-import scala.concurrent._
-import scala.concurrent.duration._
 import java.util.Date
 import java.util.Calendar
 import java.text.SimpleDateFormat
@@ -11,32 +9,32 @@ import java.sql.Timestamp
 
 object MandatoService {
 
-  def addMandato(mandato: Mandato): Future[String] = {
-    Mandatos.save(mandato)
+  def addMandato(mandato: Mandato) = {
+    MandatoDAOSlick.save(mandato)
   }
 
-  def deleteMandato(id: Long): Future[Int] = {
-    Mandatos.delete(id)
+  def deleteMandato(id: Long) = {
+    MandatoDAOSlick.delete(id)
   }
 
-  def getMandato(id: Long): Future[Option[Mandato]] = {
-    Mandatos.get(id)
+  def getMandato(id: Long): Option[Mandato] = {
+    MandatoDAOSlick.get(id)
   }
 
-  def listAllMandatos: Future[Seq[Mandato]] = {
-    Mandatos.listAll
+  def listAllMandatos: Seq[Mandato] = {
+    MandatoDAOSlick.listAll
   }
   
-  def listAllMandatosByProfessor(idProfessor : Long): Future[Seq[Mandato]] = {
-    Mandatos.findByProfessor(idProfessor)
+  def listAllMandatosByProfessor(idProfessor : Long): Seq[Mandato] = {
+    MandatoDAOSlick.findByProfessor(idProfessor)
   }
     
-  def update(mandato : Mandato): Future[String] = { 
-    Mandatos.update(mandato)
+  def update(mandato : Mandato) = { 
+    MandatoDAOSlick.update(mandato)
   }
   
   def getMandatoAtual(): Seq[Mandato] = {
-    val mandatos = Await.result(this.listAllMandatos, Duration.Inf)
+    val mandatos = this.listAllMandatos
     val dataAtual = new Timestamp(Calendar.getInstance().getTime().getTime())
     var mandatosList : Seq[Mandato] = Seq()
     for (m <- mandatos){
@@ -48,7 +46,7 @@ object MandatoService {
   }
   
   def checaDataOutros(dataInicial : Date, dataFinal : Date, cargo : String): Boolean = {
-    val mandatos = Await.result(this.listAllMandatos,Duration.Inf)
+    val mandatos = this.listAllMandatos
     for (m <- mandatos){
       if (!(dataFinal.before(m.dataIniMandato) || dataInicial.after(m.dataFimMandato))){
         if(m.cargo.equals(cargo)){

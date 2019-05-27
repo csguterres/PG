@@ -1,16 +1,14 @@
 package br.ufes.scap.persistence
 
-import scala.concurrent.Future
-
 trait BaseDAO{
   
-	def save(T : Any): Future[String]
+	def save(T : Any)
 	
-	def delete(id: Long): Future[Int]
+	def delete(id: Long)
 	
-	def get(id: Long): Future[Option[Any]]
+	def get(id: Long): Option[Any]
 	
-	def update(T: Any): Future[String]
+	def update(T: Any)
 	
-	def listAll(): Future[Seq[Any]]
+	def listAll(): Seq[Any]
 }

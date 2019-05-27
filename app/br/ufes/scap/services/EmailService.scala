@@ -11,10 +11,9 @@ import scala.concurrent._
 
 object EmailService {
  
-   def sendEmail(idUser : Long, assunto : String, message : String) =  {
+   def sendEmail(user : User, assunto : String, message : String) =  {
       
-      val user = Await.result(UserService.getUser(idUser),Duration.Inf)
-      val sentTo = user.get.email 
+      val sentTo = user.email 
       
       val email = new SimpleEmail();
       email.setHostName("smtp.gmail.com");
@@ -28,30 +27,31 @@ object EmailService {
       email.send();
    }
    
-  def enviarEmailParaRelator(idSolicitacao : Long, idRelator : Long) = {
+  def enviarEmailParaRelator(idSolicitacao : Long, relator : User) = {
       val mensagem = "Você foi designado como relator de uma solicitação de afastamento (ID = " + idSolicitacao + "). \nAcesse o SCAP para deferir seu parecer." 
       val assunto = "Você foi designado para ser relator"
-      sendEmail(idRelator, assunto, mensagem)
+      sendEmail(relator, assunto, mensagem)
     }
           
     def enviarEmailParaChefeCancelamento(idSolicitacao : Long) = {
+      val chefe = UserService.getUser(Global.CHEFE_ID)
       val mensagem = "A solicitação de afastamento (ID = " + idSolicitacao + ") foi cancelada pelo autor." 
       val assunto = "Uma Solicitação foi cancelada"
-      sendEmail(Global.CHEFE_ID, assunto, mensagem)
+      sendEmail(chefe.get, assunto, mensagem)
     }
     
-    def enviarEmailParaSolicitante(idSolicitacao : Long, idSolicitante : Long, status : String) = {
+    def enviarEmailParaSolicitante(idSolicitacao : Long, solicitante : User, status : String) = {
       val mensagem = "Sua solicitação de afastamento (ID = " + idSolicitacao + ") foi "+ status + " \nAcesse o SCAP para ver mais detalhes." 
       val assunto = "Sua Solicitação foi " + status
-      sendEmail(idSolicitante, assunto, mensagem)
+      sendEmail(solicitante, assunto, mensagem)
     }
     
     def enviarEmailParaTodos(nome : String) = {
-      val users = Await.result(UserService.listAllUsersByTipo("PROFESSOR"),Duration.Inf)
+      val users = UserService.listAllUsersByTipo("PROFESSOR")
       val mensagem = "Uma nova solicitação de afastamento foi cadastrada no sistema. \nAcesse o SCAP para ver mais detalhes." 
       val assunto = "Nova Solicitação - Evento " + nome
       for (user <- users){
-        sendEmail(user.id, assunto, mensagem)
+        sendEmail(user, assunto, mensagem)
       }
     }
    

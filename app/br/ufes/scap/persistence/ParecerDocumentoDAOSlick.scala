@@ -10,14 +10,16 @@ import slick.driver.MySQLDriver.api._
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.data.Form
 import play.api.data.Forms._
+import scala.concurrent._
+import scala.concurrent.duration._
 
-object PareceresDocumento extends ParecerDocumentoDAO {
+object ParecerDocumentoDAOSlick extends ParecerDocumentoDAO {
   val dbConfig = DatabaseConfigProvider.get[JdbcProfile](Play.current)
 
   val pareceresDocumento = TableQuery[ParecerDocumentoTableDef]
   
   @Override
-  def  save(p: Any): Future[String] = {
+  def  save(p: Any) = {
         val parecerDocumento = p.asInstanceOf[ParecerDocumento]
     dbConfig.db.run(pareceresDocumento += parecerDocumento).map(res => 
       "Parecer successfully added").recover {
@@ -28,30 +30,30 @@ object PareceresDocumento extends ParecerDocumentoDAO {
   }
 
   @Override
-  def delete(id: Long): Future[Int] = {
+  def delete(id: Long) = {
     dbConfig.db.run(pareceresDocumento.filter(_.id === id).delete)
   }
 
   @Override
-  def get(id: Long): Future[Option[ParecerDocumento]] = {
-    dbConfig.db.run(pareceresDocumento.filter(_.id === id).result.headOption)
+  def get(id: Long): Option[ParecerDocumento] = {
+    Await.result(dbConfig.db.run(pareceresDocumento.filter(_.id === id).result.headOption),Duration.Inf)
   }
     
   @Override
-  def update(p: Any) : Future[String] = {
+  def update(p: Any) = {
     val parecerDocumento = p.asInstanceOf[ParecerDocumento]
     dbConfig.db.run(pareceresDocumento.filter(_.id === parecerDocumento.id).update(parecerDocumento)).map(res => "Parecer successfully added").recover {
       case ex: Exception => ex.getCause.getMessage
     }
   }
 
-  def findBySolicitacao(idSolicitacao : Long): Future[Seq[ParecerDocumento]] = {
-    dbConfig.db.run(pareceresDocumento.filter(_.idSolicitacao === idSolicitacao).result)
+  def findBySolicitacao(idSolicitacao : Long): Seq[ParecerDocumento] = {
+    Await.result(dbConfig.db.run(pareceresDocumento.filter(_.idSolicitacao === idSolicitacao).result),Duration.Inf)
   }
   
   
-  def listAll: Future[Seq[ParecerDocumento]] = {
-    dbConfig.db.run(pareceresDocumento.result)
+  def listAll: Seq[ParecerDocumento] = {
+    Await.result(dbConfig.db.run(pareceresDocumento.result),Duration.Inf)
   }
 
 

@@ -1,4 +1,4 @@
-@(solicitacaoForm: Form[br.ufes.scap.models.SolicitacaoFormData],solicitacoes : Seq[br.ufes.scap.models.Solicitacao])(implicit request: RequestHeader)
+@(solicitacoes : Seq[br.ufes.scap.models.SolicitacaoFull])(implicit request: RequestHeader)
 @main() {
 
 <html>
@@ -16,7 +16,7 @@ table, th, td {
 <table style="width:100%">
                 <tr>
                     <th>ID</th>
-                    <th>ID DO PROFESSOR</th>
+                    <th>NOME DO PROFESSOR</th>
                     <th>NOME DO EVENTO</th>
 			  <th>DATA INICIO DO AFASTAMENTO</th>
 			  <th>DATA FIM DO AFASTAMENTO</th>
@@ -26,7 +26,7 @@ table, th, td {
                 @for(solicitacao <- solicitacoes){
                 <tr>
                     <td>@solicitacao.id</td>
-                    <td>@solicitacao.idProfessor</td>
+                    <td>@solicitacao.professor.get.nome</td>
                     <td>@solicitacao.nomeEvento</td>
 			  <td>@solicitacao.dataIniAfast</td>
 			  <td>@solicitacao.dataFimAfast</td>

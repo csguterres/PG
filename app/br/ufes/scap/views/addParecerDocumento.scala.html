@@ -1,4 +1,4 @@
-@(parecerDocumentoForm: Form[br.ufes.scap.models.ParecerDocumentoFormData], solicitacao : Option[br.ufes.scap.models.Solicitacao])(implicit request: RequestHeader)
+@(parecerDocumentoForm: Form[br.ufes.scap.models.ParecerDocumentoFormData], solicitacao : Option[br.ufes.scap.models.SolicitacaoFull])(implicit request: RequestHeader)
 @main() {
 
     @parecerDocumentoForm.globalError.map { error =>

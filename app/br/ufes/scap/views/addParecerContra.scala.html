@@ -1,4 +1,4 @@
-@(manifestacaoForm: Form[br.ufes.scap.models.ManifestacaoFormData], solicitacao : Option[br.ufes.scap.models.Solicitacao])(implicit request: RequestHeader)
+@(manifestacaoForm: Form[br.ufes.scap.models.ManifestacaoFormData], solicitacao : Option[br.ufes.scap.models.SolicitacaoFull])(implicit request: RequestHeader)
 @main() {
 
     @manifestacaoForm.globalError.map { error =>

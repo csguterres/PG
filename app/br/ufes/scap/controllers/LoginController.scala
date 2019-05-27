@@ -5,8 +5,6 @@ import play.api.mvc._
 import br.ufes.scap.services.{UserService, AuthenticatorService}
 import scala.concurrent.ExecutionContext.Implicits.global
 import javax.inject.Inject
-import scala.concurrent._
-import scala.concurrent.duration._
 import play.api.data.Forms._
 import play.api.data._
 import scala.concurrent.Future
@@ -22,16 +20,15 @@ class LoginController extends Controller {
       // if any error in submitted data
       errorForm => Future.successful(BadRequest(br.ufes.scap.views.html.userLogin(errorForm))),
       data => {
-        val user = Await.result(UserService.getUserByMatricula(data.matricula),Duration.Inf)
+        val user = UserService.getUserByMatricula(data.matricula)
         Global.SESSION_KEY = user.get.id 
         Global.SESSION_TIPO = user.get.tipo
         Global.SESSION_MATRICULA = user.get.matricula
         Global.SESSION_EMAIL = user.get.email
         Global.SESSION_PASS = user.get.password
         Global.isPresidenteOuVice()
-        UserService.getUserByMatricula(data.matricula).map(res =>
-            Ok(br.ufes.scap.views.html.menu(UserForm.form, user))
-          )
+        UserService.getUserByMatricula(data.matricula)
+        Future.successful(Ok(br.ufes.scap.views.html.menu(UserForm.form, user)))
       })
   }
     
@@ -46,7 +43,7 @@ class LoginController extends Controller {
     
     def menu() = Action{ implicit request =>
       if (AuthenticatorService.isLoggedIn()){
-        val user = Await.result(UserService.getUser(Global.SESSION_KEY),Duration.Inf)
+        val user = UserService.getUser(Global.SESSION_KEY)
         Ok(br.ufes.scap.views.html.menu(UserForm.form, user))
       }else{
         Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))

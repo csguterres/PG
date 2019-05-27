@@ -1,43 +1,41 @@
 package br.ufes.scap.services
 
-import br.ufes.scap.persistence.Users
+import br.ufes.scap.persistence.UserDAOSlick
 import br.ufes.scap.models.User
-import scala.concurrent._
-import scala.concurrent.duration._
 
 object UserService {
 
-  def addUser(user: User): Future[String] = {
-    Users.save(user)
+  def addUser(user: User) = {
+    UserDAOSlick.save(user)
   }
 
-  def deleteUser(id: Long): Future[Int] = {
-    Users.delete(id)
+  def deleteUser(id: Long) = {
+    UserDAOSlick.delete(id)
   }
 
-  def getUser(id: Long): Future[Option[User]] = {
-    Users.get(id)
+  def getUser(id: Long): Option[User] = {
+    UserDAOSlick.get(id)
   }
 
-  def listAllUsers: Future[Seq[User]] = {
-    Users.listAll
+  def listAllUsers: Seq[User] = {
+    UserDAOSlick.listAll
   }
   
-  def listAllUsersByTipo(tipo: String): Future[Seq[User]] = {
-    Users.listAllByTipo(tipo)
+  def listAllUsersByTipo(tipo: String): Seq[User] = {
+    UserDAOSlick.listAllByTipo(tipo)
   }
   
-  def update(user : User): Future[String] = { 
-    Users.update(user)
+  def update(user : User) = { 
+    UserDAOSlick.update(user)
   }
   
-  def getUserByMatricula(matricula : String): Future[Option[User]] = {
-    Users.getByMatricula(matricula)
+  def getUserByMatricula(matricula : String): Option[User] = {
+    UserDAOSlick.getByMatricula(matricula)
   }
   
   def checaMatriculaSenha(matricula : String, password : String): Boolean = {
     val usuario = getUserByMatricula(matricula)
-    val usuarioReal = Await.result(usuario,Duration.Inf)
+    val usuarioReal = usuario
     if (usuarioReal == None){ 
         false
     }else{
@@ -51,7 +49,7 @@ object UserService {
   
   def checaMatricula(matricula : String): Boolean = {
     val usuario = getUserByMatricula(matricula)
-    if (Await.result(usuario,10 seconds) == None){ 
+    if (usuario == None){ 
         true
     }else{
         false

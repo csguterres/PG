@@ -10,13 +10,15 @@ import slick.driver.MySQLDriver.api._
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.data.Form
 import play.api.data.Forms._
+import scala.concurrent._
+import scala.concurrent.duration._
 
-object Solicitacoes extends SolicitacaoDAO {
+object SolicitacaoDAOSlick extends SolicitacaoDAO {
   val dbConfig = DatabaseConfigProvider.get[JdbcProfile](Play.current)
 
   val solicitacoes = TableQuery[SolicitacaoTableDef]
   
-  def  save(s: Any): Future[String] = {
+  def  save(s: Any) = {
     val solicitacao = s.asInstanceOf[Solicitacao]  
     dbConfig.db.run(solicitacoes += solicitacao).map(res => 
       "Solicitacao successfully added").recover {
@@ -24,31 +26,39 @@ object Solicitacoes extends SolicitacaoDAO {
     }
   }
 
-  def delete(id: Long): Future[Int] = {
+  def delete(id: Long) = {
     dbConfig.db.run(solicitacoes.filter(_.id === id).delete)
   }
 
-  def get(id: Long): Future[Option[Solicitacao]] = {
-    dbConfig.db.run(solicitacoes.filter(_.id === id).result.headOption)
+  def get(id: Long): Option[Solicitacao] = {
+    Await.result(dbConfig.db.run(solicitacoes.filter(_.id === id).result.headOption),Duration.Inf)
   }
     
-  def update(s: Any) : Future[String] = {
+  def update(s: Any) = {
     val solicitacao = s.asInstanceOf[Solicitacao]  
     dbConfig.db.run(solicitacoes.filter(_.id === solicitacao.id).update(solicitacao)).map(res => "Solicitacao successfully added").recover {
       case ex: Exception => ex.getCause.getMessage
     }
   }
 
-  def findBySolicitante(idProfessor : Long): Future[Seq[Solicitacao]] = {
-    dbConfig.db.run(solicitacoes.filter(_.idProfessor === idProfessor).result)
+  def findById(id : Long): Seq[Solicitacao] = {
+    Await.result(dbConfig.db.run(solicitacoes.filter(_.id === id).result),Duration.Inf)
   }
   
-  def findByStatus(status : String): Future[Seq[Solicitacao]] = {
-    dbConfig.db.run(solicitacoes.filter(_.status === status).result)
+  def findBySolicitante(idProfessor : Long): Seq[Solicitacao] = {
+    Await.result(dbConfig.db.run(solicitacoes.filter(_.idProfessor === idProfessor).result),Duration.Inf)
   }
   
-  def listAll: Future[Seq[Solicitacao]] = {
-    dbConfig.db.run(solicitacoes.result)
+  def findByRelator(idRelator : Long): Seq[Solicitacao] = {
+    Await.result(dbConfig.db.run(solicitacoes.filter(_.idRelator === idRelator).result),Duration.Inf)
+  }
+  
+  def findByStatus(status : String): Seq[Solicitacao] = {
+    Await.result(dbConfig.db.run(solicitacoes.filter(_.status === status).result),Duration.Inf)
+  }
+  
+  def listAll: Seq[Solicitacao] = {
+    Await.result(dbConfig.db.run(solicitacoes.result),Duration.Inf)
   }
 
 
