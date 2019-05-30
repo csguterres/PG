@@ -1,4 +1,7 @@
-@(parecerDocumentoForm: Form[br.ufes.scap.models.ParecerDocumentoFormData], solicitacao : Option[br.ufes.scap.models.SolicitacaoFull])(implicit request: RequestHeader)
+@(parecerDocumentoForm: Form[br.ufes.scap.models.ParecerDocumentoFormData], solicitacao : br.ufes.scap.models.SolicitacaoFull)(implicit request: RequestHeader)
+
+@import br.ufes.scap.models.{StatusSolicitacao, TipoJulgamento, Setor}
+
 @main() {
 
     @parecerDocumentoForm.globalError.map { error =>
@@ -8,16 +11,16 @@
 	}
 
 <body>
-      <form action = "@br.ufes.scap.controllers.routes.PareceresDocumentoController.registrarParecerDocumento(solicitacao.get.id)" align="center"
+      <form action = "@br.ufes.scap.controllers.routes.PareceresDocumentoController.registrarParecerDocumento(solicitacao.id)" align="center"
 	method = "post">
          <br>
 
 		Parecer: 
 
-		@if(solicitacao.get.status.equals("APROVADA-CT")){
-		<input type="text" readonly="readonly" name="tipo" id="tipo" value="PRPPG">
+		@if(solicitacao.status.equals(StatusSolicitacao.AprovadaCT.toString())){
+		<input type="text" readonly="readonly" name="tipo" id="tipo" value=@Setor.PRPPG.toString()>
 		}else{
-		<input type="text" readonly="readonly" name="tipo" id="tipo" value="CT">	
+		<input type="text" readonly="readonly" name="tipo" id="tipo" value=@Setor.CT.toString()>	
 		}
 		<br> 
 		<br>
@@ -33,8 +36,9 @@
 		<br>
 
 		<select id=julgamento name="julgamento" value="">
-  			<option value="FAVORAVEL">FAVORÁVEL</option>
-  			<option value="DESFAVORAVEL">DESFAVORÁVEL</option>
+		@for(j <- TipoJulgamento.values){
+  			<option value=@j.toString()>@j.toString()</option>
+		}
 		</select>
             </div>
 		<br> 

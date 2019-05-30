@@ -1,7 +1,8 @@
 package br.ufes.scap.services
 
 import br.ufes.scap.persistence.SolicitacaoDAOSlick
-import br.ufes.scap.models.{Solicitacao, SolicitacaoFull, User}
+import br.ufes.scap.models.{Solicitacao, SolicitacaoFull, User, StatusSolicitacao}
+import util.control.Breaks._
 
 object SolicitacaoService {
 
@@ -14,11 +15,7 @@ object SolicitacaoService {
   }
 
   def getSolicitacao(id: Long): SolicitacaoFull = {
-    this.turnSolicitacaoIntoSolicitacaoFull(SolicitacaoDAOSlick.get(id))
-  }
-  
-  def getSolicitacaoNormal(id: Long): Option[Solicitacao] = {
-    SolicitacaoDAOSlick.get(id)
+    this.turnSolicitacaoIntoSolicitacaoFull(SolicitacaoDAOSlick.get(id).get)
   }
 
   def listAllSolicitacoes: Seq[SolicitacaoFull] = {
@@ -29,9 +26,14 @@ object SolicitacaoService {
   def turnSeqSolIntoSeqSolFull(solicitacoes : Seq[Solicitacao]): Seq[SolicitacaoFull] = {
     var solicitacoesFull : Seq[SolicitacaoFull] = Seq()
     for (s <- solicitacoes){
-      solicitacoesFull = solicitacoesFull :+ this.turnSolicitacaoIntoSolicitacaoFull(Some(s))
+      solicitacoesFull = solicitacoesFull :+ this.turnSolicitacaoIntoSolicitacaoFull(s)
     }
     return solicitacoesFull
+  }
+  
+  def listAllSolicitacoesById(id : Long): Seq[SolicitacaoFull] = {
+    val solicitacoes = SolicitacaoDAOSlick.findById(id)
+    return turnSeqSolIntoSeqSolFull(solicitacoes) 
   }
   
   def listAllSolicitacoesBySolicitante(idProfessor : Long): Seq[SolicitacaoFull] = {
@@ -50,99 +52,122 @@ object SolicitacaoService {
   }
   
   def update(solicitacao : SolicitacaoFull) = { 
-    val sol = this.turnSolicitacaoFullIntoSolicitacao(Some(solicitacao))
-    SolicitacaoDAOSlick.update(Some(sol))
+    val sol = this.turnSolicitacaoFullIntoSolicitacao(solicitacao)
+    SolicitacaoDAOSlick.update(sol)
   }
   
-  def mergeListas(listSolicitacao1 : Seq[Solicitacao], listSolicitacao2 : Seq[Solicitacao]) : Seq[Solicitacao] = {
-      var solicitacoes : Seq[Solicitacao] = Seq()
-      for (s <- listSolicitacao1){
-        solicitacoes = solicitacoes :+ s
-      }
+  def mergeListas(listSolicitacao1 : Seq[SolicitacaoFull], listSolicitacao2 : Seq[SolicitacaoFull]) : Seq[SolicitacaoFull] = {
+      var solicitacoes : Seq[SolicitacaoFull] = Seq()
       for (s <- listSolicitacao2){
-        solicitacoes = solicitacoes :+ s
+          var entra = false
+          for(sol <- listSolicitacao1){
+              if (s.id == sol.id){
+                entra = true ;
+                break
+              }
+          }
+          if(entra == true){
+            solicitacoes = solicitacoes :+ s
+          }
       }
       return solicitacoes
   }
   
-  def mudaStatus(oldSolicitacao : Option[SolicitacaoFull], status : String): SolicitacaoFull = {
-    val solicitacao = SolicitacaoFull(oldSolicitacao.get.id, oldSolicitacao.get.professor,
-              oldSolicitacao.get.relator, oldSolicitacao.get.dataSolicitacao, 
-              oldSolicitacao.get.dataIniAfast, oldSolicitacao.get.dataFimAfast, 
-              oldSolicitacao.get.dataIniEvento, oldSolicitacao.get.dataFimEvento, 
-              oldSolicitacao.get.nomeEvento, oldSolicitacao.get.cidade, 
-              oldSolicitacao.get.onus, oldSolicitacao.get.tipoAfastamento, 
-              status, oldSolicitacao.get.motivoCancelamento, 
-              oldSolicitacao.get.dataJulgamentoAfast)
+  def mudaStatus(oldSolicitacao : SolicitacaoFull, status : String): SolicitacaoFull = {
+    val solicitacao = SolicitacaoFull(oldSolicitacao.id, oldSolicitacao.professor,
+              oldSolicitacao.relator, oldSolicitacao.dataSolicitacao, 
+              oldSolicitacao.dataIniAfast, oldSolicitacao.dataFimAfast, 
+              oldSolicitacao.dataIniEvento, oldSolicitacao.dataFimEvento, 
+              oldSolicitacao.nomeEvento, oldSolicitacao.cidade, 
+              oldSolicitacao.onus, oldSolicitacao.tipoAfastamento, 
+              status, oldSolicitacao.motivoCancelamento, 
+              oldSolicitacao.dataJulgamentoAfast)
     return solicitacao
   }
   
   def turnSolicitacaoIntoSolicitacaoFull
-  (oldSolicitacao : Option[Solicitacao]): SolicitacaoFull = {
-    val professor = UserService.getUser(oldSolicitacao.get.idProfessor)
+  (oldSolicitacao : Solicitacao): SolicitacaoFull = {
+    val professor = UserService.getUser(oldSolicitacao.idProfessor)
     var relator : Option[User] = None
-    if (oldSolicitacao.get.idRelator == 0){
+    if (oldSolicitacao.idRelator == 0){
       relator = None
     }else{
-      relator = UserService.getUser(oldSolicitacao.get.idRelator)
+      relator = UserService.getUser(oldSolicitacao.idRelator)
     }
-    val solicitacao = SolicitacaoFull(oldSolicitacao.get.id, professor,
-              relator, oldSolicitacao.get.dataSolicitacao, 
-              oldSolicitacao.get.dataIniAfast, oldSolicitacao.get.dataFimAfast, 
-              oldSolicitacao.get.dataIniEvento, oldSolicitacao.get.dataFimEvento, 
-              oldSolicitacao.get.nomeEvento, oldSolicitacao.get.cidade, 
-              oldSolicitacao.get.onus, oldSolicitacao.get.tipoAfastamento, 
-              oldSolicitacao.get.status,oldSolicitacao.get.motivoCancelamento, 
-              oldSolicitacao.get.dataJulgamentoAfast)
+    val solicitacao = SolicitacaoFull(oldSolicitacao.id, professor,
+              relator, oldSolicitacao.dataSolicitacao, 
+              oldSolicitacao.dataIniAfast, oldSolicitacao.dataFimAfast, 
+              oldSolicitacao.dataIniEvento, oldSolicitacao.dataFimEvento, 
+              oldSolicitacao.nomeEvento, oldSolicitacao.cidade, 
+              oldSolicitacao.onus, oldSolicitacao.tipoAfastamento, 
+              oldSolicitacao.status,oldSolicitacao.motivoCancelamento, 
+              oldSolicitacao.dataJulgamentoAfast)
     return solicitacao
   }
   
   
   def turnSolicitacaoFullIntoSolicitacao
-  (oldSolicitacao : Option[SolicitacaoFull]): Solicitacao = {
-    val idProfessor = oldSolicitacao.get.professor.get.id
+  (oldSolicitacao : SolicitacaoFull): Solicitacao = {
+    val idProfessor = oldSolicitacao.professor.get.id
     var idRelator : Long = 0
-    if (oldSolicitacao.get.relator == None){
+    if (oldSolicitacao.relator == None){
       idRelator = 0
     }else{
-      idRelator = oldSolicitacao.get.relator.get.id
+      idRelator = oldSolicitacao.relator.get.id
     }
-    val solicitacao = Solicitacao(oldSolicitacao.get.id, idProfessor,
-              idRelator, oldSolicitacao.get.dataSolicitacao, 
-              oldSolicitacao.get.dataIniAfast, oldSolicitacao.get.dataFimAfast, 
-              oldSolicitacao.get.dataIniEvento, oldSolicitacao.get.dataFimEvento, 
-              oldSolicitacao.get.nomeEvento, oldSolicitacao.get.cidade, 
-              oldSolicitacao.get.onus, oldSolicitacao.get.tipoAfastamento, 
-              oldSolicitacao.get.status,oldSolicitacao.get.motivoCancelamento, 
-              oldSolicitacao.get.dataJulgamentoAfast)
+    val solicitacao = Solicitacao(oldSolicitacao.id, idProfessor,
+              idRelator, oldSolicitacao.dataSolicitacao, 
+              oldSolicitacao.dataIniAfast, oldSolicitacao.dataFimAfast, 
+              oldSolicitacao.dataIniEvento, oldSolicitacao.dataFimEvento, 
+              oldSolicitacao.nomeEvento, oldSolicitacao.cidade, 
+              oldSolicitacao.onus, oldSolicitacao.tipoAfastamento, 
+              oldSolicitacao.status,oldSolicitacao.motivoCancelamento, 
+              oldSolicitacao.dataJulgamentoAfast)
     return solicitacao
   }
   
-  def addRelator(oldSolicitacao : Option[SolicitacaoFull], idRelator : Long): SolicitacaoFull = {
-    val relator = UserService.getUser(idRelator)
-    val solicitacao = SolicitacaoFull(oldSolicitacao.get.id, 
-      oldSolicitacao.get.professor,
-      relator, oldSolicitacao.get.dataSolicitacao, 
-      oldSolicitacao.get.dataIniAfast, oldSolicitacao.get.dataFimAfast, 
-      oldSolicitacao.get.dataIniEvento, oldSolicitacao.get.dataFimEvento, 
-      oldSolicitacao.get.nomeEvento, oldSolicitacao.get.cidade, 
-      oldSolicitacao.get.onus, oldSolicitacao.get.tipoAfastamento, 
-      oldSolicitacao.get.status,oldSolicitacao.get.motivoCancelamento, 
-      oldSolicitacao.get.dataJulgamentoAfast)
+ def addRelator(oldSolicitacao : SolicitacaoFull, idRelator : Long): SolicitacaoFull = {
+      val relator = UserService.getUser(idRelator)
+      val solicitacao = SolicitacaoFull(oldSolicitacao.id, 
+      oldSolicitacao.professor,
+      relator, oldSolicitacao.dataSolicitacao, 
+      oldSolicitacao.dataIniAfast, oldSolicitacao.dataFimAfast, 
+      oldSolicitacao.dataIniEvento, oldSolicitacao.dataFimEvento, 
+      oldSolicitacao.nomeEvento, oldSolicitacao.cidade, 
+      oldSolicitacao.onus, oldSolicitacao.tipoAfastamento, 
+      oldSolicitacao.status,oldSolicitacao.motivoCancelamento, 
+      oldSolicitacao.dataJulgamentoAfast)
     return solicitacao
   }
   
-    def cancelaSolicitacao(oldSolicitacao : Option[SolicitacaoFull]): SolicitacaoFull = {
-    val solicitacao = SolicitacaoFull(oldSolicitacao.get.id, 
-      oldSolicitacao.get.professor,
-      oldSolicitacao.get.relator, oldSolicitacao.get.dataSolicitacao, 
-      oldSolicitacao.get.dataIniAfast, oldSolicitacao.get.dataFimAfast, 
-      oldSolicitacao.get.dataIniEvento, oldSolicitacao.get.dataFimEvento, 
-      oldSolicitacao.get.nomeEvento, oldSolicitacao.get.cidade, 
-      oldSolicitacao.get.onus, oldSolicitacao.get.tipoAfastamento, 
-      "CANCELADO",oldSolicitacao.get.motivoCancelamento, 
-      oldSolicitacao.get.dataJulgamentoAfast)
+  def cancelaSolicitacao(oldSolicitacao : SolicitacaoFull): SolicitacaoFull = {
+    val solicitacao = SolicitacaoFull(oldSolicitacao.id, 
+      oldSolicitacao.professor,
+      oldSolicitacao.relator, oldSolicitacao.dataSolicitacao, 
+      oldSolicitacao.dataIniAfast, oldSolicitacao.dataFimAfast, 
+      oldSolicitacao.dataIniEvento, oldSolicitacao.dataFimEvento, 
+      oldSolicitacao.nomeEvento, oldSolicitacao.cidade, 
+      oldSolicitacao.onus, oldSolicitacao.tipoAfastamento, 
+      StatusSolicitacao.Cancelada.toString(),oldSolicitacao.motivoCancelamento, 
+      oldSolicitacao.dataJulgamentoAfast)
     return solicitacao
   }
+  
+    def busca(idProfessor : Long, status : String): Seq[SolicitacaoFull] = {
+        var solicitacoesIdProfessor : Seq[SolicitacaoFull] = Seq()
+        var solicitacoesStatus : Seq[SolicitacaoFull] = Seq()
+        solicitacoesIdProfessor = listAllSolicitacoesBySolicitante(idProfessor)
+        solicitacoesStatus = listAllSolicitacoesByStatus(status)    
+        if(status.equals(StatusSolicitacao.Todos.toString()) && idProfessor == 0){
+            return listAllSolicitacoes
+        }
+        if (idProfessor == 0){
+            return solicitacoesStatus
+        }
+        if (status.equals(StatusSolicitacao.Todos.toString())){
+            return solicitacoesIdProfessor
+        } 
+        return mergeListas(solicitacoesIdProfessor, solicitacoesStatus)
+    }
 
 }

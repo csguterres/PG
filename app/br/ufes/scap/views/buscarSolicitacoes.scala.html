@@ -1,0 +1,80 @@
+@(buscaForm: Form[br.ufes.scap.models.BuscaFormData], users : Seq[br.ufes.scap.models.User])(implicit request: RequestHeader)
+
+@import br.ufes.scap.models.StatusSolicitacao
+
+@main() {
+
+    @buscaForm.globalError.map { error =>
+        <p class="error">
+            @error.message
+        </p>
+	}
+
+<form id="busca-form-id" role="form" action='@br.ufes.scap.controllers.routes.SolicitacoesController.definirBusca()' method="post"
+      class="form-horizontal" align="center" autocomplete="off">
+
+    <fieldset class="busca-fieldset">
+        <div class="col-xs-4">
+            <div class="busca-form">
+                <label class="form-title"
+                       style="color: #F8741B; font-size: 22px;font-weight: bold; text-decoration:none">Busca</label>
+            </div>
+            <br/>
+
+		<br>
+		<b>Nome do Professor:</b> 
+		<br>
+		<br>
+		*deixar o valor como TODOS caso não deseje usar esse parâmetro de busca
+		<br>
+		<br>
+		<select id="idProfessor" name="idProfessor" value="">
+    			<option value=0>TODOS</option>
+		@for(user <- users){
+    			<option value=@user.id>@user.nome</option>
+		}
+		</select>
+
+		<br>
+		<br>
+		<br>
+
+            <b>Status da Solicitacao </b>
+		<br>
+		<br>
+		*deixar o valor como TODOS caso não deseje usar esse parâmetro de busca
+		<br>
+		<br>
+		<select id="status" name="status" value="">
+		@for(s <- StatusSolicitacao.values){
+  			<option value=@s.toString()>@s.toString()</option>
+		}
+		</select>
+		<br>
+		<br>
+
+    </ul>
+  </div>
+
+
+            <br/>
+            <div class="form-actions controls ynt-btn-xlarge">
+                <button type="submit" class="btn btn-primary ynt-btn-orange">Executar Busca</button>
+            </div>
+
+        </div>
+    </fieldset>
+</form>
+
+<br>
+<br>
+<br>
+
+<form id="user-add-form" role="form" action='@br.ufes.scap.controllers.routes.LoginController.menu()' method="get"
+      class="form-horizontal" align="center" autocomplete="off">
+            <div class="form-actions controls ynt-btn-xlarge">
+                <button type="submit" class="btn btn-primary ynt-btn-orange">Voltar ao Menu Principal</button>
+            </div>
+</form>
+
+}

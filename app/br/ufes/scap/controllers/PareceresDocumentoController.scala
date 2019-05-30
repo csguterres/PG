@@ -1,7 +1,8 @@
 package br.ufes.scap.controllers
 
 import br.ufes.scap.models.{Global, ParecerDocumento, 
-  UserLoginForm, ParecerDocumentoForm}
+  UserLoginForm, ParecerDocumentoForm, 
+  StatusSolicitacao, TipoJulgamento, Setor}
 import play.api.mvc._
 import br.ufes.scap.services.{ParecerDocumentoService, SolicitacaoService, EmailService, AuthenticatorService}
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -20,7 +21,7 @@ class PareceresDocumentoController extends Controller {
   def registrarParecerDocumentoForm(idSolicitacao : Long) = Action { implicit request =>
     val solicitacao = SolicitacaoService.getSolicitacao(idSolicitacao)
     if (AuthenticatorService.isSecretario()){
-      Ok(br.ufes.scap.views.html.addParecerDocumento(ParecerDocumentoForm.form, Some(solicitacao)))
+      Ok(br.ufes.scap.views.html.addParecerDocumento(ParecerDocumentoForm.form, solicitacao))
     }else{
       Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
     }
@@ -32,7 +33,7 @@ class PareceresDocumentoController extends Controller {
         (
             BadRequest
             (br.ufes.scap.views.html.addParecerDocumento
-              (errorForm, Some(SolicitacaoService.getSolicitacao(idSolicitacao)))
+              (errorForm, SolicitacaoService.getSolicitacao(idSolicitacao))
             )
         ),
         data => {
@@ -41,13 +42,22 @@ class PareceresDocumentoController extends Controller {
               val dataAtual = new Timestamp(Calendar.getInstance().getTime().getTime())
               val byteArray = Files.readAllBytes(Paths.get(data.filePath))
               val newParecerDocumento = ParecerDocumento(0, idSolicitacao, data.tipo, data.julgamento, byteArray, dataAtual)   
-              var status : String = "REPROVADA"
-              if (data.julgamento.equals("FAVORAVEL")){
-                status = "APROVADA-" + data.tipo
+              if (data.julgamento.equals(TipoJulgamento.Contra.toString())){
+                  SolicitacaoService.mudaStatus(solicitacao,StatusSolicitacao.Reprovada.toString())
+                  EmailService.enviarEmailParaSolicitante(solicitacao.id, solicitacao.professor.get, StatusSolicitacao.Reprovada.toString())
+              }else{
+                if (data.julgamento.equals(TipoJulgamento.AFavor.toString()) && data.tipo.equals(Setor.CT.toString())){
+                  SolicitacaoService.mudaStatus(solicitacao,StatusSolicitacao.AprovadaCT.toString())
+                  EmailService.enviarEmailParaSolicitante(solicitacao.id, solicitacao.professor.get, StatusSolicitacao.AprovadaCT.toString())
+                }else{
+                   if (data.julgamento.equals(TipoJulgamento.Contra.toString()) && data.tipo.equals(Setor.PRPPG.toString())){
+                     SolicitacaoService.mudaStatus(solicitacao,StatusSolicitacao.AprovadaPRPPG.toString())
+                     EmailService.enviarEmailParaSolicitante(solicitacao.id, solicitacao.professor.get, StatusSolicitacao.AprovadaPRPPG.toString())
+                   }
+                }
               }
-              EmailService.enviarEmailParaSolicitante(idSolicitacao, solicitacao.professor.get, status)
               ParecerDocumentoService.addParecerDocumento(newParecerDocumento)
-              Future.successful(  Redirect(routes.SolicitacoesController.mudaStatus(solicitacao.id,status))
+              Future.successful(  Redirect(routes.LoginController.menu())
               )
           }else{
               Future.successful(  Ok(br.ufes.scap.views.html.erro(UserLoginForm.form)))            

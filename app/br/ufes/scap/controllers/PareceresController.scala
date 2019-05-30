@@ -1,7 +1,8 @@
 package br.ufes.scap.controllers
 
 import br.ufes.scap.models.{Global, User, Mandato, Parecer, 
-  UserLoginForm, ManifestacaoForm, ParecerForm}
+  UserLoginForm, ManifestacaoForm, ParecerForm, 
+  StatusSolicitacao, TipoJulgamento}
 import play.api.mvc._
 import br.ufes.scap.services.{ParecerService, AuthenticatorService, ParecerDocumentoService, SolicitacaoService, EmailService}
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -56,14 +57,18 @@ class PareceresController extends Controller {
           val solicitacao = SolicitacaoService.getSolicitacao(idSolicitacao)
               val dataAtual = new Timestamp(Calendar.getInstance().getTime().getTime())
               val newParecer = Parecer(0, idSolicitacao, Global.SESSION_KEY, data.julgamento, data.motivo, dataAtual)   
-              var status : String = "REPROVADA"
-              if (data.julgamento.equals("FAVORAVEL")){
-                status = "APROVADA-DI"
+              if (data.julgamento.equals(TipoJulgamento.AFavor.toString())){
+                  SolicitacaoService.mudaStatus(solicitacao,StatusSolicitacao.AprovadaDI.toString())              
+                  EmailService.enviarEmailParaSolicitante(idSolicitacao, solicitacao.professor.get, StatusSolicitacao.AprovadaDI.toString())
+              }else{
+                  if (data.julgamento.equals(TipoJulgamento.Contra.toString())){
+                    SolicitacaoService.mudaStatus(solicitacao,StatusSolicitacao.Reprovada.toString())              
+                    EmailService.enviarEmailParaSolicitante(idSolicitacao, solicitacao.professor.get, StatusSolicitacao.Reprovada.toString())
+                  }
               }
-              EmailService.enviarEmailParaSolicitante(idSolicitacao, solicitacao.professor.get, status)
               ParecerService.addParecer(newParecer)
               Future.successful(
-                Redirect(routes.SolicitacoesController.mudaStatus(solicitacao.id,status))
+                Redirect(routes.LoginController.menu)
               )
         }
     )
@@ -80,8 +85,9 @@ class PareceresController extends Controller {
         ),
         data => {
               val dataAtual = new Timestamp(Calendar.getInstance().getTime().getTime())
-              val newParecer = Parecer(0, idSolicitacao, Global.SESSION_KEY, "DESFAVORAVEL", data.motivo, dataAtual)
-             val solicitacao = SolicitacaoService.getSolicitacao(idSolicitacao)
+              val newParecer = Parecer(0, idSolicitacao, Global.SESSION_KEY, 
+                  TipoJulgamento.Contra.toString(), data.motivo, dataAtual)
+              val solicitacao = SolicitacaoService.getSolicitacao(idSolicitacao)
               EmailService.enviarEmailParaSolicitante(idSolicitacao, solicitacao.professor.get, "Manifestação Contrária")
               ParecerService.addParecer(newParecer)
               Future.successful(Redirect(routes.LoginController.menu()))

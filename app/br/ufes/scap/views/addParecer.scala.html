@@ -1,4 +1,7 @@
 @(parecerForm: Form[br.ufes.scap.models.ParecerFormData], solicitacao : Option[br.ufes.scap.models.SolicitacaoFull])(implicit request: RequestHeader)
+
+@import br.ufes.scap.models.TipoJulgamento
+
 @main() {
 
     @parecerForm.globalError.map { error =>
@@ -12,9 +15,10 @@
 	method = "post">
          <br>
          	<p>Determinar o parecer
-		<select id=julgamento name="julgamento" value="">
-  			<option value="FAVORAVEL">FAVORÁVEL</option>
-  			<option value="DESFAVORAVEL">DESFAVORÁVEL</option>
+		<select id="julgamento" name="julgamento" value="">
+		@for(j <- TipoJulgamento.values){
+  			<option value=@j.toString()>@j.toString()</option>
+		}
 		</select>
             </div>
 

@@ -1,6 +1,7 @@
 package br.ufes.scap.controllers
 
-import br.ufes.scap.models.{User, UserForm, UserEditForm, UserLoginForm, Global}
+import br.ufes.scap.models.{User, UserForm, UserEditForm, 
+UserLoginForm, Global, TipoUser}
 import play.api.mvc._
 import br.ufes.scap.services.{UserService, AuthenticatorService}
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -12,7 +13,7 @@ class UsersController extends Controller {
 
   def listarUsuarios = Action { implicit request =>
       if (AuthenticatorService.isSecretario()){
-        val users = UserService.listAllUsersByTipo("PROFESSOR")
+        val users = UserService.listAllUsersByTipo(TipoUser.Prof.toString())
         Ok(br.ufes.scap.views.html.listUsers(UserForm.form, users))
       }else{
           Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
@@ -23,7 +24,7 @@ class UsersController extends Controller {
     if(AuthenticatorService.isSecretario()){
       UserForm.form.bindFromRequest.fold(
         // if any error in submitted data
-        errorForm => Future.successful(BadRequest(br.ufes.scap.views.html.addUser(errorForm, Seq.empty[User]))),
+        errorForm => Future.successful(BadRequest(br.ufes.scap.views.html.addUser(errorForm))),
         data => {
           val newUser = User(0, data.nome, data.matricula, data.email, data.password, data.tipo)
           UserService.addUser(newUser)
@@ -45,8 +46,8 @@ class UsersController extends Controller {
   }
   
   def editUser(id:Long) = Action { implicit request =>
-    if (AuthenticatorService.isSecretario() || id == Global.SESSION_KEY){
-      val user = UserService.getUser(id)
+    val user = UserService.getUser(id)
+    if (AuthenticatorService.isSecretario() || AuthenticatorService.isAutor(user)){
       Ok(br.ufes.scap.views.html.editUser(UserEditForm.form, user))
     }else{
       Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))

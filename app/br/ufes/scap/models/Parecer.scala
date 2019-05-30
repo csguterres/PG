@@ -33,17 +33,9 @@ object ParecerForm {
   val form = Form(
     mapping(
       "julgamento" -> nonEmptyText,
-      "motivo" -> text
+      "motivo" -> nonEmptyText
     )(ParecerFormData.apply)(ParecerFormData.unapply)      
   )
-  
-  def motivo(julgamento : String, motivoIndeferimento : String): Boolean = {
-    if (julgamento.equals("DESFAVORÁVEL") && motivoIndeferimento.equals(null)){
-      false
-    }else{
-      true
-    }
-  }
   
 }
 

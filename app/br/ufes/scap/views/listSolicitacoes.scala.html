@@ -18,6 +18,7 @@ table, th, td {
                     <th>ID</th>
                     <th>NOME DO PROFESSOR</th>
                     <th>NOME DO EVENTO</th>
+			  <th>STATUS ATUAL</th>
 			  <th>DATA INICIO DO AFASTAMENTO</th>
 			  <th>DATA FIM DO AFASTAMENTO</th>
 		        <th>VER MAIS DETALHES</th>
@@ -28,6 +29,7 @@ table, th, td {
                     <td>@solicitacao.id</td>
                     <td>@solicitacao.professor.get.nome</td>
                     <td>@solicitacao.nomeEvento</td>
+			  <th>@solicitacao.status</th>
 			  <td>@solicitacao.dataIniAfast</td>
 			  <td>@solicitacao.dataFimAfast</td>
                     <td><a href="@br.ufes.scap.controllers.routes.SolicitacoesController.verSolicitacao(solicitacao.id)">VER</a></td>
@@ -37,6 +39,11 @@ table, th, td {
 
 </body>
 
+
+<br>
+<br>
+
+<a href="@br.ufes.scap.controllers.routes.SolicitacoesController.definirBuscaForm">Fazer busca</a>
 
 <br>
 <br>

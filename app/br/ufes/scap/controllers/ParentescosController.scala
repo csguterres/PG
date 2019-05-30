@@ -1,6 +1,7 @@
 package br.ufes.scap.controllers
 
-import br.ufes.scap.models.{Global, Parentesco, ParentescoFull, User, UserForm, UserLoginForm, ParentescoForm}
+import br.ufes.scap.models.{Global, Parentesco, ParentescoFull, 
+  User, UserForm, UserLoginForm, ParentescoForm, TipoUser}
 import play.api.mvc._
 import br.ufes.scap.services.{UserService, ParentescoService, AuthenticatorService}
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -42,7 +43,7 @@ class ParentescosController extends Controller {
   
   def addParentescoForm() = Action { implicit request =>
     if (AuthenticatorService.isSecretario()){
-      val users = UserService.listAllUsersByTipo("PROFESSOR")
+      val users = UserService.listAllUsersByTipo(TipoUser.Prof.toString())
       Ok(br.ufes.scap.views.html.addParentesco(ParentescoForm.form,users))    
     }else{
       Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
@@ -57,7 +58,7 @@ class ParentescosController extends Controller {
         (BadRequest
           (br.ufes.scap.views.html.addParentesco
              (errorForm, 
-                UserService.listAllUsersByTipo("PROFESSOR")
+                UserService.listAllUsersByTipo(TipoUser.Prof.toString())
              )
            )
         ),

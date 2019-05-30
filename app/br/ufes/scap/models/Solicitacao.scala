@@ -31,6 +31,8 @@ case class SolicitacaoFull(id: Long, professor : Option[User],
 
 case class EncaminhamentoFormData(idProfessor : Long, idRelator : Long)
 
+
+
 case class SolicitacaoFormData(dataIniAfast : Date, dataFimAfast : 
     Date, dataIniEvento: Date, dataFimEvento : Date, 
     nomeEvento : String, cidade : String, onus : String,

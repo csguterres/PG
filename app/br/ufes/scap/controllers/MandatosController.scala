@@ -1,6 +1,7 @@
 package br.ufes.scap.controllers
 
-import br.ufes.scap.models.{Global, User, Mandato, MandatoForm, UserLoginForm}
+import br.ufes.scap.models.{Global, User, Mandato, MandatoForm, 
+UserLoginForm,TipoUser}
 import play.api.mvc._
 import br.ufes.scap.services.{MandatoService, UserService, AuthenticatorService}
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -25,7 +26,7 @@ class MandatosController extends Controller {
   
   def addMandatoForm() = Action { implicit request =>
     if(AuthenticatorService.isSecretario()){
-      val users = UserService.listAllUsersByTipo("PROFESSOR")
+      val users = UserService.listAllUsersByTipo(TipoUser.Prof.toString())
       Ok(br.ufes.scap.views.html.addMandato(MandatoForm.form, users))
     }else{
       Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
