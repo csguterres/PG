@@ -10,6 +10,7 @@ import scala.concurrent._
 import scala.concurrent.duration._
 import java.sql.Timestamp
 import br.ufes.scap.services.ParentescoService
+import java.time.LocalDate;    
 
 case class Solicitacao(id: Long, idProfessor : Long, 
     idRelator : Long, dataSolicitacao : Timestamp, 
@@ -22,8 +23,8 @@ case class Solicitacao(id: Long, idProfessor : Long,
     
 case class SolicitacaoFull(id: Long, professor : Option[User], 
     relator : Option[User], dataSolicitacao : Timestamp, 
-    dataIniAfast : Timestamp, dataFimAfast : Timestamp, 
-    dataIniEvento: Timestamp, dataFimEvento : Timestamp, 
+    dataIniAfast : LocalDate, dataFimAfast : LocalDate, 
+    dataIniEvento: LocalDate, dataFimEvento : LocalDate, 
     nomeEvento : String, cidade : String, onus : String,
     tipoAfastamento : String, status : String,
     motivoCancelamento : String, dataJulgamentoAfast : Timestamp

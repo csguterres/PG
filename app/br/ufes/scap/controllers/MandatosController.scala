@@ -37,7 +37,11 @@ class MandatosController extends Controller {
         MandatoForm.form.bindFromRequest.fold(
         // if any error in submitted data
         errorForm => 
-          Future.successful(BadRequest(br.ufes.scap.views.html.addMandato(errorForm, Seq.empty[User]))),
+          Future.successful
+          (BadRequest(br.ufes.scap.views.html.addMandato
+              (errorForm, UserService.listAllUsersByTipo(TipoUser.Prof.toString()))
+              )
+          ),
         data => {
           val iniMandato = new Timestamp(data.dataIniMandato.getTime())
           val fimMandato = new Timestamp(data.dataFimMandato.getTime())

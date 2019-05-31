@@ -11,6 +11,7 @@ import java.sql.Timestamp
 import java.util.Date
 import br.ufes.scap.services.MandatoService
 import java.lang.Object 
+import java.time.LocalDate
 
 case class Mandato (id: Long, idProfessor: Long, cargo : String,
     dataIniMandato: Timestamp, dataFimMandato : Timestamp)

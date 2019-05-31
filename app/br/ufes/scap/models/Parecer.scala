@@ -9,11 +9,16 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent._
 import scala.concurrent.duration._
 import java.sql.Timestamp
+import java.time.LocalDate
 
 case class Parecer(id: Long, 
     idSolicitacao : Long, idProfessor: Long, 
     julgamento: String, motivo : String, dataParecer : Timestamp)
 
+case class ParecerFull(id: Long, 
+    solicitacao : Solicitacao, professor : User, 
+    julgamento: String, motivo : String, dataParecer : LocalDate)
+    
 case class ManifestacaoFormData(motivo : String)
 
 case class ParecerFormData(julgamento: String, motivo : String)

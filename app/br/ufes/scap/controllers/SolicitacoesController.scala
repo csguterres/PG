@@ -2,8 +2,8 @@ package br.ufes.scap.controllers
 
 import br.ufes.scap.models.{Global, User, Solicitacao,
 SolicitacaoFull, ManifestacaoForm, EncaminhamentoForm, 
-UserLoginForm, SolicitacaoForm, StatusSolicitacao, TipoUser,
-TipoBusca, BuscaForm}
+UserLoginForm, SolicitacaoForm, StatusSolicitacao, 
+TipoUser, BuscaForm}
 import play.api.mvc._
 import br.ufes.scap.services.{SolicitacaoService, UserService, EmailService, AuthenticatorService}
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -32,7 +32,7 @@ class SolicitacoesController extends Controller {
           Future.successful
           (BadRequest(br.ufes.scap.views.html.buscarSolicitacoes(errorForm, UserService.listAllUsers))),
         data => {
-          val solicitacoes = SolicitacaoService.busca(data.idProfessor, data.status)
+          val solicitacoes = SolicitacaoService.busca(data.idProfessor, data.idRelator, data.status)
           Future.successful(Ok(br.ufes.scap.views.html.listSolicitacoes(solicitacoes)))
         }
         )

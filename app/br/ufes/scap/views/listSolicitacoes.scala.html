@@ -1,4 +1,8 @@
 @(solicitacoes : Seq[br.ufes.scap.models.SolicitacaoFull])(implicit request: RequestHeader)
+
+@import java.util.Locale
+@import java.time.format.TextStyle
+
 @main() {
 
 <html>
@@ -30,8 +34,8 @@ table, th, td {
                     <td>@solicitacao.professor.get.nome</td>
                     <td>@solicitacao.nomeEvento</td>
 			  <th>@solicitacao.status</th>
-			  <td>@solicitacao.dataIniAfast</td>
-			  <td>@solicitacao.dataFimAfast</td>
+			  <td>@solicitacao.dataIniAfast.getDayOfMonth() de @solicitacao.dataIniAfast.getMonth().getDisplayName(TextStyle.FULL, new Locale("pt")) de @solicitacao.dataIniAfast.getYear()</td>
+			  <td>@solicitacao.dataFimAfast.getDayOfMonth() de @solicitacao.dataFimAfast.getMonth().getDisplayName(TextStyle.FULL, new Locale("pt")) de @solicitacao.dataFimAfast.getYear()</td>
                     <td><a href="@br.ufes.scap.controllers.routes.SolicitacoesController.verSolicitacao(solicitacao.id)">VER</a></td>
                 </tr>
                 }

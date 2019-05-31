@@ -3,6 +3,10 @@ package br.ufes.scap.services
 import br.ufes.scap.persistence.SolicitacaoDAOSlick
 import br.ufes.scap.models.{Solicitacao, SolicitacaoFull, User, StatusSolicitacao}
 import util.control.Breaks._
+import java.time.{LocalDate, LocalDateTime, ZoneId}
+import java.time.format.{DateTimeFormatter, DateTimeParseException }
+import java.util.Date
+import java.sql.Timestamp
 
 object SolicitacaoService {
 
@@ -63,7 +67,6 @@ object SolicitacaoService {
           for(sol <- listSolicitacao1){
               if (s.id == sol.id){
                 entra = true ;
-                break
               }
           }
           if(entra == true){
@@ -85,6 +88,10 @@ object SolicitacaoService {
     return solicitacao
   }
   
+  def getData(data : Timestamp): LocalDate = {
+    return LocalDateTime.ofInstant(data.toInstant(), ZoneId.of("America/Sao_Paulo")).toLocalDate()
+  }
+  
   def turnSolicitacaoIntoSolicitacaoFull
   (oldSolicitacao : Solicitacao): SolicitacaoFull = {
     val professor = UserService.getUser(oldSolicitacao.idProfessor)
@@ -94,10 +101,15 @@ object SolicitacaoService {
     }else{
       relator = UserService.getUser(oldSolicitacao.idRelator)
     }
+    val dataIniAfast = getData(oldSolicitacao.dataIniAfast)
+    val dataFimAfast = getData(oldSolicitacao.dataFimAfast)
+    val dataIniEvento = getData(oldSolicitacao.dataIniEvento)
+    val dataFimEvento = getData(oldSolicitacao.dataFimEvento)
+    
     val solicitacao = SolicitacaoFull(oldSolicitacao.id, professor,
               relator, oldSolicitacao.dataSolicitacao, 
-              oldSolicitacao.dataIniAfast, oldSolicitacao.dataFimAfast, 
-              oldSolicitacao.dataIniEvento, oldSolicitacao.dataFimEvento, 
+              dataIniAfast, dataFimAfast, 
+              dataIniEvento, dataFimEvento, 
               oldSolicitacao.nomeEvento, oldSolicitacao.cidade, 
               oldSolicitacao.onus, oldSolicitacao.tipoAfastamento, 
               oldSolicitacao.status,oldSolicitacao.motivoCancelamento, 
@@ -115,10 +127,14 @@ object SolicitacaoService {
     }else{
       idRelator = oldSolicitacao.relator.get.id
     }
+    val dataIniAfast = Timestamp.valueOf(oldSolicitacao.dataIniAfast.atStartOfDay())
+    val dataFimAfast = Timestamp.valueOf(oldSolicitacao.dataFimAfast.atStartOfDay())
+    val dataIniEvento = Timestamp.valueOf(oldSolicitacao.dataIniEvento.atStartOfDay())
+    val dataFimEvento = Timestamp.valueOf(oldSolicitacao.dataFimEvento.atStartOfDay())
     val solicitacao = Solicitacao(oldSolicitacao.id, idProfessor,
               idRelator, oldSolicitacao.dataSolicitacao, 
-              oldSolicitacao.dataIniAfast, oldSolicitacao.dataFimAfast, 
-              oldSolicitacao.dataIniEvento, oldSolicitacao.dataFimEvento, 
+              dataIniAfast, dataFimAfast, 
+              dataIniEvento, dataFimEvento, 
               oldSolicitacao.nomeEvento, oldSolicitacao.cidade, 
               oldSolicitacao.onus, oldSolicitacao.tipoAfastamento, 
               oldSolicitacao.status,oldSolicitacao.motivoCancelamento, 
@@ -153,21 +169,21 @@ object SolicitacaoService {
     return solicitacao
   }
   
-    def busca(idProfessor : Long, status : String): Seq[SolicitacaoFull] = {
-        var solicitacoesIdProfessor : Seq[SolicitacaoFull] = Seq()
-        var solicitacoesStatus : Seq[SolicitacaoFull] = Seq()
-        solicitacoesIdProfessor = listAllSolicitacoesBySolicitante(idProfessor)
-        solicitacoesStatus = listAllSolicitacoesByStatus(status)    
-        if(status.equals(StatusSolicitacao.Todos.toString()) && idProfessor == 0){
-            return listAllSolicitacoes
-        }
-        if (idProfessor == 0){
-            return solicitacoesStatus
-        }
-        if (status.equals(StatusSolicitacao.Todos.toString())){
-            return solicitacoesIdProfessor
-        } 
-        return mergeListas(solicitacoesIdProfessor, solicitacoesStatus)
-    }
+    def busca(idProfessor : Long, idRelator : Long, status : String): Seq[SolicitacaoFull] = {
+        var solicitacoesProfessor = listAllSolicitacoes
+        var solicitacoesStatus = listAllSolicitacoes
+        var solicitacoesRelator = listAllSolicitacoes
 
+        if(!status.equals(StatusSolicitacao.Todos.toString())){
+          solicitacoesStatus = listAllSolicitacoesByStatus(status)
+        }
+        if (idProfessor != 0){
+            solicitacoesProfessor = listAllSolicitacoesBySolicitante(idProfessor)
+        }
+        if (idRelator != 0){
+            solicitacoesRelator = listAllSolicitacoesByRelator(idRelator)
+        } 
+        val solicitacoes = mergeListas(mergeListas(solicitacoesProfessor, solicitacoesStatus),solicitacoesRelator)
+        return solicitacoes
+    }
 }

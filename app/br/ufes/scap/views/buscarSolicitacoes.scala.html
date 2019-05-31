@@ -24,11 +24,24 @@
 		<br>
 		<b>Nome do Professor:</b> 
 		<br>
-		<br>
-		*deixar o valor como TODOS caso não deseje usar esse parâmetro de busca
+		(escolher TODOS caso não deseje usar esse parâmetro de busca)
 		<br>
 		<br>
 		<select id="idProfessor" name="idProfessor" value="">
+    			<option value=0>TODOS</option>
+		@for(user <- users){
+    			<option value=@user.id>@user.nome</option>
+		}
+		</select>
+		<br>
+		<br>
+		<br>
+		<b>Nome do Relator:</b> 
+		<br>
+		(escolher TODOS caso não deseje usar esse parâmetro de busca)
+		<br>
+		<br>
+		<select id="idRelator" name="idRelator" value="">
     			<option value=0>TODOS</option>
 		@for(user <- users){
     			<option value=@user.id>@user.nome</option>
@@ -42,7 +55,7 @@
             <b>Status da Solicitacao </b>
 		<br>
 		<br>
-		*deixar o valor como TODOS caso não deseje usar esse parâmetro de busca
+		(escolher TODOS caso não deseje usar esse parâmetro de busca)
 		<br>
 		<br>
 		<select id="status" name="status" value="">
