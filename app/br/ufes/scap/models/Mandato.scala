@@ -16,6 +16,9 @@ import java.time.LocalDate
 case class Mandato (id: Long, idProfessor: Long, cargo : String,
     dataIniMandato: Timestamp, dataFimMandato : Timestamp)
     
+case class MandatoFull (id: Long, professor : User, cargo : String,
+    dataIniMandato: LocalDate, dataFimMandato : LocalDate)
+    
 case class MandatoFormData(idProfessor : Long, cargo : String, 
     dataIniMandato : Date, dataFimMandato : Date)
     

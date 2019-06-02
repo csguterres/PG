@@ -10,7 +10,14 @@
 <form id="mandato-data-form" role="form" action='@br.ufes.scap.controllers.routes.MandatosController.addMandato()' method="post"
       class="form-horizontal" align="center" autocomplete="off">
 
+    <fieldset class="mandato-fieldset">
+        <div class="col-xs-4">
+            <div class="mandato-form">
+                <label class="form-title"
+                       style="color: #F8741B; font-size: 22px;font-weight: bold; text-decoration:none">Registro Novo Mandato</label>
             <br/>
+
+		<br>
 
 		Professor  
 		<select id=idProfessor name="idProfessor" value="">
@@ -48,18 +55,16 @@
 		<br>
 
             <button type="submit" class="btn btn-primary ynt-btn-orange">Adicionar Mandato</button>
-
+        </div>
+    </fieldset>
 </form>
 
 <br>
 <br>
 <br>
 
-<form id="user-add-form" role="form" action='@br.ufes.scap.controllers.routes.LoginController.menu()' method="get"
-      class="form-horizontal" align="center" autocomplete="off">
-            <div class="form-actions controls ynt-btn-xlarge">
-                <button type="submit" class="btn btn-primary ynt-btn-orange">Voltar ao Menu Principal</button>
-            </div>
+		
+<form role="form" action='@br.ufes.scap.controllers.routes.LoginController.menu()' method="get" align="center">
+                <button type="submit" >Voltar ao Menu Principal</button>
 </form>
-
 }

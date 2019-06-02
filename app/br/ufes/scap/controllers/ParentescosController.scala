@@ -19,14 +19,7 @@ class ParentescosController extends Controller {
   def listarParentescos = Action { implicit request =>
       if (AuthenticatorService.isSecretario()){
         val parentescos = ParentescoService.listAllParentescos
-        var Parentescos : Seq[ParentescoFull] = Seq()
-        for (p <- parentescos){
-          var user1 = UserService.getUser(p.idProfessor1)
-          var user2 = UserService.getUser(p.idProfessor2)
-          var P = new ParentescoFull(p.id, user1, user2)
-          Parentescos = Parentescos :+ P
-        }
-        Ok(br.ufes.scap.views.html.listParentescos(ParentescoForm.form, Parentescos))
+        Ok(br.ufes.scap.views.html.listParentescos(parentescos))
       }else{
     		Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
       }

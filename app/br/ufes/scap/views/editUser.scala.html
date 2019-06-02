@@ -8,6 +8,17 @@
         </p>
 	}
 
+
+      <form action = "@br.ufes.scap.controllers.routes.UsersController.updateUser(user.get.id)" align="center"
+	method = "post">
+
+    <fieldset class="user-fieldset">
+        <div class="col-xs-4">
+            <div class="user-form">
+                <label style="color: #F8741B; font-size: 22px;font-weight: bold; text-decoration:none">Editar Usuário</label>
+            </div>
+            <br/>
+
       <form action = "@br.ufes.scap.controllers.routes.UsersController.updateUser(user.get.id)" align="center"
 	method = "post">
 
@@ -21,7 +32,6 @@
              Email 
              <input type="text" class="form-control" id="email" name="email" value="@user.get.email" placeholder="Email" required>
 
-            </div>
 
 		<br>
 		<br>
@@ -34,20 +44,20 @@
 
 		<br> 
             <br>
-
+    </ul>
+  </div>
          <input type = "submit" align="center" onclick="return confirm('Você tem certeza de que deseja confirmar essas mudanças?');" value = "Editar">
 
-           
-
-
+        </div>
+    </fieldset>
 </form>
 
 <br>
 <br>
 <br>
 
-<form id="menu" role="form" action='@br.ufes.scap.controllers.routes.LoginController.menu()' method="get"
-      align="center">
-      <button type="submit">Voltar ao Menu Principal</button>
+<form role="form" action='@br.ufes.scap.controllers.routes.LoginController.menu()' method="get" align="center">
+                <button type="submit" >Voltar ao Menu Principal</button>
 </form>
+
 }

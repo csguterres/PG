@@ -1,7 +1,7 @@
 package br.ufes.scap.services
 
 import br.ufes.scap.persistence.ParentescoDAOSlick
-import br.ufes.scap.models.Parentesco
+import br.ufes.scap.models.{Parentesco, ParentescoFull}
 
 object ParentescoService {
 
@@ -17,8 +17,8 @@ object ParentescoService {
     ParentescoDAOSlick.get(id)
   }
 
-  def listAllParentescos: Seq[Parentesco] = {
-    ParentescoDAOSlick.listAll
+  def listAllParentescos: Seq[ParentescoFull] = {
+    turnSeqParentescoIntoSeqParentescoFull(ParentescoDAOSlick.listAll)
   }
   
   def listAllParentescosByProfessor(idProfessor : Long): Seq[Parentesco] = {
@@ -31,6 +31,20 @@ object ParentescoService {
   
   def checaDiferente(id1 : Long, id2 : Long):Boolean = {
        return id1 != id2
+  }
+  
+  def turnParentescoIntoParentescoFull(p : Parentesco) : ParentescoFull = {
+      var user1 = UserService.getUser(p.idProfessor1)
+      var user2 = UserService.getUser(p.idProfessor2)
+      return new ParentescoFull(p.id, user1.get, user2.get)
+  }
+  
+  def turnSeqParentescoIntoSeqParentescoFull(parentescos : Seq[Parentesco]) : Seq[ParentescoFull] = {
+    var Parentescos : Seq[ParentescoFull] = Seq()
+    for (p <- parentescos){
+       Parentescos = Parentescos :+ turnParentescoIntoParentescoFull(p)
+    }
+    return Parentescos
   }
           
   def naoExisteParentesco(id1 : Long, id2 : Long):Boolean = {

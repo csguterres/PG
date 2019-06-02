@@ -9,9 +9,13 @@ import scala.concurrent._
 import scala.concurrent.duration._
 import java.sql.Timestamp
 import java.util.Date
+import java.time.LocalDate
 
 case class ParecerDocumento(id: Long, idSolicitacao : Long, tipo: String, julgamento : String, 
     fileData: Array[Byte], dataParecer : Timestamp)
+    
+case class ParecerDocumentoFull(id: Long, solicitacao : Solicitacao, tipo: String, julgamento : String, 
+    fileData: Array[Byte], dataParecer : LocalDate)
     
 case class ParecerDocumentoFormData(tipo: String, 
     julgamento : String, filePath: String)

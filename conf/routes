@@ -26,10 +26,9 @@ GET	  /busca	      				br.ufes.scap.controllers.SolicitacoesController.definirBu
 POST	  /busca	      				br.ufes.scap.controllers.SolicitacoesController.definirBusca
 GET	  /login						br.ufes.scap.controllers.LoginController.loginForm
 POST	  /login						br.ufes.scap.controllers.LoginController.login
+GET     /mandatos						br.ufes.scap.controllers.MandatosController.listarMandatos()
 GET     /addMandatoForm					br.ufes.scap.controllers.MandatosController.addMandatoForm()
 POST    /addMandato					br.ufes.scap.controllers.MandatosController.addMandato()
-GET     /editMandato/:id            		br.ufes.scap.controllers.MandatosController.editMandato(id : Long)
-POST    /updateMandato/:id/         		br.ufes.scap.controllers.MandatosController.updateMandato(id : Long)
 GET     /deleteMandato/:id/         		br.ufes.scap.controllers.MandatosController.deleteMandato(id : Long)
 GET	  /user/:id/mandatos				br.ufes.scap.controllers.MandatosController.showMandatosByProfessor(id : Long)
 GET	  /addParentesco					br.ufes.scap.controllers.ParentescosController.addParentescoForm

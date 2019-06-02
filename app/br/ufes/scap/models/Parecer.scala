@@ -16,7 +16,7 @@ case class Parecer(id: Long,
     julgamento: String, motivo : String, dataParecer : Timestamp)
 
 case class ParecerFull(id: Long, 
-    solicitacao : Solicitacao, professor : User, 
+    solicitacao : SolicitacaoFull, professor : User, 
     julgamento: String, motivo : String, dataParecer : LocalDate)
     
 case class ManifestacaoFormData(motivo : String)

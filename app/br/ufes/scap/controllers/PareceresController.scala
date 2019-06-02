@@ -22,8 +22,8 @@ class PareceresController extends Controller {
   }
   
   def registrarParecerForm(idSolicitacao : Long) = Action { implicit request =>
-    val solicitacao = Some(SolicitacaoService.getSolicitacao(idSolicitacao))
-    if (AuthenticatorService.isRelator(solicitacao.get.relator)){
+    val solicitacao = SolicitacaoService.getSolicitacao(idSolicitacao)
+    if (AuthenticatorService.isRelator(solicitacao.relator)){
       Ok(br.ufes.scap.views.html.addParecer(ParecerForm.form, solicitacao))
     }else{
       Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))

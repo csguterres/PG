@@ -1,7 +1,7 @@
 package br.ufes.scap.controllers
 
-import br.ufes.scap.models.{Global, User, Mandato, MandatoForm, 
-UserLoginForm,TipoUser}
+import br.ufes.scap.models.{User, Mandato, MandatoFull, MandatoForm, 
+UserLoginForm,TipoUser, Global}
 import play.api.mvc._
 import br.ufes.scap.services.{MandatoService, UserService, AuthenticatorService}
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -15,12 +15,16 @@ class MandatosController extends Controller {
   
   def showMandatosByProfessor(idProfessor : Long) = Action { implicit request =>
     if (AuthenticatorService.isSecretario()){
-      val user = UserService.getUser(idProfessor)
       val mandatos = MandatoService.listAllMandatosByProfessor(idProfessor)
-      Ok(br.ufes.scap.views.html.listMandatos(MandatoForm.form, mandatos, user))
+      Ok(br.ufes.scap.views.html.listMandatos(mandatos, Global.SESSION_TIPO))
     }else{
       Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
     }
+  }
+  
+  def listarMandatos() = Action { implicit request =>
+      val mandatos = MandatoService.listAllMandatos
+      Ok(br.ufes.scap.views.html.listMandatos(mandatos, Global.SESSION_TIPO))
   }
 
   
@@ -59,10 +63,11 @@ class MandatosController extends Controller {
         Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
       }
   }
-
+/*
   def editMandato(id:Long) = Action { implicit request =>
     if (AuthenticatorService.isSecretario()){
-      val mandato = MandatoService.getMandato(id)
+      val mandato = MandatoService.getMandatoFull(id)
+      val users = UserService.listAllUsersByTipo(TipoUser.Prof.toString())
       Ok(br.ufes.scap.views.html.editMandato(MandatoForm.form, mandato))
     }else{
       Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
@@ -70,19 +75,20 @@ class MandatosController extends Controller {
   }
   
   def updateMandato(id:Long) = Action.async { implicit request =>
+      val mandato = MandatoService.getMandatoFull(id)
+      val users = UserService.listAllUsersByTipo(TipoUser.Prof.toString())
       MandatoForm.form.bindFromRequest.fold(
       // if any error in submitted data
       errorForm => 
-        Future.successful(BadRequest(br.ufes.scap.views.html.editMandato(errorForm, None))),
+        Future.successful(BadRequest(br.ufes.scap.views.html.editMandato(errorForm, mandato))),
       data => {
         val iniMandato = new Timestamp(data.dataIniMandato.getTime())
         val fimMandato = new Timestamp(data.dataFimMandato.getTime())
-        val mandato = MandatoService.getMandato(id)
-        val newMandato = Mandato(id, mandato.get.idProfessor, data.cargo, iniMandato, fimMandato)
+        val newMandato = Mandato(id, mandato.professor.id, data.cargo, iniMandato, fimMandato)
         MandatoService.update(newMandato)
         Future.successful(  Redirect(routes.LoginController.menu())
         )
       })
   }
-    
+  */  
 }

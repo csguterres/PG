@@ -1,4 +1,4 @@
-@(parecerForm: Form[br.ufes.scap.models.ParecerFormData], solicitacao : Option[br.ufes.scap.models.SolicitacaoFull])(implicit request: RequestHeader)
+@(parecerForm: Form[br.ufes.scap.models.ParecerFormData], solicitacao : br.ufes.scap.models.SolicitacaoFull)(implicit request: RequestHeader)
 
 @import br.ufes.scap.models.TipoJulgamento
 
@@ -11,7 +11,7 @@
 	}
 
 <body>
-      <form action = "@br.ufes.scap.controllers.routes.PareceresController.registrarParecer(solicitacao.get.id)" 
+      <form action = "@br.ufes.scap.controllers.routes.PareceresController.registrarParecer(solicitacao.id)" 
 	method = "post">
          <br>
          	<p>Determinar o parecer
@@ -40,10 +40,7 @@
 <br>
 
 		
-<form id="user-add-form" role="form" action='@br.ufes.scap.controllers.routes.LoginController.menu()' method="get"
-      class="form-horizontal" align="center" autocomplete="off">
-            <div class="form-actions controls ynt-btn-xlarge">
-                <button type="submit" class="btn btn-primary ynt-btn-orange">Voltar ao Menu Principal</button>
-            </div>
+<form role="form" action='@br.ufes.scap.controllers.routes.LoginController.menu()' method="get" align="center">
+                <button type="submit" >Voltar ao Menu Principal</button>
 </form>
 }

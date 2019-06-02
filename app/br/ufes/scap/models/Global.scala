@@ -25,8 +25,8 @@ object Global {
     def isPresidenteOuVice(): Int ={
       val mandatos = MandatoService.getMandatoAtual()
       for (m <- mandatos){
-        Global.CHEFE_ID = m.idProfessor
-        if (Global.SESSION_KEY == m.idProfessor){
+        Global.CHEFE_ID = m.professor.id
+        if (Global.SESSION_KEY == m.professor.id){
           Global.SESSION_CHEFE = true
           return 0
         }

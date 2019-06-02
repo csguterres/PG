@@ -1,9 +1,14 @@
-@(mandatoForm: Form[br.ufes.scap.models.MandatoFormData],mandatos : Seq[br.ufes.scap.models.Mandato], user : Option[br.ufes.scap.models.User])(implicit request: RequestHeader)
+@(mandatos : Seq[br.ufes.scap.models.MandatoFull], role : String)(implicit request: RequestHeader)
+
+@import br.ufes.scap.models.TipoUser
+@import java.util.Locale
+@import java.time.format.TextStyle
+
 @main() {
 
 <html>
 
-<h1>Mandatos do professor @user.get.nome</h1>
+<h1>Mandatos</h1>
 
 
 <head>
@@ -19,20 +24,24 @@ table, th, td {
 <table style="width:100%">
 
                 <tr>
+			  <th>PROFESSOR</th>
                     <th>CARGO</th>
                     <th>DATA INICIO DO MANDATO</th>
                     <th>DATA FIM DO MANDATO</th>
-			  <th>EDITAR</th>
-			  <th>DELETAR</th>
+			  @if(role.equals(TipoUser.Sec.toString())){
+			  	<th>DELETAR</th>
+			  }
                 </tr>
 
                 @for(mandato <- mandatos){
                 <tr>
+			  <td>@mandato.professor.nome</td>
                     <td>@mandato.cargo</td>
-                    <td>@mandato.dataIniMandato</td>
-			  <td>@mandato.dataFimMandato</td>
-                    <td><a href="@br.ufes.scap.controllers.routes.MandatosController.editMandato(mandato.id)">editar</a></td>
-                    <td><a onclick="return confirm('Você tem certeza de que deseja deletar esse mandato?');" href="@br.ufes.scap.controllers.routes.MandatosController.deleteMandato(mandato.id)">deletar</a></td>
+			  <td>@mandato.dataIniMandato.getDayOfMonth() de @mandato.dataIniMandato.getMonth().getDisplayName(TextStyle.FULL, new Locale("pt")) de @mandato.dataIniMandato.getYear()</td>
+			  <td>@mandato.dataFimMandato.getDayOfMonth() de @mandato.dataFimMandato.getMonth().getDisplayName(TextStyle.FULL, new Locale("pt")) de @mandato.dataFimMandato.getYear()</td>
+			  @if(role.equals(TipoUser.Sec.toString())) {
+	                    <td><a onclick="return confirm('Você tem certeza de que deseja deletar esse mandato?');" 					  href="@br.ufes.scap.controllers.routes.MandatosController.deleteMandato(mandato.id)">deletar</a></td>
+			  }
                 </tr>
                 }
 </table>
@@ -43,11 +52,8 @@ table, th, td {
 <br>
 <br>
 
-<form id="user-add-form" role="form" action='@br.ufes.scap.controllers.routes.LoginController.menu()' method="get"
-      class="form-horizontal" align="center" autocomplete="off">
-            <div class="form-actions controls ynt-btn-xlarge">
-                <button type="submit" class="btn btn-primary ynt-btn-orange">Voltar ao Menu Principal</button>
-            </div>
+<form role="form" action='@br.ufes.scap.controllers.routes.LoginController.menu()' method="get" align="center">
+                <button type="submit" >Voltar ao Menu Principal</button>
 </form>
 
 </html>

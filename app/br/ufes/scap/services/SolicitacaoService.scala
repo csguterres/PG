@@ -2,10 +2,7 @@ package br.ufes.scap.services
 
 import br.ufes.scap.persistence.SolicitacaoDAOSlick
 import br.ufes.scap.models.{Solicitacao, SolicitacaoFull, User, StatusSolicitacao}
-import util.control.Breaks._
 import java.time.{LocalDate, LocalDateTime, ZoneId}
-import java.time.format.{DateTimeFormatter, DateTimeParseException }
-import java.util.Date
 import java.sql.Timestamp
 
 object SolicitacaoService {
