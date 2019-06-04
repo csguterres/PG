@@ -1,6 +1,6 @@
-@(mandatos : Seq[br.ufes.scap.models.MandatoFull], role : String)(implicit request: RequestHeader)
+@(mandatos : Seq[br.ufes.scap.models.MandatoFull], role : String)()
 
-@import br.ufes.scap.models.TipoUser
+@import br.ufes.scap.models.TipoUsuario
 @import java.util.Locale
 @import java.time.format.TextStyle
 
@@ -28,7 +28,7 @@ table, th, td {
                     <th>CARGO</th>
                     <th>DATA INICIO DO MANDATO</th>
                     <th>DATA FIM DO MANDATO</th>
-			  @if(role.equals(TipoUser.Sec.toString())){
+			  @if(role.equals(TipoUsuario.Sec.toString())){
 			  	<th>DELETAR</th>
 			  }
                 </tr>
@@ -39,7 +39,7 @@ table, th, td {
                     <td>@mandato.cargo</td>
 			  <td>@mandato.dataIniMandato.getDayOfMonth() de @mandato.dataIniMandato.getMonth().getDisplayName(TextStyle.FULL, new Locale("pt")) de @mandato.dataIniMandato.getYear()</td>
 			  <td>@mandato.dataFimMandato.getDayOfMonth() de @mandato.dataFimMandato.getMonth().getDisplayName(TextStyle.FULL, new Locale("pt")) de @mandato.dataFimMandato.getYear()</td>
-			  @if(role.equals(TipoUser.Sec.toString())) {
+			  @if(role.equals(TipoUsuario.Sec.toString())) {
 	                    <td><a onclick="return confirm('Você tem certeza de que deseja deletar esse mandato?');" 					  href="@br.ufes.scap.controllers.routes.MandatosController.deleteMandato(mandato.id)">deletar</a></td>
 			  }
                 </tr>

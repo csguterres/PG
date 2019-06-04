@@ -1,10 +1,13 @@
 package br.ufes.scap.controllers
 
 import br.ufes.scap.models.{Global, ParecerDocumento, 
-  UserLoginForm, ParecerDocumentoForm, 
+ ParecerDocumentoForm, 
   StatusSolicitacao, TipoJulgamento, Setor}
 import play.api.mvc._
-import br.ufes.scap.services.{ParecerDocumentoService, SolicitacaoService, EmailService, AuthenticatorService}
+import br.ufes.scap.services.{ParecerDocumentoService, 
+  SolicitacaoService, EmailService, AuthenticatorService, 
+  AuthenticatedUsuarioAction, AuthenticatedProfessorAction, 
+  AuthenticatedSecretarioAction}
 import scala.concurrent.ExecutionContext.Implicits.global
 import javax.inject.Inject
 import scala.concurrent.Future
@@ -23,7 +26,7 @@ class PareceresDocumentoController extends Controller {
     if (AuthenticatorService.isSecretario()){
       Ok(br.ufes.scap.views.html.addParecerDocumento(ParecerDocumentoForm.form, solicitacao))
     }else{
-      Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
+      Ok(br.ufes.scap.views.html.erro())
     }
   }
   
@@ -44,15 +47,15 @@ class PareceresDocumentoController extends Controller {
               val newParecerDocumento = ParecerDocumento(0, idSolicitacao, data.tipo, data.julgamento, byteArray, dataAtual)   
               if (data.julgamento.equals(TipoJulgamento.Contra.toString())){
                   SolicitacaoService.mudaStatus(solicitacao,StatusSolicitacao.Reprovada.toString())
-                  EmailService.enviarEmailParaSolicitante(solicitacao.id, solicitacao.professor.get, StatusSolicitacao.Reprovada.toString())
+                  EmailService.enviarEmailParaSolicitante(solicitacao.id, solicitacao.professor, StatusSolicitacao.Reprovada.toString())
               }else{
                 if (data.julgamento.equals(TipoJulgamento.AFavor.toString()) && data.tipo.equals(Setor.CT.toString())){
                   SolicitacaoService.mudaStatus(solicitacao,StatusSolicitacao.AprovadaCT.toString())
-                  EmailService.enviarEmailParaSolicitante(solicitacao.id, solicitacao.professor.get, StatusSolicitacao.AprovadaCT.toString())
+                  EmailService.enviarEmailParaSolicitante(solicitacao.id, solicitacao.professor, StatusSolicitacao.AprovadaCT.toString())
                 }else{
                    if (data.julgamento.equals(TipoJulgamento.Contra.toString()) && data.tipo.equals(Setor.PRPPG.toString())){
                      SolicitacaoService.mudaStatus(solicitacao,StatusSolicitacao.AprovadaPRPPG.toString())
-                     EmailService.enviarEmailParaSolicitante(solicitacao.id, solicitacao.professor.get, StatusSolicitacao.AprovadaPRPPG.toString())
+                     EmailService.enviarEmailParaSolicitante(solicitacao.id, solicitacao.professor, StatusSolicitacao.AprovadaPRPPG.toString())
                    }
                 }
               }
@@ -60,7 +63,7 @@ class PareceresDocumentoController extends Controller {
               Future.successful(  Redirect(routes.LoginController.menu())
               )
           }else{
-              Future.successful(  Ok(br.ufes.scap.views.html.erro(UserLoginForm.form)))            
+              Future.successful(  Ok(br.ufes.scap.views.html.erro()))            
           }
     
         }
@@ -75,10 +78,10 @@ class PareceresDocumentoController extends Controller {
     def DownloadFile(idParecer : Long) = Action {
           val parecerDocumento = ParecerDocumentoService.getParecer(idParecer)
           val currentDirectory = new java.io.File(".").getCanonicalPath
-          val output = new FileOutputStream(new File(currentDirectory + "/Pareceres/" + "PARECER-" + parecerDocumento.get.tipo));
+          val output = new FileOutputStream(new File(currentDirectory + "/Pareceres/" + "PARECER-" + parecerDocumento.tipo));
           System.out.println("Getting file please be patient..");
     
-          output.write(parecerDocumento.get.fileData);
+          output.write(parecerDocumento.fileData);
           
           println("File writing complete !")
           Ok(br.ufes.scap.views.html.verParecerDocumento(parecerDocumento))

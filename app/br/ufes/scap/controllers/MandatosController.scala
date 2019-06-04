@@ -1,9 +1,11 @@
 package br.ufes.scap.controllers
 
 import br.ufes.scap.models.{User, Mandato, MandatoFull, MandatoForm, 
-UserLoginForm,TipoUser, Global}
+TipoUsuario, Global}
 import play.api.mvc._
-import br.ufes.scap.services.{MandatoService, UserService, AuthenticatorService}
+import br.ufes.scap.services.{MandatoService, UserService, 
+  AuthenticatorService, AuthenticatedUsuarioAction, 
+  AuthenticatedProfessorAction, AuthenticatedSecretarioAction}
 import scala.concurrent.ExecutionContext.Implicits.global
 import javax.inject.Inject
 import scala.concurrent.Future
@@ -18,7 +20,7 @@ class MandatosController extends Controller {
       val mandatos = MandatoService.listAllMandatosByProfessor(idProfessor)
       Ok(br.ufes.scap.views.html.listMandatos(mandatos, Global.SESSION_TIPO))
     }else{
-      Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
+      Ok(br.ufes.scap.views.html.erro())
     }
   }
   
@@ -30,10 +32,10 @@ class MandatosController extends Controller {
   
   def addMandatoForm() = Action { implicit request =>
     if(AuthenticatorService.isSecretario()){
-      val users = UserService.listAllUsersByTipo(TipoUser.Prof.toString())
+      val users = UserService.listAllUsersByTipo(TipoUsuario.Prof.toString())
       Ok(br.ufes.scap.views.html.addMandato(MandatoForm.form, users))
     }else{
-      Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
+      Ok(br.ufes.scap.views.html.erro())
     }
   }
   
@@ -43,7 +45,7 @@ class MandatosController extends Controller {
         errorForm => 
           Future.successful
           (BadRequest(br.ufes.scap.views.html.addMandato
-              (errorForm, UserService.listAllUsersByTipo(TipoUser.Prof.toString()))
+              (errorForm, UserService.listAllUsersByTipo(TipoUsuario.Prof.toString()))
               )
           ),
         data => {
@@ -60,23 +62,23 @@ class MandatosController extends Controller {
         MandatoService.deleteMandato(id) 
         Redirect(routes.LoginController.menu())
       }else{
-        Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
+        Ok(br.ufes.scap.views.html.erro())
       }
   }
 /*
   def editMandato(id:Long) = Action { implicit request =>
     if (AuthenticatorService.isSecretario()){
       val mandato = MandatoService.getMandatoFull(id)
-      val users = UserService.listAllUsersByTipo(TipoUser.Prof.toString())
+      val users = UserService.listAllUsersByTipo(TipoUsuario.Prof.toString())
       Ok(br.ufes.scap.views.html.editMandato(MandatoForm.form, mandato))
     }else{
-      Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
+      Ok(br.ufes.scap.views.html.erro())
     }
   }
   
   def updateMandato(id:Long) = Action.async { implicit request =>
       val mandato = MandatoService.getMandatoFull(id)
-      val users = UserService.listAllUsersByTipo(TipoUser.Prof.toString())
+      val users = UserService.listAllUsersByTipo(TipoUsuario.Prof.toString())
       MandatoForm.form.bindFromRequest.fold(
       // if any error in submitted data
       errorForm => 

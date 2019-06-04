@@ -1,9 +1,11 @@
 package br.ufes.scap.controllers
 
 import br.ufes.scap.models.{User, UserForm, UserEditForm, 
-UserLoginForm, Global, TipoUser}
+ Global, TipoUsuario}
 import play.api.mvc._
-import br.ufes.scap.services.{UserService, AuthenticatorService}
+import br.ufes.scap.services.{UserService, AuthenticatorService, 
+  AuthenticatedUsuarioAction, AuthenticatedProfessorAction, 
+  AuthenticatedSecretarioAction}
 import scala.concurrent.ExecutionContext.Implicits.global
 import javax.inject.Inject
 import scala.concurrent.Future
@@ -13,10 +15,10 @@ class UsersController extends Controller {
 
   def listarUsuarios = Action { implicit request =>
       if (AuthenticatorService.isSecretario()){
-        val users = UserService.listAllUsersByTipo(TipoUser.Prof.toString())
+        val users = UserService.listAllUsersByTipo(TipoUsuario.Prof.toString())
         Ok(br.ufes.scap.views.html.listUsers(UserForm.form, users))
       }else{
-          Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
+          Ok(br.ufes.scap.views.html.erro())
       }
   }
   
@@ -31,7 +33,7 @@ class UsersController extends Controller {
           Future.successful(Redirect(routes.UsersController.listarUsuarios()))
         })    
      }else{
-        Future.successful(Ok(br.ufes.scap.views.html.erro(UserLoginForm.form)))
+        Future.successful(Ok(br.ufes.scap.views.html.erro()))
      }
   }
     
@@ -41,16 +43,16 @@ class UsersController extends Controller {
       UserService.deleteUser(id) 
       Redirect(routes.UsersController.listarUsuarios())
     }else{
-      Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
+      Ok(br.ufes.scap.views.html.erro())
     }
   }
   
   def editUser(id:Long) = Action { implicit request =>
     val user = UserService.getUser(id)
-    if (AuthenticatorService.isSecretario() || AuthenticatorService.isAutor(user)){
+    if (AuthenticatorService.isSecretario() || AuthenticatorService.isAutor(user.get)){
       Ok(br.ufes.scap.views.html.editUser(UserEditForm.form, user))
     }else{
-      Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
+      Ok(br.ufes.scap.views.html.erro())
     }
   }
   

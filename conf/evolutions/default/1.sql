@@ -57,9 +57,9 @@ create table `mandato` (
 create table `parecer` (
   `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `idSolicitacao` BIGINT NOT NULL,
-  `idProfessor` BIGINT,
+  `idProfessor` BIGINT NOT NULL,
   `julgamento` TEXT NOT NULL,
-  `motivo` MEDIUMTEXT NOT NULL,
+  `motivo` MEDIUMTEXT,
   `dataParecer` DATETIME NOT NULL,
 	FOREIGN KEY (idSolicitacao)
         REFERENCES solicitacao(id)

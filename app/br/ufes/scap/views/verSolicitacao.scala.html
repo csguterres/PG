@@ -1,23 +1,29 @@
 @(solicitacao : br.ufes.scap.models.SolicitacaoFull, userTipo : String)(implicit request: RequestHeader)
 
-@import br.ufes.scap.models.{TipoUser, StatusSolicitacao}
+@import br.ufes.scap.models.{TipoUsuario, StatusSolicitacao, TipoAcessorio}
+@import java.util.Locale
+@import java.time.format.TextStyle
+
 @main() {
 
 <p>Solicitacao para o evento "@solicitacao.nomeEvento"</p> 
-<p>Professor: @solicitacao.professor.get.nome</p>
-<p>Status Atual: @solicitacao.status
+<p>Professor(a): @solicitacao.professor.nome</p>
+<p>Status Atual: @solicitacao.status</p>
 @if(solicitacao.relator != None){
-<p>Relator: @solicitacao.relator.get.nome</p>
+<p>Relator(a): @solicitacao.relator.get.nome</p>
 }else{
-<p>Relator: Não designado</p>
+<p>Relator(a): Não designado</p>
 }
 <p> Tipo Afastamento : @solicitacao.tipoAfastamento</p>
-<br>
-<br>
+<p>Data de início do afastamento: @solicitacao.dataIniAfast.getDayOfMonth() de @solicitacao.dataIniAfast.getMonth().getDisplayName(TextStyle.FULL, new Locale("pt")) de @solicitacao.dataIniAfast.getYear()</p>
+<p>Data de fim do afastamento: @solicitacao.dataFimAfast.getDayOfMonth() de @solicitacao.dataFimAfast.getMonth().getDisplayName(TextStyle.FULL, new Locale("pt")) de @solicitacao.dataFimAfast.getYear()</p>
+<p>Data de início do evento: @solicitacao.dataIniEvento.getDayOfMonth() de @solicitacao.dataIniEvento.getMonth().getDisplayName(TextStyle.FULL, new Locale("pt")) de @solicitacao.dataIniEvento.getYear()</p>
+<p>Data de fim do evento: @solicitacao.dataFimEvento.getDayOfMonth() de @solicitacao.dataFimEvento.getMonth().getDisplayName(TextStyle.FULL, new Locale("pt")) de @solicitacao.dataFimEvento.getYear()</p>
 <br>
 
 
-@if(userTipo.equals(TipoUser.Sec.toString()) && (solicitacao.status.equals("REPROVADA") || solicitacao.status.equals(StatusSolicitacao.AprovadaPRPPG.toString()))){
+
+@if(userTipo.equals(TipoUsuario.Sec.toString()) && (solicitacao.status.equals(StatusSolicitacao.Reprovada.toString()) || solicitacao.status.equals(StatusSolicitacao.AprovadaPRPPG.toString()))){
 <form action="@br.ufes.scap.controllers.routes.SolicitacoesController.arquivar(solicitacao.id)" align="center" method="get">
   <input type="submit" value="Arquivar">
 </form>
@@ -25,7 +31,7 @@
 <br>
 }
 
-@if(userTipo.equals(TipoUser.Sec.toString()) && (solicitacao.status.equals("APROVADA-DI") || solicitacao.status.equals(StatusSolicitacao.AprovadaCT.toString()))){
+@if(userTipo.equals(TipoUsuario.Sec.toString()) && (solicitacao.status.equals(StatusSolicitacao.AprovadaDI.toString()) || solicitacao.status.equals(StatusSolicitacao.AprovadaCT.toString()))){
 <form action="@br.ufes.scap.controllers.routes.PareceresDocumentoController.registrarParecerDocumentoForm(solicitacao.id)" align="center" method="get">
   <input type="submit" value="Registrar Parecer">
 </form>
@@ -33,7 +39,7 @@
 <br>
 }
 
-@if(userTipo.equals(TipoUser.Chefe.toString()) && solicitacao.status.equals(StatusSolicitacao.Iniciada.toString())){
+@if(userTipo.equals(TipoAcessorio.Chefe.toString()) && solicitacao.status.equals(StatusSolicitacao.Iniciada.toString())){
 <form action="@br.ufes.scap.controllers.routes.SolicitacoesController.encaminharSolicitacao(solicitacao.id)" align="center" method="get">
   <input type="submit" value="Designar Relator">
 </form>
@@ -41,7 +47,7 @@
 <br>
 }
 
-@if(userTipo.equals(TipoUser.Autor.toString()) && !solicitacao.status.equals(StatusSolicitacao.Cancelada.toString())){
+@if(userTipo.equals(TipoAcessorio.Autor.toString()) && !solicitacao.status.equals(StatusSolicitacao.Cancelada.toString())){
 <form action="@br.ufes.scap.controllers.routes.SolicitacoesController.deleteSolicitacao(solicitacao.id)" align="center" method="get">
   <input type="submit" onclick="return confirm('Você tem certeza de que deseja cancelar essa solicitação?');" value="Deletar">
 </form>
@@ -49,7 +55,7 @@
 <br>
 }
 
-@if(userTipo.equals(TipoUser.Prof.toString()) && (solicitacao.status.equals(StatusSolicitacao.Iniciada.toString()) || solicitacao.status.equals(StatusSolicitacao.Liberada.toString())) ){
+@if(userTipo.equals(TipoUsuario.Prof.toString()) && (solicitacao.status.equals(StatusSolicitacao.Iniciada.toString()) || solicitacao.status.equals(StatusSolicitacao.Liberada.toString())) ){
 <form action="@br.ufes.scap.controllers.routes.PareceresController.manifestarContraForm(solicitacao.id)" align="center" method="get">
   <input type="submit" value="Manifestar-se Contra">
 </form>
@@ -57,7 +63,7 @@
 <br>
 }
 
-@if(userTipo.equals(TipoUser.Relator.toString()) && solicitacao.status.equals(StatusSolicitacao.Liberada.toString())){
+@if(userTipo.equals(TipoAcessorio.Relator.toString()) && solicitacao.status.equals(StatusSolicitacao.Liberada.toString())){
 <form action="@br.ufes.scap.controllers.routes.PareceresController.registrarParecer(solicitacao.id)" align="center" method="get">
   <input type="submit" value="Registrar Parecer">
 </form>

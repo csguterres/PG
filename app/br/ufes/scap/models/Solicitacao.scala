@@ -21,7 +21,7 @@ case class Solicitacao(id: Long, idProfessor : Long,
     motivoCancelamento : String, dataJulgamentoAfast : Timestamp
     )
     
-case class SolicitacaoFull(id: Long, professor : Option[User], 
+case class SolicitacaoFull(id: Long, professor : User, 
     relator : Option[User], dataSolicitacao : Timestamp, 
     dataIniAfast : LocalDate, dataFimAfast : LocalDate, 
     dataIniEvento: LocalDate, dataFimEvento : LocalDate, 

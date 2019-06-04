@@ -1,4 +1,4 @@
-@(Pareceres : Seq[br.ufes.scap.models.Parecer], PareceresDocumento : Seq [br.ufes.scap.models.ParecerDocumento])
+@(pareceres : Seq[br.ufes.scap.models.ParecerFull], PareceresDocumento : Seq [br.ufes.scap.models.ParecerDocumentoFull])
 @main() {
 
 <html>
@@ -24,9 +24,9 @@ table, th, td {
                     <th>JULGAMENTO</th>
 			  <th>VER MAIS DETALHES</th>
                 </tr>
-                @for(p <- Pareceres){
+                @for(p <- pareceres){
                 <tr>
-                    <td>@p.idProfessor</td>
+                    <td>@p.professor.nome</td>
                     <td>@p.julgamento</td>
                     <td><a href="@br.ufes.scap.controllers.routes.PareceresController.verParecer(p.id)">Ver mais detalhes</a></td>
                 </tr>

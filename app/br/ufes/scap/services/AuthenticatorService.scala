@@ -1,6 +1,6 @@
 package br.ufes.scap.services
 
-import br.ufes.scap.models.{Global, User, TipoUser}
+import br.ufes.scap.models.{Global, User, TipoUsuario}
 
 object AuthenticatorService {
 
@@ -12,20 +12,16 @@ object AuthenticatorService {
       }
     }
     
-    def isAutor(professor : Option[User]) : Boolean ={
-        if (professor == None){
-            return false
-        }else{
-          if(professor.get.id == Global.SESSION_KEY){
+    def isAutor(professor : User) : Boolean ={
+          if(professor.id == Global.SESSION_KEY){
             return true
           }else{
             return false
           }
-        }
     }
     
     def isSecretario() : Boolean ={ 
-      if (Global.SESSION_TIPO.equals(TipoUser.Sec.toString())){
+      if (Global.SESSION_TIPO.equals(TipoUsuario.Sec.toString())){
         return true
       }else{
         return false
@@ -61,7 +57,7 @@ object AuthenticatorService {
     }
         
     def isProfessor() : Boolean ={ 
-      if (Global.SESSION_TIPO.equals(TipoUser.Prof.toString())){
+      if (Global.SESSION_TIPO.equals(TipoUsuario.Prof.toString())){
         return true
       }else{
         return false

@@ -2,8 +2,8 @@ package br.ufes.scap.models
 
 object StatusSolicitacao extends Enumeration {
   type StatusSolicitacao = Value
-  val Todos = Value("TODOS")
   val Iniciada = Value("INICIADA")
+  val Bloqueada = Value("BLOQUEADA")
   val Liberada = Value("LIBERADA")
   val AprovadaDI = Value("APROVADA-DI")
   val AprovadaCT = Value("APROVADA-CT")

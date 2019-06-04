@@ -12,19 +12,22 @@ import scala.concurrent._
 object EmailService {
  
    def sendEmail(user : User, assunto : String, message : String) =  {
-      
-      val sentTo = user.email 
-      
-      val email = new SimpleEmail();
-      email.setHostName("smtp.gmail.com");
-      email.setSmtpPort(465);
-      email.setAuthenticator(new DefaultAuthenticator(Global.SESSION_EMAIL, Global.SESSION_PASS));
-      email.setSSLOnConnect(true);
-      email.setFrom(Global.SESSION_EMAIL);
-      email.setSubject(assunto);
-      email.setMsg(message);
-      email.addTo(sentTo);
-      email.send();
+      try{
+          val sentTo = user.email 
+          val email = new SimpleEmail();
+          email.setHostName("smtp.gmail.com");
+          email.setSmtpPort(465);
+          email.setAuthenticator(new DefaultAuthenticator(Global.SESSION_EMAIL, Global.SESSION_PASS));
+          email.setSSLOnConnect(true);
+          email.setFrom(Global.SESSION_EMAIL);
+          email.setSubject(assunto);
+          email.setMsg(message);
+          email.addTo(sentTo);
+          email.send();
+      }catch {
+          case ex : Exception =>
+              ex.printStackTrace()
+      }
    }
    
   def enviarEmailParaRelator(idSolicitacao : Long, relator : User) = {

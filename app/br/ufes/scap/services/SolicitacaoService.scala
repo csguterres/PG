@@ -1,7 +1,8 @@
 package br.ufes.scap.services
 
 import br.ufes.scap.persistence.SolicitacaoDAOSlick
-import br.ufes.scap.models.{Solicitacao, SolicitacaoFull, User, StatusSolicitacao}
+import br.ufes.scap.models.{Solicitacao, SolicitacaoFull, 
+  User, StatusSolicitacao, TipoAcessorio}
 import java.time.{LocalDate, LocalDateTime, ZoneId}
 import java.sql.Timestamp
 
@@ -73,7 +74,7 @@ object SolicitacaoService {
       return solicitacoes
   }
   
-  def mudaStatus(oldSolicitacao : SolicitacaoFull, status : String): SolicitacaoFull = {
+  def mudaStatus(oldSolicitacao : SolicitacaoFull, status : String) = {
     val solicitacao = SolicitacaoFull(oldSolicitacao.id, oldSolicitacao.professor,
               oldSolicitacao.relator, oldSolicitacao.dataSolicitacao, 
               oldSolicitacao.dataIniAfast, oldSolicitacao.dataFimAfast, 
@@ -82,7 +83,7 @@ object SolicitacaoService {
               oldSolicitacao.onus, oldSolicitacao.tipoAfastamento, 
               status, oldSolicitacao.motivoCancelamento, 
               oldSolicitacao.dataJulgamentoAfast)
-    return solicitacao
+    SolicitacaoService.update(solicitacao)
   }
   
   def getData(data : Timestamp): LocalDate = {
@@ -91,7 +92,7 @@ object SolicitacaoService {
   
   def turnSolicitacaoIntoSolicitacaoFull
   (oldSolicitacao : Solicitacao): SolicitacaoFull = {
-    val professor = UserService.getUser(oldSolicitacao.idProfessor)
+    val professor = UserService.getUser(oldSolicitacao.idProfessor).get
     var relator : Option[User] = None
     if (oldSolicitacao.idRelator == 0){
       relator = None
@@ -117,7 +118,7 @@ object SolicitacaoService {
   
   def turnSolicitacaoFullIntoSolicitacao
   (oldSolicitacao : SolicitacaoFull): Solicitacao = {
-    val idProfessor = oldSolicitacao.professor.get.id
+    val idProfessor = oldSolicitacao.professor.id
     var idRelator : Long = 0
     if (oldSolicitacao.relator == None){
       idRelator = 0
@@ -171,7 +172,7 @@ object SolicitacaoService {
         var solicitacoesStatus = listAllSolicitacoes
         var solicitacoesRelator = listAllSolicitacoes
 
-        if(!status.equals(StatusSolicitacao.Todos.toString())){
+        if(!status.equals(TipoAcessorio.Todos.toString())){
           solicitacoesStatus = listAllSolicitacoesByStatus(status)
         }
         if (idProfessor != 0){

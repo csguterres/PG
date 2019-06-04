@@ -1,4 +1,4 @@
-@(mandatoForm: Form[br.ufes.scap.models.MandatoFormData],users : Seq[br.ufes.scap.models.User])(implicit request: RequestHeader)
+@(mandatoForm: Form[br.ufes.scap.models.MandatoFormData],users : Seq[br.ufes.scap.models.User])()
 @main() {
 
     @mandatoForm.globalError.map { error =>

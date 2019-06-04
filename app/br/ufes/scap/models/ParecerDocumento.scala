@@ -14,7 +14,7 @@ import java.time.LocalDate
 case class ParecerDocumento(id: Long, idSolicitacao : Long, tipo: String, julgamento : String, 
     fileData: Array[Byte], dataParecer : Timestamp)
     
-case class ParecerDocumentoFull(id: Long, solicitacao : Solicitacao, tipo: String, julgamento : String, 
+case class ParecerDocumentoFull(id: Long, solicitacao : SolicitacaoFull, tipo: String, julgamento : String, 
     fileData: Array[Byte], dataParecer : LocalDate)
     
 case class ParecerDocumentoFormData(tipo: String, 

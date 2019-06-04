@@ -10,11 +10,17 @@
         </p>
 	}
 
-<body>
-      <form action = "@br.ufes.scap.controllers.routes.PareceresController.registrarParecer(solicitacao.id)" 
-	method = "post">
-         <br>
-         	<p>Determinar o parecer
+
+<form action = "@br.ufes.scap.controllers.routes.PareceresController.registrarParecer(solicitacao.id)" method = "post" align="center">
+ 
+<fieldset>
+        <div class="col-xs-4">
+            <div>
+                <label style="color: #F8741B; font-size: 22px;font-weight: bold; text-decoration:none">Registrar Parecer</label>
+            </div>
+            <br/>
+
+         	<p>Determinar o parecer<p>
 		<select id="julgamento" name="julgamento" value="">
 		@for(j <- TipoJulgamento.values){
   			<option value=@j.toString()>@j.toString()</option>
@@ -23,16 +29,18 @@
             </div>
 
 		<br>
-		<br>
+		<p>Escreva o motivo</p>
          <textarea id="motivo"  align="center" name="motivo" rows = "5" cols = "50" name = "description">
-		Escreva o motivo
          </textarea>
-		
-         
+		<br>
 <br>
-         <input type = "submit" onclick="return confirm('Você tem certeza de que deseja registrar esse parecer?');" value = "Registrar">
-      </form>
-</body>
+<br>
+<br>
+         <input type = "submit" onclick="return confirm('Você tem certeza de que deseja registrar esse parecer? Não é possível alterá-lo depois.');" value = "Registrar">
+      
+        </div>
+    </fieldset>
+</form>
 
 
 <br>

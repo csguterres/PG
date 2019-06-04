@@ -1,10 +1,16 @@
-@(parecer : Option[br.ufes.scap.models.Parecer])
+@(parecer : br.ufes.scap.models.ParecerFull)
+
+@import java.util.Locale
+@import java.time.format.TextStyle
 
 @main() {
 
-<p>Julgamento: @parecer.get.julgamento</p>
 <br>
-<p>Motivo: @parecer.get.motivo</p>
+<p>Julgamento: @parecer.julgamento</p>
+<p>Motivo: @parecer.motivo</p>
+<p>Autor do Parecer: @parecer.professor.nome</p>
+<p>Data em que o Parecer foi emitido: @parecer.dataParecer.getDayOfMonth() de @parecer.dataParecer.getMonth().getDisplayName(TextStyle.FULL, new Locale("pt")) de @parecer.dataParecer.getYear()</p>
+<p>Solicitação do(a) professor(a) @parecer.solicitacao.professor.nome para o evento @parecer.solicitacao.nomeEvento</p>
 <br>
 <br>
 <form id="user-list-form" role="form" action='@br.ufes.scap.controllers.routes.LoginController.menu()' method="get"

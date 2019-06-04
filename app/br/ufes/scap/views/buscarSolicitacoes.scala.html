@@ -1,6 +1,6 @@
 @(buscaForm: Form[br.ufes.scap.models.BuscaFormData], users : Seq[br.ufes.scap.models.User])(implicit request: RequestHeader)
 
-@import br.ufes.scap.models.StatusSolicitacao
+@import br.ufes.scap.models.{StatusSolicitacao, TipoAcessorio}
 
 @main() {
 
@@ -28,7 +28,7 @@
 		<br>
 		<br>
 		<select id="idProfessor" name="idProfessor" value="">
-    			<option value=0>TODOS</option>
+    			<option value=0>@TipoAcessorio.Todos.toString()</option>
 		@for(user <- users){
     			<option value=@user.id>@user.nome</option>
 		}
@@ -42,7 +42,7 @@
 		<br>
 		<br>
 		<select id="idRelator" name="idRelator" value="">
-    			<option value=0>TODOS</option>
+    			<option value=0>@TipoAcessorio.Todos.toString()</option>
 		@for(user <- users){
     			<option value=@user.id>@user.nome</option>
 		}
@@ -59,6 +59,7 @@
 		<br>
 		<br>
 		<select id="status" name="status" value="">
+    			<option value=@TipoAcessorio.Todos.toString()>@TipoAcessorio.Todos.toString()</option>
 		@for(s <- StatusSolicitacao.values){
   			<option value=@s.toString()>@s.toString()</option>
 		}

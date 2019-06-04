@@ -7,14 +7,12 @@
         </p>
 	}
 
-<form id="user-data-form" role="form" action='@br.ufes.scap.controllers.routes.UsersController.addUser()' method="post"
-      class="form-horizontal" align="center" autocomplete="off">
+<form role="form" action='@br.ufes.scap.controllers.routes.UsersController.addUser()' method="post" align="center" autocomplete="off">
 
-    <fieldset class="user-fieldset">
+    <fieldset>
         <div class="col-xs-4">
-            <div class="user-form">
-                <label class="form-title"
-                       style="color: #F8741B; font-size: 22px;font-weight: bold; text-decoration:none">Registrar Novo Usuário</label>
+            <div>
+                <label style="color: #F8741B; font-size: 22px;font-weight: bold; text-decoration:none">Registrar Novo Usuário</label>
             </div>
             <br/>
 
@@ -54,6 +52,8 @@
   </div>
 
 
+<br>
+<br>
             <br/>
             <div class="form-actions controls ynt-btn-xlarge">
                 <button type="submit" class="btn btn-primary ynt-btn-orange">Adicionar Novo Usuário</button>
@@ -66,7 +66,7 @@
 <br>
 <br>
 <br>
-
+<br>
 <form role="form" action='@br.ufes.scap.controllers.routes.LoginController.menu()' method="get" align="center">
                 <button type="submit" >Voltar ao Menu Principal</button>
 </form>

@@ -31,7 +31,7 @@ table, th, td {
                 @for(solicitacao <- solicitacoes){
                 <tr>
                     <td>@solicitacao.id</td>
-                    <td>@solicitacao.professor.get.nome</td>
+                    <td>@solicitacao.professor.nome</td>
                     <td>@solicitacao.nomeEvento</td>
 			  <th>@solicitacao.status</th>
 			  <td>@solicitacao.dataIniAfast.getDayOfMonth() de @solicitacao.dataIniAfast.getMonth().getDisplayName(TextStyle.FULL, new Locale("pt")) de @solicitacao.dataIniAfast.getYear()</td>
@@ -51,12 +51,9 @@ table, th, td {
 
 <br>
 <br>
-
-<form id="user-add-form" role="form" action='@br.ufes.scap.controllers.routes.LoginController.menu()' method="get"
+<form id="user-list-form" role="form" action='@br.ufes.scap.controllers.routes.LoginController.menu()' method="get"
       class="form-horizontal" align="center" autocomplete="off">
-            <div class="form-actions controls ynt-btn-xlarge">
                 <button type="submit" class="btn btn-primary ynt-btn-orange">Voltar ao Menu Principal</button>
-            </div>
 </form>
 
 </html>

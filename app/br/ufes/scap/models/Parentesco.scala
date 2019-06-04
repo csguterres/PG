@@ -11,7 +11,7 @@ import scala.concurrent.duration._
 
 case class Parentesco(id: Long, idProfessor1 : Long, idProfessor2 : Long)
 
-case class ParentescoFull(id : Long, professor1 : Option[User], professor2 : Option[User])
+case class ParentescoFull(id : Long, professor1 : User, professor2 : User)
 
 case class ParentescoFormData(idProfessor1 : Long, idProfessor2 : Long)
 

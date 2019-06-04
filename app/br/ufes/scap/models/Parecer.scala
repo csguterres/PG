@@ -27,7 +27,7 @@ object ManifestacaoForm {
 
   val form = Form(
     mapping(
-      "motivo" -> nonEmptyText
+      "motivo" -> text
     )(ManifestacaoFormData.apply)(ManifestacaoFormData.unapply)      
   )
   
@@ -38,7 +38,7 @@ object ParecerForm {
   val form = Form(
     mapping(
       "julgamento" -> nonEmptyText,
-      "motivo" -> nonEmptyText
+      "motivo" -> text
     )(ParecerFormData.apply)(ParecerFormData.unapply)      
   )
   

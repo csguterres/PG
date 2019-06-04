@@ -1,24 +1,36 @@
-@(parecerDocumento : Option[br.ufes.scap.models.ParecerDocumento])
+@(parecer : br.ufes.scap.models.ParecerDocumentoFull)
+
+@import java.util.Locale
+@import java.time.format.TextStyle
 
 @main() {
 
-<p>Julgamento: @parecerDocumento.get.julgamento</p>
+<p>Julgamento: @parecer.julgamento</p>
 <br>
-<p>Origem: @parecerDocumento.get.tipo</p>
+<br>
+<p>Origem: @parecer.tipo</p>
+<br>
+<br>
+Data em que o Parecer foi emitido: @parecer.dataParecer.getDayOfMonth() de @parecer.dataParecer.getMonth().getDisplayName(TextStyle.FULL, new Locale("pt")) de @parecer.dataParecer.getYear()
+<br>
+<br>
+Solicitacao para o Evento: @parecer.solicitacao.nomeEvento
+Solicitacao feita pelo professor: @parecer.solicitacao.professor.nome
+<br>
+<br>
 <br>
 <p>Documento: (O download será feito para a pasta "Pareceres" na raiz de instalação do sistema)</p>
 <br>
-<form action="@br.ufes.scap.controllers.routes.PareceresDocumentoController.DownloadFile(parecerDocumento.get.id)" align="center" method="get">
+<form action="@br.ufes.scap.controllers.routes.PareceresDocumentoController.DownloadFile(parecer.id)" align="center" method="get">
   <input type="submit" value="Download">
 </form>
 <br>
 <br>
 <br>
 <br>
+<br>
 <form id="user-list-form" role="form" action='@br.ufes.scap.controllers.routes.LoginController.menu()' method="get"
       class="form-horizontal" align="center" autocomplete="off">
-            <div class="form-actions controls ynt-btn-xlarge">
                 <button type="submit" class="btn btn-primary ynt-btn-orange">Voltar ao Menu Principal</button>
-            </div>
 </form>
 }

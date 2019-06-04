@@ -1,9 +1,11 @@
 package br.ufes.scap.controllers
 
 import br.ufes.scap.models.{Global, Parentesco, ParentescoFull, 
-  User, UserForm, UserLoginForm, ParentescoForm, TipoUser}
+  User, UserForm, ParentescoForm, TipoUsuario}
 import play.api.mvc._
-import br.ufes.scap.services.{UserService, ParentescoService, AuthenticatorService}
+import br.ufes.scap.services.{UserService, ParentescoService, 
+  AuthenticatorService, AuthenticatedUsuarioAction, 
+  AuthenticatedProfessorAction, AuthenticatedSecretarioAction}
 import scala.concurrent.ExecutionContext.Implicits.global
 import javax.inject.Inject
 import scala.concurrent.Future
@@ -21,7 +23,7 @@ class ParentescosController extends Controller {
         val parentescos = ParentescoService.listAllParentescos
         Ok(br.ufes.scap.views.html.listParentescos(parentescos))
       }else{
-    		Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
+    		Ok(br.ufes.scap.views.html.erro())
       }
   }
 
@@ -30,16 +32,16 @@ class ParentescosController extends Controller {
       ParentescoService.deleteParentesco(id)
       Redirect(routes.ParentescosController.listarParentescos())
     }else{
-    	Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
+    	Ok(br.ufes.scap.views.html.erro())
     }
   }
   
   def addParentescoForm() = Action { implicit request =>
     if (AuthenticatorService.isSecretario()){
-      val users = UserService.listAllUsersByTipo(TipoUser.Prof.toString())
+      val users = UserService.listAllUsersByTipo(TipoUsuario.Prof.toString())
       Ok(br.ufes.scap.views.html.addParentesco(ParentescoForm.form,users))    
     }else{
-      Ok(br.ufes.scap.views.html.erro(UserLoginForm.form))
+      Ok(br.ufes.scap.views.html.erro())
     }
   }
   
@@ -51,7 +53,7 @@ class ParentescosController extends Controller {
         (BadRequest
           (br.ufes.scap.views.html.addParentesco
              (errorForm, 
-                UserService.listAllUsersByTipo(TipoUser.Prof.toString())
+                UserService.listAllUsersByTipo(TipoUsuario.Prof.toString())
              )
            )
         ),
