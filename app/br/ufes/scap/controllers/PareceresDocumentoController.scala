@@ -19,9 +19,11 @@ import java.nio.file.{Files, Paths}
 import java.io.FileOutputStream;
 import java.io.File;
 
-class PareceresDocumentoController extends Controller { 
+class PareceresDocumentoController @Inject() 
+(authenticatedUsuarioAction: AuthenticatedUsuarioAction,
+    authenticatedSecretarioAction : AuthenticatedSecretarioAction)  extends Controller { 
 
-  def registrarParecerDocumentoForm(idSolicitacao : Long) = Action { implicit request =>
+  def registrarParecerDocumentoForm(idSolicitacao : Long) = authenticatedSecretarioAction { implicit request =>
     val solicitacao = SolicitacaoService.getSolicitacao(idSolicitacao)
     if (AuthenticatorService.isSecretario()){
       Ok(br.ufes.scap.views.html.addParecerDocumento(ParecerDocumentoForm.form, solicitacao))
@@ -30,7 +32,7 @@ class PareceresDocumentoController extends Controller {
     }
   }
   
-  def registrarParecerDocumento(idSolicitacao : Long) = Action.async { implicit request =>
+  def registrarParecerDocumento(idSolicitacao : Long) = authenticatedSecretarioAction.async { implicit request =>
     ParecerDocumentoForm.form.bindFromRequest.fold(
         errorForm => Future.successful
         (
@@ -41,7 +43,6 @@ class PareceresDocumentoController extends Controller {
         ),
         data => {
           val solicitacao = SolicitacaoService.getSolicitacao(idSolicitacao)
-          if (AuthenticatorService.isSecretario()){
               val dataAtual = new Timestamp(Calendar.getInstance().getTime().getTime())
               val byteArray = Files.readAllBytes(Paths.get(data.filePath))
               val newParecerDocumento = ParecerDocumento(0, idSolicitacao, data.tipo, data.julgamento, byteArray, dataAtual)   
@@ -62,20 +63,16 @@ class PareceresDocumentoController extends Controller {
               ParecerDocumentoService.addParecerDocumento(newParecerDocumento)
               Future.successful(  Redirect(routes.LoginController.menu())
               )
-          }else{
-              Future.successful(  Ok(br.ufes.scap.views.html.erro()))            
-          }
-    
         }
     )
     }
   
-    def verParecer(idParecer: Long) = Action{
+    def verParecer(idParecer: Long) = authenticatedUsuarioAction{
       val parecer = ParecerDocumentoService.getParecer(idParecer)
       Ok(br.ufes.scap.views.html.verParecerDocumento(parecer))
     }
   
-    def DownloadFile(idParecer : Long) = Action {
+    def DownloadFile(idParecer : Long) = authenticatedUsuarioAction{
           val parecerDocumento = ParecerDocumentoService.getParecer(idParecer)
           val currentDirectory = new java.io.File(".").getCanonicalPath
           val output = new FileOutputStream(new File(currentDirectory + "/Pareceres/" + "PARECER-" + parecerDocumento.tipo));

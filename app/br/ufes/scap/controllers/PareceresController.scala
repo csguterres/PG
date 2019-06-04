@@ -16,29 +16,24 @@ import java.sql.Date
 import java.text.SimpleDateFormat
 import java.util.Calendar
 
-class PareceresController extends Controller { 
+class PareceresController  @Inject() 
+(authenticatedUsuarioAction: AuthenticatedUsuarioAction,
+    authenticatedSecretarioAction : AuthenticatedSecretarioAction, 
+    authenticatedProfessorAction : AuthenticatedProfessorAction)  extends Controller { 
 
-  def index(idSolicitacao : Long) = Action { 
+  def index(idSolicitacao : Long) = authenticatedUsuarioAction { 
       val pareceres = ParecerService.listAllPareceresBySolicitacao(idSolicitacao)
       val pareceresDoc = ParecerDocumentoService.listAllPareceresBySolicitacao(idSolicitacao)
       Ok(br.ufes.scap.views.html.listPareceres(pareceres, pareceresDoc))
   }
   
-  def registrarParecerForm(idSolicitacao : Long) = Action { implicit request =>
-    val solicitacao = SolicitacaoService.getSolicitacao(idSolicitacao)
-    if (AuthenticatorService.isRelator(solicitacao.relator)){
-      Ok(br.ufes.scap.views.html.addParecer(ParecerForm.form, solicitacao))
-    }else{
-      Ok(br.ufes.scap.views.html.erro())
-    }
-  }
-  
-  def verParecer(idParecer: Long) = Action{
+
+  def verParecer(idParecer: Long) = authenticatedUsuarioAction{
     val parecer = ParecerService.getParecer(idParecer)
     Ok(br.ufes.scap.views.html.verParecer(parecer))
   }
   
-  def manifestarContraForm(idSolicitacao : Long) = Action { implicit request =>
+  def manifestarContraForm(idSolicitacao : Long) = authenticatedProfessorAction { implicit request =>
     if (AuthenticatorService.isProfessor()){
       val solicitacao = SolicitacaoService.getSolicitacao(idSolicitacao)
       Ok(br.ufes.scap.views.html.addParecerContra(ManifestacaoForm.form, solicitacao))
@@ -47,7 +42,16 @@ class PareceresController extends Controller {
     }
   }
   
-  def registrarParecer(idSolicitacao : Long) = Action.async { implicit request =>
+  def registrarParecerForm(idSolicitacao : Long) = authenticatedProfessorAction { implicit request =>
+    val solicitacao = SolicitacaoService.getSolicitacao(idSolicitacao)
+    if (AuthenticatorService.isRelator(solicitacao.relator)){
+      Ok(br.ufes.scap.views.html.addParecer(ParecerForm.form, solicitacao))
+    }else{
+      Ok(br.ufes.scap.views.html.erro())
+    }
+  }
+  
+  def registrarParecer(idSolicitacao : Long) = authenticatedProfessorAction.async { implicit request =>
     ParecerForm.form.bindFromRequest.fold(
         errorForm => Future.successful
         (
@@ -78,7 +82,7 @@ class PareceresController extends Controller {
     )
     }
   
-  def manifestarContra(idSolicitacao : Long) = Action.async { implicit request =>
+  def manifestarContra(idSolicitacao : Long) = authenticatedProfessorAction.async { implicit request =>
     ManifestacaoForm.form.bindFromRequest.fold(
         errorForm => Future.successful
         (BadRequest

@@ -15,10 +15,11 @@ import scala.collection.Seq
 import java.util.Calendar
 import java.text.SimpleDateFormat
 
-
-class ParentescosController extends Controller { 
+class ParentescosController @Inject() 
+(authenticatedUsuarioAction: AuthenticatedUsuarioAction,
+    authenticatedSecretarioAction : AuthenticatedSecretarioAction) extends Controller { 
   
-  def listarParentescos = Action { implicit request =>
+  def listarParentescos = authenticatedUsuarioAction { implicit request =>
       if (AuthenticatorService.isSecretario()){
         val parentescos = ParentescoService.listAllParentescos
         Ok(br.ufes.scap.views.html.listParentescos(parentescos))
@@ -27,7 +28,7 @@ class ParentescosController extends Controller {
       }
   }
 
-  def deleteParentesco(id: Long) = Action { implicit request =>
+  def deleteParentesco(id: Long) = authenticatedSecretarioAction { implicit request =>
     if(AuthenticatorService.isSecretario()){
       ParentescoService.deleteParentesco(id)
       Redirect(routes.ParentescosController.listarParentescos())
@@ -36,7 +37,7 @@ class ParentescosController extends Controller {
     }
   }
   
-  def addParentescoForm() = Action { implicit request =>
+  def addParentescoForm() = authenticatedSecretarioAction { implicit request =>
     if (AuthenticatorService.isSecretario()){
       val users = UserService.listAllUsersByTipo(TipoUsuario.Prof.toString())
       Ok(br.ufes.scap.views.html.addParentesco(ParentescoForm.form,users))    
@@ -45,7 +46,7 @@ class ParentescosController extends Controller {
     }
   }
   
-  def addParentesco() = Action.async { implicit request =>
+  def addParentesco() = authenticatedSecretarioAction.async { implicit request =>
     ParentescoForm.form.bindFromRequest.fold(
       // if any error in submitted data
       errorForm => 

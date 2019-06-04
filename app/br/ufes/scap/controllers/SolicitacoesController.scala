@@ -1,33 +1,35 @@
 package br.ufes.scap.controllers
 
-import br.ufes.scap.models.{Global, User, Solicitacao,
+import br.ufes.scap.models.{Global, User, UserForm, Solicitacao,
 SolicitacaoFull, ManifestacaoForm, EncaminhamentoForm, 
  SolicitacaoForm, StatusSolicitacao, 
 TipoUsuario, BuscaForm, TipoAfastamento, TipoAcessorio}
 import play.api.mvc._
 import br.ufes.scap.services.{SolicitacaoService, UserService, 
   EmailService, AuthenticatorService, AuthenticatedUsuarioAction, 
-  AuthenticatedProfessorAction, AuthenticatedSecretarioAction}
+  AuthenticatedProfessorAction, AuthenticatedSecretarioAction,
+  AuthenticatedChefeAction}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import java.sql.Timestamp
 import java.sql.Date
 import java.util.Calendar
 import java.text.SimpleDateFormat
+import javax.inject.Inject
 
-class SolicitacoesController extends Controller { 
+class SolicitacoesController @Inject()
+(authenticatedUsuarioAction: AuthenticatedUsuarioAction,
+    authenticatedSecretarioAction : AuthenticatedSecretarioAction,
+    authenticatedProfessorAction : AuthenticatedProfessorAction,
+    authenticatedChefeAction : AuthenticatedChefeAction) extends Controller { 
   
   
-  def definirBuscaForm = Action { implicit request =>
-        if (AuthenticatorService.isLoggedIn()){
-            val users = UserService.listAllUsersByTipo(TipoUsuario.Prof.toString())
-            Ok(br.ufes.scap.views.html.buscarSolicitacoes(BuscaForm.form, users))
-        }else{
-           Ok(br.ufes.scap.views.html.erro())
-        }
+  def definirBuscaForm = authenticatedUsuarioAction { implicit request =>
+        val users = UserService.listAllUsersByTipo(TipoUsuario.Prof.toString())
+        Ok(br.ufes.scap.views.html.buscarSolicitacoes(BuscaForm.form, users))
   }
   
-  def definirBusca = Action.async { implicit request =>
+  def definirBusca = authenticatedUsuarioAction.async { implicit request =>
         BuscaForm.form.bindFromRequest.fold(
         // if any error in submitted data
         errorForm => 
@@ -40,18 +42,14 @@ class SolicitacoesController extends Controller {
         )
   }
   
-  def listarSolicitacoes = Action { implicit request =>
-        if (AuthenticatorService.isLoggedIn()){
-            val solicitacoes = SolicitacaoService.listAllSolicitacoes
-            Ok(br.ufes.scap.views.html.listSolicitacoes(solicitacoes))
-        }else{
-           Ok(br.ufes.scap.views.html.erro())
-        }
+  def listarSolicitacoes = authenticatedUsuarioAction { implicit request =>
+       val solicitacoes = SolicitacaoService.listAllSolicitacoes
+       Ok(br.ufes.scap.views.html.listSolicitacoes(solicitacoes))
   }
 
-  def deleteSolicitacao(id: Long) = Action { implicit request =>
+  def deleteSolicitacao(id: Long) = authenticatedProfessorAction { implicit request =>
       val sol = SolicitacaoService.getSolicitacao(id)
-      if (sol.professor.id == Global.SESSION_KEY){
+      if (AuthenticatorService.isAutor(sol.professor)){
         val newSolicitacao = SolicitacaoService.cancelaSolicitacao(sol)
         SolicitacaoService.update(newSolicitacao)
         EmailService.enviarEmailParaChefeCancelamento(id)
@@ -61,7 +59,7 @@ class SolicitacoesController extends Controller {
       }
   }
   
-  def verSolicitacao(id : Long) = Action { implicit request =>
+  def verSolicitacao(id : Long) = authenticatedUsuarioAction { implicit request =>
     var userTipo = Global.SESSION_TIPO
     val solicitacao = SolicitacaoService.getSolicitacao(id)
     if(AuthenticatorService.isAutor(solicitacao.professor)){
@@ -82,22 +80,20 @@ class SolicitacoesController extends Controller {
     Ok(br.ufes.scap.views.html.verSolicitacao(solicitacao, userTipo))
   }
   
-  def arquivar(id : Long)  = Action {
+  def arquivar(id : Long)  = authenticatedSecretarioAction {
     val oldSolicitacao = SolicitacaoService.getSolicitacao(id)
     val solicitacao = SolicitacaoService.mudaStatus(oldSolicitacao, StatusSolicitacao.Arquivada.toString())
     Redirect(routes.LoginController.menu())
   }
   
-  def mudaStatus(id : Long, status : String) = Action { 
-    val oldSolicitacao = SolicitacaoService.getSolicitacao(id)
-    val solicitacao = SolicitacaoService.mudaStatus(oldSolicitacao, status)
-    Redirect(routes.LoginController.menu())
+  def addSolicitacaoForm() = authenticatedProfessorAction{
+    Ok(br.ufes.scap.views.html.addSolicitacao(SolicitacaoForm.form))
   }
   
-  def addSolicitacao() = Action.async { implicit request =>
+  def addSolicitacao() = authenticatedProfessorAction.async { implicit request =>
     SolicitacaoForm.form.bindFromRequest.fold(
       // if any error in submitted data
-      errorForm => Future.successful(BadRequest(br.ufes.scap.views.html.addSolicitacao(errorForm, Seq.empty[Solicitacao]))),
+      errorForm => Future.successful(BadRequest(br.ufes.scap.views.html.addSolicitacao(errorForm))),
       data => {
         val iniAfast = new Timestamp(data.dataIniAfast.getTime())
         val fimAfast = new Timestamp(data.dataFimAfast.getTime())
@@ -114,7 +110,7 @@ class SolicitacoesController extends Controller {
       })
   }
   
-  def encaminharSolicitacaoForm(idSolicitacao : Long) = Action { implicit request =>
+  def encaminharSolicitacaoForm(idSolicitacao : Long) = authenticatedChefeAction { implicit request =>
     if (AuthenticatorService.isChefe()){
         val users = UserService.listAllUsersByTipo(TipoUsuario.Prof.toString())
         val solicitacao = SolicitacaoService.getSolicitacao(idSolicitacao)
@@ -124,7 +120,7 @@ class SolicitacoesController extends Controller {
     }
   }
   
-  def encaminharSolicitacao(idSolicitacao : Long) = Action.async { implicit request =>
+  def encaminharSolicitacao(idSolicitacao : Long) = authenticatedChefeAction.async { implicit request =>
     EncaminhamentoForm.form.bindFromRequest.fold(
         // if any error in submitted data
         errorForm => 
@@ -140,9 +136,9 @@ SolicitacaoService.getSolicitacao(idSolicitacao)
           val oldSolicitacao = SolicitacaoService.getSolicitacao(idSolicitacao)
           val newSolicitacao = SolicitacaoService.addRelator(oldSolicitacao, data.idRelator)
           EmailService.enviarEmailParaRelator(idSolicitacao, UserService.getUser(data.idRelator).get)
-          SolicitacaoService.update(newSolicitacao)
-          Future.successful(Redirect(routes.SolicitacoesController.mudaStatus(newSolicitacao.id,StatusSolicitacao.Liberada.toString()))
-          )
+          SolicitacaoService.mudaStatus(newSolicitacao,StatusSolicitacao.Liberada.toString())
+          Future.successful(Ok(br.ufes.scap.views.html.menu(UserForm.form, UserService.getUser(Global.SESSION_KEY))))
+          
      })
   }
   

@@ -22,17 +22,15 @@ object Global {
       }
     }
     
-    def isPresidenteOuVice(): Int ={
+    def isPresidenteOuVice() ={
       val mandatos = MandatoService.getMandatoAtual()
       for (m <- mandatos){
         Global.CHEFE_ID = m.professor.id
         if (Global.SESSION_KEY == m.professor.id){
           Global.SESSION_CHEFE = true
-          return 0
         }
       }
       Global.SESSION_CHEFE = false
-      return 0
     }
   
 }

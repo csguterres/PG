@@ -1,4 +1,4 @@
-@(solicitacaoForm: Form[br.ufes.scap.models.SolicitacaoFormData],solicitacoes : Seq[br.ufes.scap.models.Solicitacao])(implicit request: RequestHeader)
+@(solicitacaoForm: Form[br.ufes.scap.models.SolicitacaoFormData])()
 @main() {
 
     @solicitacaoForm.globalError.map { error =>

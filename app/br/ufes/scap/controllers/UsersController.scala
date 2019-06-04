@@ -11,19 +11,18 @@ import javax.inject.Inject
 import scala.concurrent.Future
 import scala.util.{Success,Failure}
 
-class UsersController extends Controller { 
+class UsersController @Inject()
+(authenticatedUsuarioAction: AuthenticatedUsuarioAction,
+    authenticatedSecretarioAction : AuthenticatedSecretarioAction,
+    authenticatedProfessorAction : AuthenticatedProfessorAction)
+    extends Controller { 
 
-  def listarUsuarios = Action { implicit request =>
-      if (AuthenticatorService.isSecretario()){
+  def listarUsuarios = authenticatedSecretarioAction { implicit request =>
         val users = UserService.listAllUsersByTipo(TipoUsuario.Prof.toString())
         Ok(br.ufes.scap.views.html.listUsers(UserForm.form, users))
-      }else{
-          Ok(br.ufes.scap.views.html.erro())
-      }
   }
   
-  def addUser() =  Action.async { implicit request =>
-    if(AuthenticatorService.isSecretario()){
+  def addUser() =  authenticatedSecretarioAction.async { implicit request =>
       UserForm.form.bindFromRequest.fold(
         // if any error in submitted data
         errorForm => Future.successful(BadRequest(br.ufes.scap.views.html.addUser(errorForm))),
@@ -32,22 +31,15 @@ class UsersController extends Controller {
           UserService.addUser(newUser)
           Future.successful(Redirect(routes.UsersController.listarUsuarios()))
         })    
-     }else{
-        Future.successful(Ok(br.ufes.scap.views.html.erro()))
-     }
   }
     
 
-  def deleteUser(id: Long) = Action { implicit request =>
-    if (AuthenticatorService.isSecretario()){
+  def deleteUser(id: Long) = authenticatedSecretarioAction { implicit request =>
       UserService.deleteUser(id) 
       Redirect(routes.UsersController.listarUsuarios())
-    }else{
-      Ok(br.ufes.scap.views.html.erro())
-    }
   }
   
-  def editUser(id:Long) = Action { implicit request =>
+  def editUser(id:Long) = authenticatedUsuarioAction { implicit request =>
     val user = UserService.getUser(id)
     if (AuthenticatorService.isSecretario() || AuthenticatorService.isAutor(user.get)){
       Ok(br.ufes.scap.views.html.editUser(UserEditForm.form, user))
@@ -56,7 +48,7 @@ class UsersController extends Controller {
     }
   }
   
-  def updateUser(id:Long) = Action.async { implicit request =>
+  def updateUser(id:Long) = authenticatedUsuarioAction.async { implicit request =>
     UserEditForm.form.bindFromRequest.fold(
       // if any error in submitted data
       errorForm => Future.successful(BadRequest(br.ufes.scap.views.html.editUser(errorForm, None))),

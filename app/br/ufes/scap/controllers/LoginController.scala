@@ -9,7 +9,7 @@ import play.api.data.Forms._
 import play.api.data._
 import scala.concurrent.Future
 
-class LoginController @Inject()(authenticatedUserAction: AuthenticatedUsuarioAction) extends Controller {
+class LoginController @Inject()(authenticatedUsuarioAction: AuthenticatedUsuarioAction) extends Controller {
 
     def loginForm() = Action {
         Ok(br.ufes.scap.views.html.login(UserLoginForm.form))
@@ -41,7 +41,7 @@ class LoginController @Inject()(authenticatedUserAction: AuthenticatedUsuarioAct
         Redirect(routes.LoginController.login)
     }
     
-    def menu =  authenticatedUserAction { implicit request =>
+    def menu =  authenticatedUsuarioAction { implicit request =>
         val user = UserService.getUser(Global.SESSION_KEY)
         Ok(br.ufes.scap.views.html.menu(UserForm.form, user))
     }

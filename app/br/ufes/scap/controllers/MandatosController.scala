@@ -13,9 +13,12 @@ import java.sql.Timestamp
 import java.sql.Date
 import java.text.SimpleDateFormat
 
-class MandatosController extends Controller {
+class MandatosController @Inject() 
+(authenticatedUsuarioAction: AuthenticatedUsuarioAction,
+    authenticatedSecretarioAction : AuthenticatedSecretarioAction, 
+    authenticatedProfessorAction : AuthenticatedProfessorAction) extends Controller {
   
-  def showMandatosByProfessor(idProfessor : Long) = Action { implicit request =>
+  def showMandatosByProfessor(idProfessor : Long) = authenticatedUsuarioAction { implicit request =>
     if (AuthenticatorService.isSecretario()){
       val mandatos = MandatoService.listAllMandatosByProfessor(idProfessor)
       Ok(br.ufes.scap.views.html.listMandatos(mandatos, Global.SESSION_TIPO))
@@ -24,13 +27,13 @@ class MandatosController extends Controller {
     }
   }
   
-  def listarMandatos() = Action { implicit request =>
+  def listarMandatos() = authenticatedUsuarioAction { implicit request =>
       val mandatos = MandatoService.listAllMandatos
       Ok(br.ufes.scap.views.html.listMandatos(mandatos, Global.SESSION_TIPO))
   }
 
   
-  def addMandatoForm() = Action { implicit request =>
+  def addMandatoForm() = authenticatedSecretarioAction { implicit request =>
     if(AuthenticatorService.isSecretario()){
       val users = UserService.listAllUsersByTipo(TipoUsuario.Prof.toString())
       Ok(br.ufes.scap.views.html.addMandato(MandatoForm.form, users))
@@ -39,7 +42,7 @@ class MandatosController extends Controller {
     }
   }
   
-  def addMandato() = Action.async { implicit request =>
+  def addMandato() = authenticatedSecretarioAction.async { implicit request =>
         MandatoForm.form.bindFromRequest.fold(
         // if any error in submitted data
         errorForm => 
@@ -53,14 +56,14 @@ class MandatosController extends Controller {
           val fimMandato = new Timestamp(data.dataFimMandato.getTime())
           val newMandato = Mandato(0, data.idProfessor, data.cargo, iniMandato, fimMandato)
           MandatoService.addMandato(newMandato)
-          Future.successful( Redirect(routes.LoginController.menu()))
+          Future.successful(Redirect(routes.MandatosController.listarMandatos()))
         })
   }
   
-  def deleteMandato(id: Long) = Action { implicit request =>
+  def deleteMandato(id: Long) = authenticatedSecretarioAction { implicit request =>
       if (AuthenticatorService.isSecretario()){
         MandatoService.deleteMandato(id) 
-        Redirect(routes.LoginController.menu())
+        Redirect(routes.MandatosController.listarMandatos())
       }else{
         Ok(br.ufes.scap.views.html.erro())
       }
