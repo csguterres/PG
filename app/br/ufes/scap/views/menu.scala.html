@@ -17,15 +17,15 @@
 <a href="@br.ufes.scap.controllers.routes.MandatosController.listarMandatos">Listar Mandatos
 <br>
 <br>
+<a href="@br.ufes.scap.controllers.routes.ParentescosController.listarParentescos">Listar Parentescos</a>
+<br>
+<br>
 @if(user.get.tipo.equals("PROFESSOR")){
 <a href="@br.ufes.scap.controllers.routes.SolicitacoesController.addSolicitacao">Adicionar Solicitação</a>
 <br>
 <br>
 }
 @if(user.get.tipo.equals("SECRETARIO")){
-<a href="@br.ufes.scap.controllers.routes.ParentescosController.listarParentescos">Listar Parentescos</a>
-<br>
-<br>
 <a href="@br.ufes.scap.controllers.routes.UsersController.listarUsuarios">Listar Usuários</a>
 <br>
 <br>

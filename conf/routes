@@ -3,7 +3,7 @@
 # ~~~~
 
 # Home page
-GET     /                           		br.ufes.scap.controllers.LoginController.menu
+GET     /                           		br.ufes.scap.controllers.LoginController.loginForm
 GET	  /logout						br.ufes.scap.controllers.LoginController.logout
 GET     /menu                       		br.ufes.scap.controllers.LoginController.menu
 GET	  /listUsers					br.ufes.scap.controllers.UsersController.listarUsuarios

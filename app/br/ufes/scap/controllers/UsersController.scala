@@ -3,9 +3,7 @@ package br.ufes.scap.controllers
 import br.ufes.scap.models.{User, UserForm, UserEditForm, 
  Global, TipoUsuario}
 import play.api.mvc._
-import br.ufes.scap.services.{UserService, AuthenticatorService, 
-  AuthenticatedUsuarioAction, AuthenticatedProfessorAction, 
-  AuthenticatedSecretarioAction}
+import br.ufes.scap.services.{UserService, AuthenticatorService}
 import scala.concurrent.ExecutionContext.Implicits.global
 import javax.inject.Inject
 import scala.concurrent.Future

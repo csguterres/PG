@@ -2,7 +2,7 @@ package br.ufes.scap.controllers
 
 import br.ufes.scap.models.{User, UserForm, UserLoginForm, Global}
 import play.api.mvc._
-import br.ufes.scap.services.{UserService, AuthenticatorService, AuthenticatedUsuarioAction}
+import br.ufes.scap.services.{UserService, AuthenticatorService}
 import scala.concurrent.ExecutionContext.Implicits.global
 import javax.inject.Inject
 import play.api.data.Forms._

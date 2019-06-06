@@ -3,12 +3,19 @@
 
 <!DOCTYPE html>
 <html>
-<body>
+<body bgcolor="teal">
+<br>
+<br>
+    <fieldset>
+<h1><font color="white">Usuário não autorizado</font></h1>
 
-<h1>Usuário não autorizado</h1>
-<p>Por favor,</p>
-<a href="@br.ufes.scap.controllers.routes.LoginController.login">efetue seu login.</a>
+<p><font color="white">Você não tem autorização para executar essa ação ou não está devidamente logado no sistema.</font></p>
 
+<form role="form" action='@br.ufes.scap.controllers.routes.LoginController.login' method="get" align="center">
+                <button type="submit" >Efetue seu login.</button>
+
+</form>
+</fieldset>
 </body>
 </html>
 }

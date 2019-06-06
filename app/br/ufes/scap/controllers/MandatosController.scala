@@ -4,8 +4,7 @@ import br.ufes.scap.models.{User, Mandato, MandatoFull, MandatoForm,
 TipoUsuario, Global}
 import play.api.mvc._
 import br.ufes.scap.services.{MandatoService, UserService, 
-  AuthenticatorService, AuthenticatedUsuarioAction, 
-  AuthenticatedProfessorAction, AuthenticatedSecretarioAction}
+  AuthenticatorService}
 import scala.concurrent.ExecutionContext.Implicits.global
 import javax.inject.Inject
 import scala.concurrent.Future
@@ -19,12 +18,8 @@ class MandatosController @Inject()
     authenticatedProfessorAction : AuthenticatedProfessorAction) extends Controller {
   
   def showMandatosByProfessor(idProfessor : Long) = authenticatedUsuarioAction { implicit request =>
-    if (AuthenticatorService.isSecretario()){
       val mandatos = MandatoService.listAllMandatosByProfessor(idProfessor)
       Ok(br.ufes.scap.views.html.listMandatos(mandatos, Global.SESSION_TIPO))
-    }else{
-      Ok(br.ufes.scap.views.html.erro())
-    }
   }
   
   def listarMandatos() = authenticatedUsuarioAction { implicit request =>
@@ -34,12 +29,8 @@ class MandatosController @Inject()
 
   
   def addMandatoForm() = authenticatedSecretarioAction { implicit request =>
-    if(AuthenticatorService.isSecretario()){
       val users = UserService.listAllUsersByTipo(TipoUsuario.Prof.toString())
       Ok(br.ufes.scap.views.html.addMandato(MandatoForm.form, users))
-    }else{
-      Ok(br.ufes.scap.views.html.erro())
-    }
   }
   
   def addMandato() = authenticatedSecretarioAction.async { implicit request =>
@@ -61,12 +52,8 @@ class MandatosController @Inject()
   }
   
   def deleteMandato(id: Long) = authenticatedSecretarioAction { implicit request =>
-      if (AuthenticatorService.isSecretario()){
         MandatoService.deleteMandato(id) 
         Redirect(routes.MandatosController.listarMandatos())
-      }else{
-        Ok(br.ufes.scap.views.html.erro())
-      }
   }
 /*
   def editMandato(id:Long) = Action { implicit request =>

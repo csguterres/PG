@@ -4,8 +4,7 @@ import br.ufes.scap.models.{Global, Parentesco, ParentescoFull,
   User, UserForm, ParentescoForm, TipoUsuario}
 import play.api.mvc._
 import br.ufes.scap.services.{UserService, ParentescoService, 
-  AuthenticatorService, AuthenticatedUsuarioAction, 
-  AuthenticatedProfessorAction, AuthenticatedSecretarioAction}
+  AuthenticatorService}
 import scala.concurrent.ExecutionContext.Implicits.global
 import javax.inject.Inject
 import scala.concurrent.Future
@@ -19,13 +18,9 @@ class ParentescosController @Inject()
 (authenticatedUsuarioAction: AuthenticatedUsuarioAction,
     authenticatedSecretarioAction : AuthenticatedSecretarioAction) extends Controller { 
   
-  def listarParentescos = authenticatedUsuarioAction { implicit request =>
-      if (AuthenticatorService.isSecretario()){
+  def listarParentescos = authenticatedUsuarioAction { 
         val parentescos = ParentescoService.listAllParentescos
         Ok(br.ufes.scap.views.html.listParentescos(parentescos))
-      }else{
-    		Ok(br.ufes.scap.views.html.erro())
-      }
   }
 
   def deleteParentesco(id: Long) = authenticatedSecretarioAction { implicit request =>
@@ -38,12 +33,8 @@ class ParentescosController @Inject()
   }
   
   def addParentescoForm() = authenticatedSecretarioAction { implicit request =>
-    if (AuthenticatorService.isSecretario()){
       val users = UserService.listAllUsersByTipo(TipoUsuario.Prof.toString())
       Ok(br.ufes.scap.views.html.addParentesco(ParentescoForm.form,users))    
-    }else{
-      Ok(br.ufes.scap.views.html.erro())
-    }
   }
   
   def addParentesco() = authenticatedSecretarioAction.async { implicit request =>

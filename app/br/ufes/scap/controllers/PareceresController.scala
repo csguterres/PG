@@ -5,9 +5,7 @@ import br.ufes.scap.models.{Global, User, Mandato, Parecer,
   StatusSolicitacao, TipoJulgamento}
 import play.api.mvc._
 import br.ufes.scap.services.{ParecerService, AuthenticatorService, 
-  ParecerDocumentoService, SolicitacaoService, EmailService,
-  AuthenticatedUsuarioAction, AuthenticatedProfessorAction, 
-  AuthenticatedSecretarioAction}
+  ParecerDocumentoService, SolicitacaoService, EmailService}
 import scala.concurrent.ExecutionContext.Implicits.global
 import javax.inject.Inject
 import scala.concurrent.Future

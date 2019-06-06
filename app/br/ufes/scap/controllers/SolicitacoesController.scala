@@ -6,9 +6,7 @@ SolicitacaoFull, ManifestacaoForm, EncaminhamentoForm,
 TipoUsuario, BuscaForm, TipoAfastamento, TipoAcessorio}
 import play.api.mvc._
 import br.ufes.scap.services.{SolicitacaoService, UserService, 
-  EmailService, AuthenticatorService, AuthenticatedUsuarioAction, 
-  AuthenticatedProfessorAction, AuthenticatedSecretarioAction,
-  AuthenticatedChefeAction}
+  EmailService, AuthenticatorService}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import java.sql.Timestamp
