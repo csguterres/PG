@@ -1,25 +1,21 @@
 @(mandatoForm: Form[br.ufes.scap.models.MandatoFormData],users : Seq[br.ufes.scap.models.User])()
 @main() {
-
+<body bgcolor="teal"  >
     @mandatoForm.globalError.map { error =>
         <p class="error">
-            @error.message
+            <font face="trebuchet ms" color="yellow">@error.message </font>
         </p>
 	}
 
-<form id="mandato-data-form" role="form" action='@br.ufes.scap.controllers.routes.MandatosController.addMandato()' method="post"
-      class="form-horizontal" align="center" autocomplete="off">
 
-    <fieldset class="mandato-fieldset">
-        <div class="col-xs-4">
-            <div class="mandato-form">
-                <label class="form-title"
-                       style="color: #F8741B; font-size: 22px;font-weight: bold; text-decoration:none">Registro Novo Mandato</label>
-            <br/>
+<form role="form" action='@br.ufes.scap.controllers.routes.MandatosController.addMandato()' method="post" align="center" >
 
-		<br>
+    <fieldset>
+            
+		<h1><font face="trebuchet ms" color="white">Registrar Novo Mandato</font></h1>
 
-		Professor  
+
+            <font color="white" face="trebuchet ms">Professor &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp </font>  
 		<select id=idProfessor name="idProfessor" value="">
 		@for(user <- users){
     			<option value=@user.id>@user.nome</option>
@@ -29,7 +25,7 @@
 		<br>
 		<br>
 
-            Cargo
+            <font color="white" face="trebuchet ms">&nbsp;&nbsp;&nbsp;&nbsp Cargo &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp </font>  
 		<select id=cargo name="cargo" value="">
     			<option value="PRESIDENTE">PRESIDENTE</option>
     			<option value="VICE-PRESIDENTE">VICE-PRESIDENTE</option>
@@ -38,24 +34,21 @@
 		<br>
 		<br>
 
-			Data de início do mandato
-  			<input type="date" name="dataIniMandato" value="" 
-				placeholder="XX/XX/XXXX" aria-describedby="sizing-addon1" required> 
 
-  		<br>
+                  <font color="white" face="trebuchet ms">Início do mandato &nbsp;&nbsp </font>  
+  			<input type="date" id="dataIniMandato" name="dataIniMandato" value="" required> 
+
 		<br>
 		<br>
 
-			Data de fim do mandato
-  			<input type="date" name="dataFimMandato" value="" 
-				placeholder="XX/XX/XXXX" aria-describedby="sizing-addon1" required> 
+                  <font color="white" face="trebuchet ms">Fim do mandato &nbsp;&nbsp </font>  
+  			<input type="date" id="dataFimMandato" name="dataFimMandato" value="" required> 
   		
 		<br>
 		<br>
 		<br>
 
-            <button type="submit" class="btn btn-primary ynt-btn-orange">Adicionar Mandato</button>
-        </div>
+            <button type="submit" class="btn btn-primary ynt-btn-orange">Registrar</button>
     </fieldset>
 </form>
 
@@ -64,7 +57,8 @@
 <br>
 
 		
-<form role="form" action='@br.ufes.scap.controllers.routes.LoginController.menu()' method="get" align="center">
-                <button type="submit" >Voltar ao Menu Principal</button>
+<form align="left">
+<a href="@br.ufes.scap.controllers.routes.LoginController.menu()"><font color="yellow" face="trebuchet ms">Voltar ao Menu Principal</font></a>
 </form>
+</body>
 }

@@ -1,29 +1,25 @@
 @(encaminhamentoForm: Form[br.ufes.scap.models.EncaminhamentoFormData], users : Seq[br.ufes.scap.models.User], solicitacao : br.ufes.scap.models.SolicitacaoFull)(implicit request: RequestHeader)
 @main() {
-
+<body bgcolor="teal"  >
     @encaminhamentoForm.globalError.map { error =>
         <p class="error">
             @error.message
         </p>
 	}
 
-<form id="solicitacao-data-form" role="form" action='@br.ufes.scap.controllers.routes.SolicitacoesController.encaminharSolicitacao(solicitacao.id)' method="post"
-      class="form-horizontal" align="center" autocomplete="off">
+<form role="form" action='@br.ufes.scap.controllers.routes.SolicitacoesController.encaminharSolicitacao(solicitacao.id)' method="post" align="center" autocomplete="off">
 
-    <fieldset class="solicitacao-fieldset">
-        <div class="col-xs-4">
-            <div class="solicitacao-form">
-                <label class="form-title"
-                       style="color: #F8741B; font-size: 22px;font-weight: bold; text-decoration:none">Designar Relator</label>
-            </div>
+    <fieldset>
+       	<h1><font color="white" face="trebuchet ms">Designar Relator</font></h1>
+
             <br/>
 
-<p>Designar relator para a solicitacao do professor @solicitacao.professor.id para o evento @solicitacao.nomeEvento</p>
+<font color="white" face="trebuchet ms"> Designar relator para a solicitacao do professor @solicitacao.professor.nome para o evento @solicitacao.nomeEvento</font>
 
             <input type="hidden" id="idProfessor" name="idProfessor" value="@solicitacao.professor.id">
 
 		<br>
-		<b>Relator:  </b>
+		<font color="white" face="trebuchet ms"> Relator:  &nbsp;&nbsp </font>
 		<select id=idRelator name="idRelator" value="">
 		@for(user <- users){
     			<option value=@user.id>@user.nome</option>
@@ -33,17 +29,10 @@
 
 		<br>
 		<br>
-
-    </ul>
-  </div>
-
-
             <br/>
-            <div class="form-actions controls ynt-btn-xlarge">
-                <button type="submit" onclick="return confirm('Você tem certeza de que deseja encaminhar essa solicitação para esse relator(a)?');" class="btn btn-primary ynt-btn-orange">Encaminhar Solicitação</button>
-            </div>
 
-        </div>
+                <button type="submit" onclick="return confirm('Você tem certeza de que deseja designar esse professor(a) como relator(a) dessa solicitação de afastamento?');" class="btn btn-primary ynt-btn-orange">Designar</button>
+
     </fieldset>
 </form>
 
@@ -51,11 +40,8 @@
 <br>
 <br>
 
-<form id="user-add-form" role="form" action='@br.ufes.scap.controllers.routes.LoginController.menu()' method="get"
-      class="form-horizontal" align="center" autocomplete="off">
-            <div class="form-actions controls ynt-btn-xlarge">
-                <button type="submit" class="btn btn-primary ynt-btn-orange">Voltar ao Menu Principal</button>
-            </div>
+<form align="left">
+<a href="@br.ufes.scap.controllers.routes.LoginController.menu()"><font color="yellow" face="trebuchet ms">Voltar ao Menu Principal</font></a>
 </form>
-
+</body>
 }

@@ -1,4 +1,4 @@
-@(solicitacoes : Seq[br.ufes.scap.models.SolicitacaoFull])(implicit request: RequestHeader)
+@(solicitacoes : Seq[br.ufes.scap.models.SolicitacaoFull])()
 
 @import java.util.Locale
 @import java.time.format.TextStyle
@@ -7,38 +7,37 @@
 
 <html>
 
-<head>
-<style>
-table, th, td {
-  border: 1px solid black;
-}
-</style>
-</head>
+<form align="right">
+<a href="@br.ufes.scap.controllers.routes.LoginController.logout"><font color="yellow" face="trebuchet ms">Logout</font></a>
+</form>
 
-<body>
-<h2>Solicitações</h2>
-<table style="width:100%">
+<body bgcolor="teal" >
+    <fieldset>
+<h1><font color="white"  face="trebuchet ms"> Solicitações</font></h1>
+<table style="width:100%"  border="5">
                 <tr>
-                    <th>ID</th>
-                    <th>NOME DO PROFESSOR</th>
-                    <th>NOME DO EVENTO</th>
-			  <th>STATUS ATUAL</th>
-			  <th>DATA INICIO DO AFASTAMENTO</th>
-			  <th>DATA FIM DO AFASTAMENTO</th>
-		        <th>VER MAIS DETALHES</th>
+                    <th><font color="white" face="trebuchet ms">&nbsp;&nbsp ID  &nbsp;&nbsp </font>  </th>
+                    <th><font color="white" face="trebuchet ms">&nbsp;&nbsp PROFESSOR  &nbsp;&nbsp </font>  </th>                    
+                    <th><font color="white" face="trebuchet ms">&nbsp;&nbsp EVENTO  &nbsp;&nbsp </font>  </th>                    
+                    <th><font color="white" face="trebuchet ms">&nbsp;&nbsp STATUS ATUAL &nbsp;&nbsp </font>  </th>                    
+                    <th><font color="white" face="trebuchet ms">&nbsp;&nbsp INÍCIO DO AFASTAMENTO  &nbsp;&nbsp </font>  </th>                    
+                    <th><font color="white" face="trebuchet ms">&nbsp;&nbsp FIM DO AFASTAMENTO  &nbsp;&nbsp </font>  </th>                    
+                    <th><font color="white" face="trebuchet ms">&nbsp;&nbsp VER MAIS DETALHES  &nbsp;&nbsp </font>  </th>                    
+</font>
                 </tr>
 
                 @for(solicitacao <- solicitacoes){
                 <tr>
-                    <td>@solicitacao.id</td>
-                    <td>@solicitacao.professor.nome</td>
-                    <td>@solicitacao.nomeEvento</td>
-			  <th>@solicitacao.status</th>
-			  <td>@solicitacao.dataIniAfast.getDayOfMonth() de @solicitacao.dataIniAfast.getMonth().getDisplayName(TextStyle.FULL, new Locale("pt")) de @solicitacao.dataIniAfast.getYear()</td>
-			  <td>@solicitacao.dataFimAfast.getDayOfMonth() de @solicitacao.dataFimAfast.getMonth().getDisplayName(TextStyle.FULL, new Locale("pt")) de @solicitacao.dataFimAfast.getYear()</td>
-                    <td><a href="@br.ufes.scap.controllers.routes.SolicitacoesController.verSolicitacao(solicitacao.id)">VER</a></td>
+ 			<td><font color="white" face="trebuchet ms">&nbsp;&nbsp @solicitacao.id &nbsp;&nbsp </font></td>
+			<td><font color="white" face="trebuchet ms">&nbsp;&nbsp @solicitacao.professor.nome &nbsp;&nbsp</font></td>
+ 			<td><font color="white" face="trebuchet ms">&nbsp;&nbsp @solicitacao.nomeEvento &nbsp;&nbsp</font></td>
+			<td><font color="white" face="trebuchet ms">&nbsp;&nbsp @solicitacao.status &nbsp;&nbsp </font></td>
+                  <td><font color="white" face="trebuchet ms">&nbsp;&nbsp @solicitacao.dataIniAfast.getDayOfMonth() de @solicitacao.dataIniAfast.getMonth().getDisplayName(TextStyle.FULL, new Locale("pt")) de @solicitacao.dataIniAfast.getYear() &nbsp;&nbsp </font></td>
+ 			<td><font color="white" face="trebuchet ms">&nbsp;&nbsp @solicitacao.dataFimAfast.getDayOfMonth() de @solicitacao.dataFimAfast.getMonth().getDisplayName(TextStyle.FULL, new Locale("pt")) de @solicitacao.dataFimAfast.getYear() &nbsp;&nbsp </font></td>
+ 			<td>&nbsp;&nbsp <a href="@br.ufes.scap.controllers.routes.SolicitacoesController.verSolicitacao(solicitacao.id)"><font color="yellow" face="trebuchet ms">Ver mais detalhes</font></a>&nbsp;&nbsp </td>
                 </tr>
                 }
+
 </table>
 
 </body>
@@ -47,14 +46,17 @@ table, th, td {
 <br>
 <br>
 
-<a href="@br.ufes.scap.controllers.routes.SolicitacoesController.definirBuscaForm">Fazer busca</a>
-
-<br>
-<br>
-<form id="user-list-form" role="form" action='@br.ufes.scap.controllers.routes.LoginController.menu()' method="get"
-      class="form-horizontal" align="center" autocomplete="off">
-                <button type="submit" class="btn btn-primary ynt-btn-orange">Voltar ao Menu Principal</button>
+<form align="center">
+<a href="@br.ufes.scap.controllers.routes.SolicitacoesController.definirBuscaForm"><font color="yellow" face="trebuchet ms">Fazer busca</font></a>
 </form>
+    </fieldset>
+<br>
+<br>
+
+<form align="left">
+<a href="@br.ufes.scap.controllers.routes.LoginController.menu()"><font color="yellow" face="trebuchet ms">Voltar ao Menu Principal</font></a>
+</form>
+
 
 </html>
 }

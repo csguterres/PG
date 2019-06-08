@@ -2,9 +2,15 @@
 
 @main() {
 
+<body bgcolor="teal"  >
+
+<form align="right">
+<a href="@br.ufes.scap.controllers.routes.LoginController.logout"><font color="yellow" face="trebuchet ms">Logout</font></a>
+</form>
+
     @userEditForm.globalError.map { error =>
         <p class="error">
-            @error.message
+            <font face="trebuchet ms" color="yellow">@error.message </font>
         </p>
 	}
 
@@ -12,43 +18,36 @@
       <form action = "@br.ufes.scap.controllers.routes.UsersController.updateUser(user.get.id)" align="center"
 	method = "post">
 
-    <fieldset class="user-fieldset">
-        <div class="col-xs-4">
-            <div class="user-form">
-                <label style="color: #F8741B; font-size: 22px;font-weight: bold; text-decoration:none">Editar Usuário</label>
-            </div>
-            <br/>
+    <fieldset>
+           <h1><font face="trebuchet ms" color="white">Editar Usuário</font></h1>
+	     <br>
 
       <form action = "@br.ufes.scap.controllers.routes.UsersController.updateUser(user.get.id)" align="center"
 	method = "post">
 
-		Nome
-            <input type="text" class="form-control" id="nome" name="nome" value=@user.get.nome
-            placeholder="Nome" required>
+
+                <font color="white" face="trebuchet ms">Nome &nbsp;&nbsp </font>  
+                <input type="text" id="nome" name="nome" value="@user.get.nome" placeholder="Nome" required>
 
 		<br>
 		<br>
 
-             Email 
-             <input type="text" class="form-control" id="email" name="email" value="@user.get.email" placeholder="Email" required>
-
+ 			<font color="white" face="trebuchet ms">E-mail&nbsp;&nbsp </font>  
+                <input type="text"  id="email" name="email" value="@user.get.email" placeholder="Email"
+                       required>
 
 		<br>
 		<br>
 
-		Senha 
-            <input type="password" class="form-control" id="password" name="password" value="@user.get.password" placeholder="Senha"
-		required>
-            <br>
-
-
-		<br> 
-            <br>
-    </ul>
-  </div>
+                <font color="white" face="trebuchet ms">Senha  &nbsp;&nbsp </font>  
+                <input type="password" id="password" name="password" value="@user.get.password" placeholder="Senha"
+                       required>
+<br>
+<br>
+<br>
+<br>
          <input type = "submit" align="center" onclick="return confirm('Você tem certeza de que deseja confirmar essas mudanças?');" value = "Editar">
 
-        </div>
     </fieldset>
 </form>
 
@@ -56,8 +55,10 @@
 <br>
 <br>
 
-<form role="form" action='@br.ufes.scap.controllers.routes.LoginController.menu()' method="get" align="center">
-                <button type="submit" >Voltar ao Menu Principal</button>
+<form align="left">
+<a href="@br.ufes.scap.controllers.routes.LoginController.menu()"><font color="yellow" face="trebuchet ms">Voltar ao Menu Principal</font></a>
 </form>
+
+</body>
 
 }

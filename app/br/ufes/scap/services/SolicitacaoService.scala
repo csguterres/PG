@@ -86,9 +86,6 @@ object SolicitacaoService {
     SolicitacaoService.update(solicitacao)
   }
   
-  def getData(data : Timestamp): LocalDate = {
-    return LocalDateTime.ofInstant(data.toInstant(), ZoneId.of("America/Sao_Paulo")).toLocalDate()
-  }
   
   def turnSolicitacaoIntoSolicitacaoFull
   (oldSolicitacao : Solicitacao): SolicitacaoFull = {
@@ -99,10 +96,10 @@ object SolicitacaoService {
     }else{
       relator = UserService.getUser(oldSolicitacao.idRelator)
     }
-    val dataIniAfast = getData(oldSolicitacao.dataIniAfast)
-    val dataFimAfast = getData(oldSolicitacao.dataFimAfast)
-    val dataIniEvento = getData(oldSolicitacao.dataIniEvento)
-    val dataFimEvento = getData(oldSolicitacao.dataFimEvento)
+    val dataIniAfast = SharedServices.getData(oldSolicitacao.dataIniAfast)
+    val dataFimAfast = SharedServices.getData(oldSolicitacao.dataFimAfast)
+    val dataIniEvento = SharedServices.getData(oldSolicitacao.dataIniEvento)
+    val dataFimEvento = SharedServices.getData(oldSolicitacao.dataFimEvento)
     
     val solicitacao = SolicitacaoFull(oldSolicitacao.id, professor,
               relator, oldSolicitacao.dataSolicitacao, 

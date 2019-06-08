@@ -3,123 +3,97 @@
 
     @solicitacaoForm.globalError.map { error =>
         <p class="error">
-            @error.message
+            <font face="trebuchet ms" color="yellow">@error.message </font>
         </p>
 	}
 
-<form id="solicitacao-data-form" role="form" action='@br.ufes.scap.controllers.routes.SolicitacoesController.addSolicitacao()' method="post"
-      class="form-horizontal" align="center" autocomplete="off">
+<body bgcolor="teal"  >
+<form align="right">
+<a href="@br.ufes.scap.controllers.routes.LoginController.logout"><font color="yellow" face="trebuchet ms">Logout</font></a>
+</form>
 
-    <fieldset class="solicitacao-fieldset">
-        <div class="col-xs-4">
-            <div class="solicitacao-form">
-                <label class="form-title"
-                       style="color: #F8741B; font-size: 22px;font-weight: bold; text-decoration:none">Registrar Nova Solicitação</label>
-            </div>
-            <br/>
+<form role="form" action='@br.ufes.scap.controllers.routes.SolicitacoesController.addSolicitacao()' method="post" align="center">
 
-            <div class="input-group input-group-sm">
-                <span class="input-group-addon" id="sizing-addon2"><b>Data de início do afastamento</b></span>
-  			<input type="date" name="dataIniAfast" value="" 
-				placeholder="XX/XX/XXXX" aria-describedby="sizing-addon1" required> 
+    <fieldset>
+            <h1><font face="trebuchet ms" color="white">Registrar Solicitação de Afastamento</font></h1>
+
+
+                  <font color="white" face="trebuchet ms">Data de início do afastamento &nbsp;&nbsp </font>  
+  			<input type="date" id="dataIniAfast" name="dataIniAfast" value="" required> 
   			<br>
-            </div>
 
 		<br>
 		<br>
 
-            <div class="input-group input-group-sm">
-                <span class="input-group-addon" id="sizing-addon2"><b>Data de fim do afastamento</b></span>
-  			<input type="date" name="dataFimAfast" value="" 
-				placeholder="XX/XX/XXXX" aria-describedby="sizing-addon1" required> 
+                  <font color="white" face="trebuchet ms">Data de fim do afastamento &nbsp;&nbsp </font>  
+  			<input type="date" id="dataFimAfast" name="dataFimAfast" value="" required> 
   			<br>
-            </div>
 
 		<br>
 		<br>
 
-            <div class="input-group input-group-sm">
-                <span class="input-group-addon" id="sizing-addon2"><b>Data de início do evento</b></span>
-  			<input type="date" name="dataIniEvento" value="" 
-				placeholder="XX/XX/XXXX" aria-describedby="sizing-addon1" required> 
+
+                  <font color="white" face="trebuchet ms">Data de início do evento &nbsp;&nbsp </font>  
+  			<input type="date" id="dataIniEvento" name="dataIniEvento" value="" required> 
   			<br>
-            </div>
 
 		<br>
 		<br>
 
-            <div class="input-group input-group-sm">
-                <span class="input-group-addon" id="sizing-addon2"><b>Data de fim do evento</b></span>
-  			<input type="date" name="dataFimEvento" value="" 
-				placeholder="XX/XX/XXXX" aria-describedby="sizing-addon1" required> 
+
+                  <font color="white" face="trebuchet ms">Data de fim do evento &nbsp;&nbsp </font>  
+  			<input type="date" id="dataFimEvento" name="dataFimEvento" value="" required> 
   			<br>
-            </div>
 
 		<br>
 		<br>
 
-            <div class="input-group input-group-sm">
-                <span class="input-group-addon" id="sizing-addon2"><b>Nome do Evento</b></span>
-                <input type="text" class="form-control" id="nome" name="nomeEvento" value=""
-                       placeholder="Nome do Evento" aria-describedby="sizing-addon1" required>
+ 		    <font color="white" face="trebuchet ms">Nome do Evento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp </font>  
+                <input type="text" id="nomeEvento" name="nomeEvento" value="" placeholder="nome do evento" required>
                 <br>
-            </div>
 
 		<br>
 		<br>
 
-            <div class="input-group input-group-sm">
-                <span class="input-group-addon" id="sizing-addon2"><b>Cidade do Evento</b></span>
-                <input type="text" class="form-control" id="cidade" name="cidade" value="" placeholder="Cidade do Evento"
-                       aria-describedby="sizing-addon1" required>
+ 		    <font color="white" face="trebuchet ms">Cidade do Evento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp </font>  
+                <input type="text" id="cidade" name="cidade" value="" placeholder="cidade do evento" required>
                 <br>
-            </div>
 
 		<br>
 		<br>
 
-            <div class="input-group input-group-sm">
-            <span class="input-group-addon" id="sizing-addon2"><b>Onus  </b></span>
+ 		    <font color="white" face="trebuchet ms">Onus &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp </font>  
 		<select id=onus name="onus" value="">
     			<option value="INEXISTENTE">INEXISTENTE</option>
     			<option value="PARCIAL">PARCIAL</option>
     			<option value="TOTAL">TOTAL</option>
 		</select>
-            </div>
 
 		<br>
 		<br>
 
-            <div class="input-group input-group-sm">
-            <span class="input-group-addon" id="sizing-addon2"><b>Tipo do Afastamento  </b></span>
+ 		    <font color="white" face="trebuchet ms">Tipo do Afastamento &nbsp;&nbsp </font>  
 		<select id=tipoAfastamento name="tipoAfastamento" value="">
     			<option value="NACIONAL">NACIONAL</option>
     			<option value="INTERNACIONAL">INTERNACIONAL</option>
 		</select>
-            </div>
 
 		<br>
 		<br>
-    </ul>
-  </div>
 
 
             <br/>
-            <div class="form-actions controls ynt-btn-xlarge">
-                <button type="submit">Adicionar Nova Solicitação</button>
-            </div>
+                <button type="submit">Registrar</button>
 
-        </div>
     </fieldset>
 </form>
 
 <br>
 <br>
-<br>
-
 		
-<form role="form" action='@br.ufes.scap.controllers.routes.LoginController.menu()' method="get" align="center">
-                <button type="submit" >Voltar ao Menu Principal</button>
+<form align="left">
+<a href="@br.ufes.scap.controllers.routes.LoginController.menu()"><font color="yellow" face="trebuchet ms">Voltar ao Menu Principal</font></a>
 </form>
 
+</body>
 }

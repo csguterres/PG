@@ -2,59 +2,47 @@
 @main() {
 
 <html>
+<body bgcolor="teal"  >
 
-<a href="@br.ufes.scap.controllers.routes.LoginController.logout">Logout</a>
+<form align="right">
+<a href="@br.ufes.scap.controllers.routes.LoginController.logout"><font color="yellow" face="trebuchet ms">Logout</font></a>
+</form>
 
-<head>
-<style>
-table, th, td {
-  border: 1px solid black;
-}
-</style>
-</head>
 
-<body>
-<h2>Parentescos</h2>
+<fieldset>
+<h1><font color="white" face="trebuchet ms">Parentescos</font></h1>
 
-<p> * Parentescos podem ser sanguíneos ou matrimoniais.</p>
- 
-<table style="width:100%">
+<font color="white" face="trebuchet ms"> * Parentescos podem ser sanguíneos ou matrimoniais.</font>
+ <br>
+ <br>
+<table style="width:100%" border="5" >
                 <tr>
-                    <th>ID</th>
-                    <th>PROFESSOR(A)</th>
-                    <th>PROFESSOR(A)</th>
-			  <th>DELETAR PARENTESCO</th>
+                    <th><font color="white" face="trebuchet ms"> &nbsp;&nbsp ID  &nbsp;&nbsp;&nbsp </font> </th>
+                    <th><font color="white" face="trebuchet ms"> &nbsp;&nbsp PROFESSOR(A) &nbsp;&nbsp </font> </th>
+                    <th><font color="white" face="trebuchet ms"> &nbsp;&nbsp PROFESSOR(A) &nbsp;&nbsp </font> </th>
+			  <th><font color="white" face="trebuchet ms"> &nbsp;&nbsp DELETAR &nbsp;&nbsp </font></th>
                 </tr>
                 @for(p <- parentescos){
                 <tr>
-                    <td>@p.id</td>
-                    <td>@p.professor1.nome</td>
-                    <td>@p.professor2.nome</td>
-                    <td><a href="@br.ufes.scap.controllers.routes.ParentescosController.deleteParentesco(p.id)" 
-   class="btn btn-danger" onclick="return confirm('Você tem certeza de que deseja excluir esse parentesco?');">Deletar</a></td>
+                    <td><font color="white" face="trebuchet ms"> &nbsp;&nbsp @p.id&nbsp;&nbsp </font></td>
+                    <td><font color="white" face="trebuchet ms"> &nbsp;&nbsp@p.professor1.nome &nbsp;&nbsp </font></td>
+                    <td><font color="white" face="trebuchet ms"> &nbsp;&nbsp @p.professor2.nome &nbsp;&nbsp </font></td>
+                    <td>&nbsp;&nbsp <a href="@br.ufes.scap.controllers.routes.ParentescosController.deleteParentesco(p.id)" 
+   class="btn btn-danger" onclick="return confirm('Você tem certeza de que deseja excluir esse parentesco?');"><font color="yellow" face="trebuchet ms"> deletar</font></a></td>
                 </tr>
                 }
 </table>
 
+</fieldset>
+
+<br>
+<br>
+<br>
+<br>
+
+<form align="left">
+<a href="@br.ufes.scap.controllers.routes.LoginController.menu()"><font color="yellow" face="trebuchet ms">Voltar ao Menu Principal</font></a>
+</form>
 </body>
-
-
-<br>
-<br>
-<form id="parentesco-add-form" role="form" action='@br.ufes.scap.controllers.routes.ParentescosController.addParentescoForm()' method="get"
-      class="form-horizontal" align="center" autocomplete="off">
-            <div class="form-actions controls ynt-btn-xlarge">
-                <button type="submit" class="btn btn-primary ynt-btn-orange">Adicionar Novo Parentesco</button>
-            </div>
-</form>
-<br>
-<br>
-<form id="parentesco-add-form" role="form" action='@br.ufes.scap.controllers.routes.LoginController.menu()' method="get"
-      class="form-horizontal" align="center" autocomplete="off">
-            <div class="form-actions controls ynt-btn-xlarge">
-                <button type="submit" class="btn btn-primary ynt-btn-orange">Voltar ao Menu Principal</button>
-            </div>
-</form>
-
 </html>
 }

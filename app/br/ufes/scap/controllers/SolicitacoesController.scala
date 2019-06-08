@@ -22,7 +22,7 @@ class SolicitacoesController @Inject()
     authenticatedChefeAction : AuthenticatedChefeAction) extends Controller { 
   
   
-  def definirBuscaForm = authenticatedUsuarioAction { implicit request =>
+  def definirBuscaForm = authenticatedUsuarioAction { 
         val users = UserService.listAllUsersByTipo(TipoUsuario.Prof.toString())
         Ok(br.ufes.scap.views.html.buscarSolicitacoes(BuscaForm.form, users))
   }
@@ -40,12 +40,12 @@ class SolicitacoesController @Inject()
         )
   }
   
-  def listarSolicitacoes = authenticatedUsuarioAction { implicit request =>
+  def listarSolicitacoes = authenticatedUsuarioAction { 
        val solicitacoes = SolicitacaoService.listAllSolicitacoes
        Ok(br.ufes.scap.views.html.listSolicitacoes(solicitacoes))
   }
 
-  def deleteSolicitacao(id: Long) = authenticatedProfessorAction { implicit request =>
+  def cancelarSolicitacao(id: Long) = authenticatedProfessorAction { implicit request =>
       val sol = SolicitacaoService.getSolicitacao(id)
       if (AuthenticatorService.isAutor(sol.professor)){
         val newSolicitacao = SolicitacaoService.cancelaSolicitacao(sol)
@@ -92,18 +92,18 @@ class SolicitacoesController @Inject()
     SolicitacaoForm.form.bindFromRequest.fold(
       // if any error in submitted data
       errorForm => Future.successful(BadRequest(br.ufes.scap.views.html.addSolicitacao(errorForm))),
-      data => {
-        val iniAfast = new Timestamp(data.dataIniAfast.getTime())
-        val fimAfast = new Timestamp(data.dataFimAfast.getTime())
-        val iniEvento = new Timestamp(data.dataIniEvento.getTime())
-        val fimEvento = new Timestamp(data.dataFimEvento.getTime())
+      solicitacaoForm => {
+        val iniAfast = new Timestamp(solicitacaoForm.dataIniAfast.getTime())
+        val fimAfast = new Timestamp(solicitacaoForm.dataFimAfast.getTime())
+        val iniEvento = new Timestamp(solicitacaoForm.dataIniEvento.getTime())
+        val fimEvento = new Timestamp(solicitacaoForm.dataFimEvento.getTime())
         val dataAtual = new Timestamp(Calendar.getInstance().getTime().getTime())
         val newSolicitacao = Solicitacao(0, Global.SESSION_KEY, 0, dataAtual,
             iniAfast, fimAfast, iniEvento, fimEvento, 
-            data.nomeEvento, data.cidade, data.onus, data.tipoAfastamento,
+            solicitacaoForm.nomeEvento, solicitacaoForm.cidade, solicitacaoForm.onus, solicitacaoForm.tipoAfastamento,
             StatusSolicitacao.Iniciada.toString(), "", iniEvento)
         SolicitacaoService.addSolicitacao(newSolicitacao)
-        EmailService.enviarEmailParaTodos(data.nomeEvento)
+        EmailService.enviarEmailParaTodos(solicitacaoForm.nomeEvento)
         Future.successful(Redirect(routes.SolicitacoesController.listarSolicitacoes()))
       })
   }

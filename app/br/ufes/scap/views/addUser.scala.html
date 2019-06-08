@@ -1,75 +1,70 @@
-@(userForm: Form[br.ufes.scap.models.UserFormData])(implicit request: RequestHeader)
+@(userForm: Form[br.ufes.scap.models.UserFormData])()
 @main() {
 
     @userForm.globalError.map { error =>
         <p class="error">
-            @error.message
+            <font face="trebuchet ms" color="yellow">@error.message </font>
         </p>
 	}
+<body bgcolor="teal"  >
+
+<form align="right">
+<a href="@br.ufes.scap.controllers.routes.LoginController.logout"><font color="yellow" face="trebuchet ms">Logout</font></a>
+</form>
+
 
 <form role="form" action='@br.ufes.scap.controllers.routes.UsersController.addUser()' method="post" align="center" autocomplete="off">
 
     <fieldset>
-        <div class="col-xs-4">
-            <div>
-                <label style="color: #F8741B; font-size: 22px;font-weight: bold; text-decoration:none">Registrar Novo Usuário</label>
-            </div>
+              <h1><font face="trebuchet ms" color="white"> Registrar Novo Usuário </font></h1>
             <br/>
 
-                Nome
+                <font color="white" face="trebuchet ms">Nome &nbsp;&nbsp </font>  
                 <input type="text" id="nome" name="nome" value="" placeholder="Nome" required>
                 <br>
 
 		<br>
 
-                Matricula
+                <font color="white" face="trebuchet ms"> Matricula &nbsp;&nbsp </font>  
                 <input type="text" class="form-control" id="matricula" name="matricula" value="" placeholder="Matricula"
                        required>
                 <br>
 
 		<br>
 
-                E-mail
+                <font color="white" face="trebuchet ms">E-mail&nbsp;&nbsp </font>  
                 <input type="text"  id="email" name="email" value="" placeholder="Email"
                        required>
 		<br>
 		<br>
 
-                Senha
+                <font color="white" face="trebuchet ms">Senha  &nbsp;&nbsp </font>  
                 <input type="password" id="password" name="password" value="" placeholder="Senha"
                        required>
                 <br>
 
 		<br>
 
-            Tipo
+            <font color="white" face="trebuchet ms">Tipo &nbsp;&nbsp </font>  
 		<select id=tipo name="tipo" value="">
     			<option value="PROFESSOR">PROFESSOR(A)</option>
     			<option value="SECRETARIO">SECRETARIO(A)</option>
 		</select>
 
-    </ul>
-  </div>
-
 
 <br>
 <br>
             <br/>
-            <div class="form-actions controls ynt-btn-xlarge">
-                <button type="submit" class="btn btn-primary ynt-btn-orange">Adicionar Novo Usuário</button>
-            </div>
+                <button type="submit" class="btn btn-primary ynt-btn-orange">Registrar</button>
 
-        </div>
     </fieldset>
 </form>
 
 <br>
 <br>
-<br>
-<br>
-<form role="form" action='@br.ufes.scap.controllers.routes.LoginController.menu()' method="get" align="center">
-                <button type="submit" >Voltar ao Menu Principal</button>
+<form align="left">
+<a href="@br.ufes.scap.controllers.routes.LoginController.menu()"><font color="yellow" face="trebuchet ms">Voltar ao Menu Principal</font></a>
 </form>
-
+</body>
 
 }

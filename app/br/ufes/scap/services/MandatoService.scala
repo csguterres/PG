@@ -50,8 +50,8 @@ object MandatoService {
     
   def turnMandatoIntoMandatoFull(oldMandato : Mandato): MandatoFull ={
     val prof = UserService.getUser(oldMandato.idProfessor).get
-    val dataIniMandato = SolicitacaoService.getData(oldMandato.dataIniMandato)
-    val dataFimMandato = SolicitacaoService.getData(oldMandato.dataFimMandato)
+    val dataIniMandato = SharedServices.getData(oldMandato.dataIniMandato)
+    val dataFimMandato = SharedServices.getData(oldMandato.dataFimMandato)
     return MandatoFull(oldMandato.id, prof, oldMandato.cargo, 
         dataIniMandato, dataFimMandato)
   }

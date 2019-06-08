@@ -33,7 +33,7 @@ object UserLoginForm{
       "matricula" -> nonEmptyText,
       "password" -> nonEmptyText
       )(UserLoginFormData.apply)(UserLoginFormData.unapply)
-       .verifying("Matrícula ou senha inválidos",  s => UserService.checaMatriculaSenha(s.matricula, s.password))
+       .verifying("ERRO: Matrícula ou senha inválidos",  s => UserService.checaMatriculaSenha(s.matricula, s.password))
        )
 }
 
@@ -47,7 +47,7 @@ object UserForm {
 	"password" -> nonEmptyText,	
 	"tipo" -> nonEmptyText
     )(UserFormData.apply)(UserFormData.unapply)      
-			  .verifying("Matricula ja cadastrada",  s => UserService.checaMatricula(s.matricula)
+			  .verifying("ERRO: Matrícula já cadastrada",  s => UserService.checaMatricula(s.matricula)
   ))
   
 }

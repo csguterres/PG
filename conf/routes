@@ -7,17 +7,17 @@ GET     /                           		br.ufes.scap.controllers.LoginController.l
 GET	  /logout						br.ufes.scap.controllers.LoginController.logout
 GET     /menu                       		br.ufes.scap.controllers.LoginController.menu
 GET	  /listUsers					br.ufes.scap.controllers.UsersController.listarUsuarios
-GET     /addUser                    		br.ufes.scap.controllers.UsersController.addUser
+GET     /addUser                    		br.ufes.scap.controllers.UsersController.addUserForm
 POST    /addUser                    		br.ufes.scap.controllers.UsersController.addUser
 GET     /deleteUser/:id             		br.ufes.scap.controllers.UsersController.deleteUser(id : Long)
 GET     /editUser/:id               		br.ufes.scap.controllers.UsersController.editUser(id : Long)
 POST    /updateUser/:id             		br.ufes.scap.controllers.UsersController.updateUser(id : Long)
 GET	  /solicitacoes					br.ufes.scap.controllers.SolicitacoesController.listarSolicitacoes
-GET	  /addSolicitacao					br.ufes.scap.controllers.SolicitacoesController.addSolicitacao
+GET	  /addSolicitacao					br.ufes.scap.controllers.SolicitacoesController.addSolicitacaoForm
 POST	  /addSolicitacao					br.ufes.scap.controllers.SolicitacoesController.addSolicitacao
 GET	  /solicitacao/:id				br.ufes.scap.controllers.SolicitacoesController.verSolicitacao(id: Long)
-GET     /solicitacao/:id/delete     		br.ufes.scap.controllers.SolicitacoesController.deleteSolicitacao(id : Long)
-POST    /solicitacao/:id/delete     		br.ufes.scap.controllers.SolicitacoesController.deleteSolicitacao(id : Long)
+GET     /solicitacao/:id/cancelar     		br.ufes.scap.controllers.SolicitacoesController.cancelarSolicitacao(id : Long)
+POST    /solicitacao/:id/cancelar    		br.ufes.scap.controllers.SolicitacoesController.cancelarSolicitacao(id : Long)
 GET	  /solicitacao/:id/encaminhar			br.ufes.scap.controllers.SolicitacoesController.encaminharSolicitacao(id : Long)
 POST	  /solicitacao/:id/encaminhar			br.ufes.scap.controllers.SolicitacoesController.encaminharSolicitacao(id : Long)
 GET	  /busca	      				br.ufes.scap.controllers.SolicitacoesController.definirBuscaForm

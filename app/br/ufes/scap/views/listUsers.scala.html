@@ -1,60 +1,54 @@
 @(userForm: Form[br.ufes.scap.models.UserFormData],users : Seq[br.ufes.scap.models.User])(implicit request: RequestHeader)
 @main() {
-
 <html>
 
-<a href="@br.ufes.scap.controllers.routes.LoginController.logout">Logout</a>
+<body bgcolor="teal"  >
 
-<head>
-<style>
-table, th, td {
-  border: 1px solid black;
-}
-</style>
-</head>
+<form align="right">
+<a href="@br.ufes.scap.controllers.routes.LoginController.logout"><font color="yellow" face="trebuchet ms">Logout</font></a>
+</form>
 
-<body>
-<h2>Usuários</h2>
-<table style="width:100%">
+    <fieldset>
+<h1><font color="white" face="trebuchet ms">Usuários</font></h1>
+
+<table style="width:100%" border="5" >
+
                 <tr>
-                    <th>ID</th>
-                    <th>NOME</th>
-                    <th>MATRICULA</th>
-                    <th>E-MAIL</th>
-                    <th>TIPO</th>
-			  <th>MANDATOS</th>
-			  <th>DELETAR</th>
-			  <th>EDITAR</th>
+
+                    <th><font color="white" face="trebuchet ms"> &nbsp;&nbsp ID  &nbsp;&nbsp </font>  </th>
+                    <th><font color="white" face="trebuchet ms">&nbsp;&nbsp NOME &nbsp;&nbsp </th>
+                    <th><font color="white" face="trebuchet ms"> &nbsp;&nbsp MATRICULA &nbsp;&nbsp </th>
+                    <th><font color="white" face="trebuchet ms">&nbsp;&nbsp E-MAIL &nbsp;&nbsp</th>
+                    <th><font color="white" face="trebuchet ms">&nbsp;&nbsp TIPO &nbsp;&nbsp</th>
+			  <th><font color="white" face="trebuchet ms">&nbsp;&nbsp MANDATOS &nbsp;&nbsp</th>
+			  <th><font color="white" face="trebuchet ms">&nbsp;&nbsp DELETAR &nbsp;&nbsp </th>
+			  <th><font color="white" face="trebuchet ms">&nbsp;&nbsp EDITAR &nbsp;&nbsp </th>
+
                 </tr>
                 @for(user <- users){
                 <tr>
-                    <td>@user.id</td>
-                    <td>@user.nome</td>
-                    <td>@user.matricula</td>
-                    <td>@user.email</td>
-			  <td>@user.tipo</td>
-                    <td><a href="@br.ufes.scap.controllers.routes.MandatosController.showMandatosByProfessor(user.id)">ver mandatos</a></td>
-                    <td><a onclick="return confirm('Você tem certeza de que deseja excluir esse professor?');" href="@br.ufes.scap.controllers.routes.UsersController.deleteUser(user.id)">deletar</a></td>
-                    <td><a href="@br.ufes.scap.controllers.routes.UsersController.editUser(user.id)">editar</a></td>
+                    <td><font color="white" face="trebuchet ms"> &nbsp;&nbsp @user.id &nbsp;&nbsp </font></td>
+                    <td><font color="white" face="trebuchet ms"> &nbsp;&nbsp @user.nome &nbsp;&nbsp </font></td>
+                    <td><font color="white" face="trebuchet ms"> &nbsp;&nbsp @user.matricula &nbsp;&nbsp </font></td>
+                    <td><font color="white" face="trebuchet ms"> &nbsp;&nbsp @user.email &nbsp;&nbsp </font></td>
+			  <td><font color="white" face="trebuchet ms"> &nbsp;&nbsp @user.tipo &nbsp;&nbsp </font></td>
+                    <td>&nbsp;&nbsp <a href="@br.ufes.scap.controllers.routes.MandatosController.showMandatosByProfessor(user.id)"><font color="yellow" face="trebuchet ms">ver mandatos</font></a>&nbsp;&nbsp</td> 
+                    <td>&nbsp;&nbsp<a onclick="return confirm('Você tem certeza de que deseja excluir esse professor?');" href="@br.ufes.scap.controllers.routes.UsersController.deleteUser(user.id)"><font color="yellow" face="trebuchet ms">deletar</font></a>&nbsp;&nbsp</td> 
+                    <td>&nbsp;&nbsp<a href="@br.ufes.scap.controllers.routes.UsersController.editUser(user.id)"><font color="yellow" face="trebuchet ms">editar</font></a>&nbsp;&nbsp</td>  
                 </tr>
                 }
 </table>
+<br>
+<br>
+    </fieldset>
+<br>
+<br>
+
+<form align="left">
+<a href="@br.ufes.scap.controllers.routes.LoginController.menu()"><font color="yellow" face="trebuchet ms">Voltar ao Menu Principal</font></a>
+</form>
+
 
 </body>
-
-
-<br>
-<br>
-<form role="form" action='@br.ufes.scap.controllers.routes.UsersController.addUser()' method="get" align="center">
-                <button type="submit" >Adicionar Novo Usuário</button>
-</form>
-
-<br>
-<br>
-
-<form role="form" action='@br.ufes.scap.controllers.routes.LoginController.menu()' method="get" align="center">
-                <button type="submit" >Voltar ao Menu Principal</button>
-</form>
-
 </html>
 }

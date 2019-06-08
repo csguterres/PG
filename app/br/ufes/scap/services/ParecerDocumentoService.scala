@@ -39,7 +39,7 @@ object ParecerDocumentoService {
     
   def turnParecerIntoParecerFull(oldParecer : ParecerDocumento): ParecerDocumentoFull = {
     val sol = SolicitacaoService.getSolicitacao(oldParecer.idSolicitacao) ;
-    val dataParecer = SolicitacaoService.getData(oldParecer.dataParecer)
+    val dataParecer = SharedServices.getData(oldParecer.dataParecer)
     return ParecerDocumentoFull(oldParecer.id, sol, oldParecer.tipo, oldParecer.julgamento, oldParecer.fileData, dataParecer) 
   }
   

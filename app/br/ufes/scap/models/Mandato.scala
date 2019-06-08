@@ -9,7 +9,7 @@ import scala.concurrent._
 import scala.concurrent.duration._
 import java.sql.Timestamp
 import java.util.Date
-import br.ufes.scap.services.MandatoService
+import br.ufes.scap.services.{MandatoService, SharedServices}
 import java.lang.Object 
 import java.time.LocalDate
 
@@ -32,9 +32,9 @@ object MandatoForm{
           "dataIniMandato" -> date,
           "dataFimMandato" -> date
         )(MandatoFormData.apply)(MandatoFormData.unapply)
-            .verifying("Erro: Data de inicio do mandato posterior a data de fim do mandato", 
-			      s => Global.checaData(s.dataIniMandato, s.dataFimMandato))  
-			      .verifying("Erro: Já há outro professor exercendo mandato na data prevista", 
+            .verifying("ERRO: Data de início do mandato posterior à data de fim do mandato", 
+			      s => SharedServices.checaData(s.dataIniMandato, s.dataFimMandato))  
+			      .verifying("ERRO: Há outro professor exercendo esse cargo nesse período", 
 			      s => MandatoService.checaDataOutros(s.dataIniMandato, s.dataFimMandato, s.cargo))  
 
 			  )

@@ -40,7 +40,7 @@ object ParecerService {
   def turnParecerIntoParecerFull(oldParecer : Parecer): ParecerFull = {
     val prof = UserService.getUser(oldParecer.idProfessor).get ;
     val sol = SolicitacaoService.getSolicitacao(oldParecer.idSolicitacao) ;
-    val dataParecer = SolicitacaoService.getData(oldParecer.dataParecer)
+    val dataParecer = SharedServices.getData(oldParecer.dataParecer)
     return ParecerFull(oldParecer.id, sol, prof, oldParecer.julgamento, oldParecer.motivo, dataParecer) 
   }
   

@@ -8,53 +8,49 @@
 
 <html>
 
-<h1>Mandatos</h1>
+<body bgcolor="teal"  >
 
+<form align="right">
+<a href="@br.ufes.scap.controllers.routes.LoginController.logout"><font color="yellow" face="trebuchet ms">Logout</font></a>
+</form>
 
-<head>
-<style>
-table, th, td {
-  border: 1px solid black;
-}
-</style>
-</head>
+    <fieldset>
+<h1><font color="white" face="trebuchet ms">Mandatos</font></h1>
 
-<body>
-
-<table style="width:100%">
+<table style="width:100%" border="5" >
 
                 <tr>
-			  <th>PROFESSOR</th>
-                    <th>CARGO</th>
-                    <th>DATA INICIO DO MANDATO</th>
-                    <th>DATA FIM DO MANDATO</th>
+			  <th><font color="white" face="trebuchet ms"> &nbsp;&nbsp PROFESSOR &nbsp;&nbsp</font></th>
+                    <th><font color="white" face="trebuchet ms"> &nbsp;&nbsp CARGO &nbsp;&nbsp </font></th>
+                    <th><font color="white" face="trebuchet ms"> &nbsp;&nbsp INICIO DO MANDATO &nbsp;&nbsp</font> </th>
+                    <th><font color="white" face="trebuchet ms"> &nbsp;&nbsp FIM DO MANDATO &nbsp;&nbsp</font></th>
 			  @if(role.equals(TipoUsuario.Sec.toString())){
-			  	<th>DELETAR</th>
+			  	<th><font color="white" face="trebuchet ms"> &nbsp;&nbsp DELETAR &nbsp;&nbsp </font></th>
 			  }
                 </tr>
 
                 @for(mandato <- mandatos){
                 <tr>
-			  <td>@mandato.professor.nome</td>
-                    <td>@mandato.cargo</td>
-			  <td>@mandato.dataIniMandato.getDayOfMonth() de @mandato.dataIniMandato.getMonth().getDisplayName(TextStyle.FULL, new Locale("pt")) de @mandato.dataIniMandato.getYear()</td>
-			  <td>@mandato.dataFimMandato.getDayOfMonth() de @mandato.dataFimMandato.getMonth().getDisplayName(TextStyle.FULL, new Locale("pt")) de @mandato.dataFimMandato.getYear()</td>
+			  <td><font color="white" face="trebuchet ms"> &nbsp;&nbsp @mandato.professor.nome &nbsp;&nbsp</font></td>
+                    <td><font color="white" face="trebuchet ms"> &nbsp;&nbsp @mandato.cargo &nbsp;&nbsp </font></td>
+			  <td><font color="white" face="trebuchet ms"> &nbsp;&nbsp @mandato.dataIniMandato.getDayOfMonth() de @mandato.dataIniMandato.getMonth().getDisplayName(TextStyle.FULL, new Locale("pt")) de @mandato.dataIniMandato.getYear() &nbsp;&nbsp </font></td>
+			  <td><font color="white" face="trebuchet ms"> &nbsp;&nbsp @mandato.dataFimMandato.getDayOfMonth() de @mandato.dataFimMandato.getMonth().getDisplayName(TextStyle.FULL, new Locale("pt")) de @mandato.dataFimMandato.getYear() &nbsp;&nbsp </font></td>
 			  @if(role.equals(TipoUsuario.Sec.toString())) {
-	                    <td><a onclick="return confirm('Você tem certeza de que deseja deletar esse mandato?');" 					  href="@br.ufes.scap.controllers.routes.MandatosController.deleteMandato(mandato.id)">deletar</a></td>
+	                    <td>&nbsp;&nbsp<a onclick="return confirm('Você tem certeza de que deseja deletar esse mandato?');" 					  href="@br.ufes.scap.controllers.routes.MandatosController.deleteMandato(mandato.id)"> <font color="yellow" face="trebuchet ms"> deletar</font></a> &nbsp;&nbsp</td>
 			  }
                 </tr>
                 }
 </table>
-
-</body>
+    </fieldset>
 
 
 <br>
 <br>
 
-<form role="form" action='@br.ufes.scap.controllers.routes.LoginController.menu()' method="get" align="center">
-                <button type="submit" >Voltar ao Menu Principal</button>
+<form align="left">
+<a href="@br.ufes.scap.controllers.routes.LoginController.menu()"><font color="yellow" face="trebuchet ms">Voltar ao Menu Principal</font></a>
 </form>
 
+</body>
 </html>
 }

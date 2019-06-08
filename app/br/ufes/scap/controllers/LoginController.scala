@@ -2,7 +2,7 @@ package br.ufes.scap.controllers
 
 import br.ufes.scap.models.{User, UserForm, UserLoginForm, Global}
 import play.api.mvc._
-import br.ufes.scap.services.{UserService, AuthenticatorService}
+import br.ufes.scap.services.{UserService, AuthenticatorService, SharedServices}
 import scala.concurrent.ExecutionContext.Implicits.global
 import javax.inject.Inject
 import play.api.data.Forms._
@@ -26,7 +26,7 @@ class LoginController @Inject()(authenticatedUsuarioAction: AuthenticatedUsuario
         Global.SESSION_MATRICULA = user.get.matricula
         Global.SESSION_EMAIL = user.get.email
         Global.SESSION_PASS = user.get.password
-        Global.isPresidenteOuVice()
+        SharedServices.isPresidenteOuVice()
         UserService.getUserByMatricula(data.matricula)
         Future.successful(Ok(br.ufes.scap.views.html.menu(UserForm.form, user)))
       })
@@ -38,6 +38,8 @@ class LoginController @Inject()(authenticatedUsuarioAction: AuthenticatedUsuario
         Global.SESSION_MATRICULA = ""
         Global.SESSION_EMAIL = ""
         Global.SESSION_PASS = ""
+        Global.SESSION_CHEFE = false
+        Global.CHEFE_ID = 0
         Redirect(routes.LoginController.login)
     }
     

@@ -20,6 +20,10 @@ class UsersController @Inject()
         Ok(br.ufes.scap.views.html.listUsers(UserForm.form, users))
   }
   
+  def addUserForm() = authenticatedSecretarioAction {
+    Ok(br.ufes.scap.views.html.addUser(UserForm.form))
+  }
+  
   def addUser() =  authenticatedSecretarioAction.async { implicit request =>
       UserForm.form.bindFromRequest.fold(
         // if any error in submitted data

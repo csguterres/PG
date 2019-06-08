@@ -6,83 +6,120 @@
 
 @main() {
 
-<p>Solicitacao para o evento "@solicitacao.nomeEvento"</p> 
-<p>Professor(a): @solicitacao.professor.nome</p>
-<p>Status Atual: @solicitacao.status</p>
-@if(solicitacao.relator != None){
-<p>Relator(a): @solicitacao.relator.get.nome</p>
-}else{
-<p>Relator(a): Não designado</p>
-}
-<p> Tipo Afastamento : @solicitacao.tipoAfastamento</p>
-<p>Data de início do afastamento: @solicitacao.dataIniAfast.getDayOfMonth() de @solicitacao.dataIniAfast.getMonth().getDisplayName(TextStyle.FULL, new Locale("pt")) de @solicitacao.dataIniAfast.getYear()</p>
-<p>Data de fim do afastamento: @solicitacao.dataFimAfast.getDayOfMonth() de @solicitacao.dataFimAfast.getMonth().getDisplayName(TextStyle.FULL, new Locale("pt")) de @solicitacao.dataFimAfast.getYear()</p>
-<p>Data de início do evento: @solicitacao.dataIniEvento.getDayOfMonth() de @solicitacao.dataIniEvento.getMonth().getDisplayName(TextStyle.FULL, new Locale("pt")) de @solicitacao.dataIniEvento.getYear()</p>
-<p>Data de fim do evento: @solicitacao.dataFimEvento.getDayOfMonth() de @solicitacao.dataFimEvento.getMonth().getDisplayName(TextStyle.FULL, new Locale("pt")) de @solicitacao.dataFimEvento.getYear()</p>
-<br>
+<body  bgcolor="teal">
 
-
-
-@if(userTipo.equals(TipoUsuario.Sec.toString()) && (solicitacao.status.equals(StatusSolicitacao.Reprovada.toString()) || solicitacao.status.equals(StatusSolicitacao.AprovadaPRPPG.toString()))){
-<form action="@br.ufes.scap.controllers.routes.SolicitacoesController.arquivar(solicitacao.id)" align="center" method="get">
-  <input type="submit" value="Arquivar">
+<form align="right">
+<a href="@br.ufes.scap.controllers.routes.LoginController.logout"><font color="yellow" face="trebuchet ms">Logout</font></a>
 </form>
+
+<fieldset>
+<h1><font color="white" face="trebuchet ms">Dados da Solicitação de Afastamento</font></h1>
+<table style="width:100%" border="5" >
+                <tr>
+                    <td><font color="white" face="trebuchet ms"> &nbsp;&nbsp ID </font> </th>
+                    <td><font color="white" face="trebuchet ms"> &nbsp;&nbsp @solicitacao.id &nbsp;&nbsp </font> </th>
+                </tr>
+                <tr>
+                    <td><font color="white" face="trebuchet ms"> &nbsp;&nbsp Evento </font> </th>
+                    <td><font color="white" face="trebuchet ms"> &nbsp;&nbsp @solicitacao.nomeEvento &nbsp;&nbsp </font> </th>
+                </tr>
+                <tr>
+                    <td><font color="white" face="trebuchet ms"> &nbsp;&nbsp Professor(a) </font> </th>
+                    <td><font color="white" face="trebuchet ms"> &nbsp;&nbsp @solicitacao.professor.nome &nbsp;&nbsp </font> </th>
+                </tr>
+                <tr>
+                    <td><font color="white" face="trebuchet ms"> &nbsp;&nbsp Status da Solicitação </font> </th>
+                    <td><font color="white" face="trebuchet ms"> &nbsp;&nbsp @solicitacao.status &nbsp;&nbsp </font> </th>
+                </tr>
+                <tr>
+                    <td><font color="white" face="trebuchet ms"> &nbsp;&nbsp Relator(a) </font> </th>
+@if(solicitacao.relator != None){
+                    <td><font color="white" face="trebuchet ms"> &nbsp;&nbsp @solicitacao.relator.get.nome &nbsp;&nbsp </font> </th>
+}else{
+                    <td><font color="white" face="trebuchet ms"> &nbsp;&nbsp --- </font> </th>
+}
+                </tr>
+                <tr>
+                    <td><font color="white" face="trebuchet ms"> &nbsp;&nbsp Tipo de Afastamento </font> </th>
+                    <td><font color="white" face="trebuchet ms"> &nbsp;&nbsp @solicitacao.tipoAfastamento &nbsp;&nbsp </font> </th>
+                </tr>
+
+                <tr>
+                    <td><font color="white" face="trebuchet ms"> &nbsp;&nbsp Início do Afastamento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp </font> </th>
+                    <td><font color="white" face="trebuchet ms"> &nbsp;&nbsp @solicitacao.dataIniAfast.getDayOfMonth() de @solicitacao.dataIniAfast.getMonth().getDisplayName(TextStyle.FULL, new Locale("pt")) de @solicitacao.dataIniAfast.getYear() &nbsp;&nbsp </font> </th>
+                </tr>
+
+                <tr>
+                    <td><font color="white" face="trebuchet ms"> &nbsp;&nbsp Fim do Afastamento </font> </th>
+                    <td><font color="white" face="trebuchet ms"> &nbsp;&nbsp @solicitacao.dataFimAfast.getDayOfMonth() de @solicitacao.dataFimAfast.getMonth().getDisplayName(TextStyle.FULL, new Locale("pt")) de @solicitacao.dataFimAfast.getYear() &nbsp;&nbsp </font> </th>
+                </tr>
+
+                <tr>
+                    <td><font color="white" face="trebuchet ms"> &nbsp;&nbsp Início do Evento </font> </th>
+                    <td><font color="white" face="trebuchet ms"> &nbsp;&nbsp @solicitacao.dataIniEvento.getDayOfMonth() de @solicitacao.dataIniEvento.getMonth().getDisplayName(TextStyle.FULL, new Locale("pt")) de @solicitacao.dataIniEvento.getYear() &nbsp;&nbsp </font> </th>
+                </tr>
+
+                <tr>
+                    <td><font color="white" face="trebuchet ms"> &nbsp;&nbsp Fim do Evento </font> </th>
+                    <td><font color="white" face="trebuchet ms"> &nbsp;&nbsp @solicitacao.dataFimEvento.getDayOfMonth() de @solicitacao.dataFimEvento.getMonth().getDisplayName(TextStyle.FULL, new Locale("pt")) de @solicitacao.dataFimEvento.getYear() &nbsp;&nbsp </font> </th>
+                </tr>
+
+</table>
+
+
+<br>
+<br>
+@if(userTipo.equals(TipoUsuario.Sec.toString()) && (solicitacao.status.equals(StatusSolicitacao.Reprovada.toString()) || solicitacao.status.equals(StatusSolicitacao.AprovadaPRPPG.toString()))){
+<a ref="@br.ufes.scap.controllers.routes.SolicitacoesController.arquivar(solicitacao.id)"><font color="yellow" face="trebuchet ms">Arquivar solicitação</font></a>
 <br>
 <br>
 }
 
 @if(userTipo.equals(TipoUsuario.Sec.toString()) && (solicitacao.status.equals(StatusSolicitacao.AprovadaDI.toString()) || solicitacao.status.equals(StatusSolicitacao.AprovadaCT.toString()))){
-<form action="@br.ufes.scap.controllers.routes.PareceresDocumentoController.registrarParecerDocumentoForm(solicitacao.id)" align="center" method="get">
-  <input type="submit" value="Registrar Parecer">
-</form>
+<a ref="@br.ufes.scap.controllers.routes.PareceresDocumentoController.registrarParecerDocumentoForm(solicitacao.id)"><font color="yellow" face="trebuchet ms">Registrar parecer externo</font></a>
 <br>
 <br>
 }
 
 @if(userTipo.equals(TipoAcessorio.Chefe.toString()) && solicitacao.status.equals(StatusSolicitacao.Iniciada.toString())){
-<form action="@br.ufes.scap.controllers.routes.SolicitacoesController.encaminharSolicitacao(solicitacao.id)" align="center" method="get">
-  <input type="submit" value="Designar Relator">
-</form>
+<a href="@br.ufes.scap.controllers.routes.SolicitacoesController.encaminharSolicitacao(solicitacao.id)" align="center" method="get">
+<font color="yellow" face="trebuchet ms">Designar relator</font>
+</a>
 <br>
 <br>
 }
 
 @if(userTipo.equals(TipoAcessorio.Autor.toString()) && !solicitacao.status.equals(StatusSolicitacao.Cancelada.toString())){
-<form action="@br.ufes.scap.controllers.routes.SolicitacoesController.deleteSolicitacao(solicitacao.id)" align="center" method="get">
-  <input type="submit" onclick="return confirm('Você tem certeza de que deseja cancelar essa solicitação?');" value="Deletar">
-</form>
+<a href="@br.ufes.scap.controllers.routes.SolicitacoesController.cancelarSolicitacao(solicitacao.id)" align="center" method="get">
+<font color="yellow" face="trebuchet ms">Cancelar solicitação</font></a>
 <br>
 <br>
 }
 
 @if(userTipo.equals(TipoUsuario.Prof.toString()) && (solicitacao.status.equals(StatusSolicitacao.Iniciada.toString()) || solicitacao.status.equals(StatusSolicitacao.Liberada.toString())) ){
-<form action="@br.ufes.scap.controllers.routes.PareceresController.manifestarContraForm(solicitacao.id)" align="center" method="get">
-  <input type="submit" value="Manifestar-se Contra">
-</form>
+<a href="@br.ufes.scap.controllers.routes.PareceresController.manifestarContraForm(solicitacao.id)">
+<font color="yellow" face="trebuchet ms">Manifestar-se Contra</font></a>
 <br>
 <br>
 }
 
 @if(userTipo.equals(TipoAcessorio.Relator.toString()) && solicitacao.status.equals(StatusSolicitacao.Liberada.toString())){
-<form action="@br.ufes.scap.controllers.routes.PareceresController.registrarParecer(solicitacao.id)" align="center" method="get">
-  <input type="submit" value="Registrar Parecer">
-</form>
+<a href="@br.ufes.scap.controllers.routes.PareceresController.registrarParecer(solicitacao.id)"><font color="yellow" face="trebuchet ms">Registrar Parecer</font></a>
 <br>
 <br>
 }
 
 
-<form action="@br.ufes.scap.controllers.routes.PareceresController.index(solicitacao.id)" align="center" method="get">
-  <input type="submit" value="Ver Pareceres">
-</form>
+<a href="@br.ufes.scap.controllers.routes.PareceresController.index(solicitacao.id)"><font color="yellow" face="trebuchet ms">Ver Pareceres</font></a>
+<br>
+</fieldset>
+<br>
+<br>
+<br>
+<br>
+<br>
 
-<br>
-<br>
-<br>
-<form id="user-list-form" role="form" action='@br.ufes.scap.controllers.routes.LoginController.menu()' method="get"
-      class="form-horizontal" align="center" autocomplete="off">
-            <div class="form-actions controls ynt-btn-xlarge">
-                <button type="submit" class="btn btn-primary ynt-btn-orange">Voltar ao Menu Principal</button>
-            </div>
+<form align="left">
+<a href="@br.ufes.scap.controllers.routes.LoginController.menu()"><font color="yellow" face="trebuchet ms">Voltar ao Menu Principal</font></a>
 </form>
 }

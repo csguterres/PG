@@ -1,4 +1,4 @@
-@(buscaForm: Form[br.ufes.scap.models.BuscaFormData], users : Seq[br.ufes.scap.models.User])(implicit request: RequestHeader)
+@(buscaForm: Form[br.ufes.scap.models.BuscaFormData], users : Seq[br.ufes.scap.models.User])()
 
 @import br.ufes.scap.models.{StatusSolicitacao, TipoAcessorio}
 
@@ -9,24 +9,21 @@
             @error.message
         </p>
 	}
+<body bgcolor="teal" >
+<form align="right">
+<a href="@br.ufes.scap.controllers.routes.LoginController.logout"><font color="yellow" face="trebuchet ms">Logout</font></a>
+</form>
 
-<form id="busca-form-id" role="form" action='@br.ufes.scap.controllers.routes.SolicitacoesController.definirBusca()' method="post"
-      class="form-horizontal" align="center" autocomplete="off">
+<form role="form" align="center" action='@br.ufes.scap.controllers.routes.SolicitacoesController.definirBusca()' method="post"
+      autocomplete="off">
 
-    <fieldset class="busca-fieldset">
-        <div class="col-xs-4">
-            <div class="busca-form">
-                <label class="form-title"
-                       style="color: #F8741B; font-size: 22px;font-weight: bold; text-decoration:none">Busca</label>
-            </div>
+    <fieldset>
+
+            <h1><font face="trebuchet ms" color="white">Buscar Solicitação de Afastamento</font></h1>
             <br/>
 
 		<br>
-		<b>Nome do Professor:</b> 
-		<br>
-		(escolher TODOS caso não deseje usar esse parâmetro de busca)
-		<br>
-		<br>
+		<font color="white" face="trebuchet ms">Professor: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp </font>
 		<select id="idProfessor" name="idProfessor" value="">
     			<option value=0>@TipoAcessorio.Todos.toString()</option>
 		@for(user <- users){
@@ -36,11 +33,7 @@
 		<br>
 		<br>
 		<br>
-		<b>Nome do Relator:</b> 
-		<br>
-		(escolher TODOS caso não deseje usar esse parâmetro de busca)
-		<br>
-		<br>
+		<font color="white" face="trebuchet ms">Relator: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp </font>
 		<select id="idRelator" name="idRelator" value="">
     			<option value=0>@TipoAcessorio.Todos.toString()</option>
 		@for(user <- users){
@@ -52,31 +45,21 @@
 		<br>
 		<br>
 
-            <b>Status da Solicitacao </b>
-		<br>
-		<br>
-		(escolher TODOS caso não deseje usar esse parâmetro de busca)
-		<br>
-		<br>
+            <font color="white" face="trebuchet ms">Status da Solicitacao: &nbsp;&nbsp </font>
+
 		<select id="status" name="status" value="">
     			<option value=@TipoAcessorio.Todos.toString()>@TipoAcessorio.Todos.toString()</option>
 		@for(s <- StatusSolicitacao.values){
   			<option value=@s.toString()>@s.toString()</option>
 		}
 		</select>
+
 		<br>
 		<br>
-
-    </ul>
-  </div>
-
-
-            <br/>
-            <div class="form-actions controls ynt-btn-xlarge">
-                <button type="submit" class="btn btn-primary ynt-btn-orange">Executar Busca</button>
-            </div>
-
-        </div>
+		<br>
+		<br>
+		<br>
+                <button type="submit">Executar Busca</button>
     </fieldset>
 </form>
 
@@ -84,11 +67,9 @@
 <br>
 <br>
 
-<form id="user-add-form" role="form" action='@br.ufes.scap.controllers.routes.LoginController.menu()' method="get"
-      class="form-horizontal" align="center" autocomplete="off">
-            <div class="form-actions controls ynt-btn-xlarge">
-                <button type="submit" class="btn btn-primary ynt-btn-orange">Voltar ao Menu Principal</button>
-            </div>
+<form align="left">
+<a href="@br.ufes.scap.controllers.routes.LoginController.menu()"><font color="yellow" face="trebuchet ms">Voltar ao Menu Principal</font></a>
 </form>
+</body>
 
 }

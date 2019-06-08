@@ -1,15 +1,14 @@
 package br.ufes.scap.models
 
-import play.api.mvc._
+import slick.driver.MySQLDriver.api._
 import play.api.data.Form
 import play.api.data.Forms._
-import slick.driver.MySQLDriver.api._
 import java.util.Date
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent._
 import scala.concurrent.duration._
 import java.sql.Timestamp
-import br.ufes.scap.services.ParentescoService
+import br.ufes.scap.services.{ParentescoService, SharedServices}
 import java.time.LocalDate;    
 
 case class Solicitacao(id: Long, idProfessor : Long, 
@@ -68,9 +67,9 @@ object SolicitacaoForm {
       "tipoAfastamento" -> nonEmptyText
     )(SolicitacaoFormData.apply)(SolicitacaoFormData.unapply)      
 			  .verifying("Erro: Data de inicio do afastamento posterior a data de fim do afastamento",  
-			      s => Global.checaData(s.dataIniAfast, s.dataFimAfast))
+			      s => SharedServices.checaData(s.dataIniAfast, s.dataFimAfast))
 			  .verifying("Erro: Data de inicio do evento posterior a data de fim do evento", 
-			      s => Global.checaData(s.dataIniEvento, s.dataFimEvento))
+			      s => SharedServices.checaData(s.dataIniEvento, s.dataFimEvento))
   )
   
 

@@ -1,24 +1,28 @@
 @(parentescoForm: Form[br.ufes.scap.models.ParentescoFormData], users : Seq[br.ufes.scap.models.User])(implicit request: RequestHeader)
 @main() {
 
+
+<body bgcolor="teal"  >
+
+<form align="right">
+<a href="@br.ufes.scap.controllers.routes.LoginController.logout"><font color="yellow" face="trebuchet ms">Logout</font></a>
+</form>
+
     @parentescoForm.globalError.map { error =>
         <p class="error">
-            @error.message
+            <font face="trebuchet ms" color="yellow">@error.message </font>
         </p>
 	}
 
-<form id="parentesco-data-form" role="form" action='@br.ufes.scap.controllers.routes.ParentescosController.addParentesco()' method="post"
-      class="form-horizontal" align="center" autocomplete="off">
 
-    <fieldset class="parentesco-fieldset">
-        <div class="col-xs-4">
-            <div class="parentesco-form">
-                <label class="form-title"
-                       style="color: #F8741B; font-size: 22px;font-weight: bold; text-decoration:none">Registro Novo Parentesco</label>
-            </div>
-            <br/>
 
-            Professor 
+<form role="form" action='@br.ufes.scap.controllers.routes.ParentescosController.addParentesco()' method="post" align="center" autocomplete="off">
+
+    <fieldset>
+        
+		<h1><font face="trebuchet ms" color="white">Registrar Parentesco</font></h1>
+
+            <font color="white" face="trebuchet ms"> Professor(a) &nbsp;&nbsp;&nbsp  </font>
 		<select id=idProfessor1 name="idProfessor1" value="">
 		@for(user <- users){
     			<option value=@user.id>@user.nome</option>
@@ -28,7 +32,7 @@
 		<br>
 		<br>
 
-            Parente de
+             <font color="white" face="trebuchet ms"> Parente de &nbsp;&nbsp  </font>
 		<select id=idProfessor2 name="idProfessor2" value="">
 		@for(user <- users){
     			<option value=@user.id>@user.nome</option>
@@ -37,24 +41,25 @@
 
 		<br>
 		<br>
-    </ul>
-  </div>
+             <font color="white" face="trebuchet ms"> *Parentescos podem ser sanguíneos ou matrimoniais  </font>
 
+		<br>
+		<br>
+		<br>
 
-            <br/>
-            <button type="submit" ">Adicionar Novo Parentesco</button>
+            <button type="submit" ">Registrar</button>
 
-        </div>
     </fieldset>
 </form>
 
 <br>
 <br>
 <br>
-
+<br>
 		
-<form role="form" action='@br.ufes.scap.controllers.routes.LoginController.menu()' method="get" align="center">
-                <button type="submit" >Voltar ao Menu Principal</button>
+<form align="left">
+<a href="@br.ufes.scap.controllers.routes.LoginController.menu()"><font color="yellow" face="trebuchet ms">Voltar ao Menu Principal</font></a>
 </form>
+</body>
 
 }

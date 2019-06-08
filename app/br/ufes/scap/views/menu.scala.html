@@ -2,46 +2,49 @@
 @main() {
 <!DOCTYPE html>
 <html>
-<body>
 
-<a href="@br.ufes.scap.controllers.routes.LoginController.logout">Logout</a>
 
-<h1>Menu Principal</h1>
-<br>
-<a href="@br.ufes.scap.controllers.routes.UsersController.editUser(user.get.id)">Editar seu perfil</a>
-<br>
-<br>
-<a href="@br.ufes.scap.controllers.routes.SolicitacoesController.listarSolicitacoes">Listar Solicitações
+<form align="right">
+<a href="@br.ufes.scap.controllers.routes.LoginController.logout"><font color="yellow" face="trebuchet ms">Logout</font></a>
+</form>
+<body  bgcolor="teal">
 <br>
 <br>
-<a href="@br.ufes.scap.controllers.routes.MandatosController.listarMandatos">Listar Mandatos
-<br>
-<br>
-<a href="@br.ufes.scap.controllers.routes.ParentescosController.listarParentescos">Listar Parentescos</a>
-<br>
-<br>
+<table  border="5"><tr><th><h1><font face="trebuchet ms" color="white">Menu Principal</font></h1></th></tr>
+<tr>
+<td><a href="@br.ufes.scap.controllers.routes.UsersController.editUser(user.get.id)"><font color="yellow" face="trebuchet ms">Editar seu perfil</font></a></td>
+</tr>
+<tr>
+<td><a href="@br.ufes.scap.controllers.routes.SolicitacoesController.listarSolicitacoes"><font color="yellow" face="trebuchet ms">Listar Solicitações</font></a></td>
+</tr>
+<tr>
+<td><a href="@br.ufes.scap.controllers.routes.MandatosController.listarMandatos"><font color="yellow" face="trebuchet ms">Listar Mandatos</font></a></td>
+</tr>
+<tr>
+<td><a href="@br.ufes.scap.controllers.routes.ParentescosController.listarParentescos"><font color="yellow" face="trebuchet ms">Listar Parentescos</font></a></td>
+</tr>
 @if(user.get.tipo.equals("PROFESSOR")){
-<a href="@br.ufes.scap.controllers.routes.SolicitacoesController.addSolicitacao">Adicionar Solicitação</a>
-<br>
-<br>
+<tr>
+<td><a href="@br.ufes.scap.controllers.routes.SolicitacoesController.addSolicitacaoForm"><font color="yellow" face="trebuchet ms">Adicionar Solicitação</font></a></td>
+</tr>
 }
 @if(user.get.tipo.equals("SECRETARIO")){
-<a href="@br.ufes.scap.controllers.routes.UsersController.listarUsuarios">Listar Usuários</a>
+<tr>
+<td><a href="@br.ufes.scap.controllers.routes.UsersController.listarUsuarios"><font color="yellow" face="trebuchet ms">Listar Usuários</font></a></td>
+</tr>
+<tr>
+<td><a href="@br.ufes.scap.controllers.routes.UsersController.addUserForm"><font color="yellow" face="trebuchet ms">Adicionar Usuário</font></a></td>
+</tr>
+<tr>
+<td><a href="@br.ufes.scap.controllers.routes.MandatosController.addMandatoForm"><font color="yellow" face="trebuchet ms">Adicionar Mandato</font></a></td>
+</tr>
+<tr>
+<td><a href="@br.ufes.scap.controllers.routes.ParentescosController.addParentescoForm()"><font color="yellow" face="trebuchet ms">Adicionar Parentesco</font></a></td>
+</tr>
+</table>
 <br>
 <br>
-<a href="@br.ufes.scap.controllers.routes.UsersController.addUser">Adicionar Usuário</a>
-<br>
-<br>
-<a href="@br.ufes.scap.controllers.routes.MandatosController.addMandatoForm">Adicionar Mandato</a>
-<br>
-<br>
-<a href="@br.ufes.scap.controllers.routes.ParentescosController.addParentescoForm()">Adicionar Parentesco</a>
-<br>
-<br>
-}
-
-
-
 </body>
 </html>
+}
 }
