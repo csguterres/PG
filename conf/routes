@@ -29,6 +29,7 @@ GET     /addMandatoForm					br.ufes.scap.controllers.MandatosController.addManda
 POST    /addMandato					br.ufes.scap.controllers.MandatosController.addMandato()
 GET     /deleteMandato/:id/         		br.ufes.scap.controllers.MandatosController.deleteMandato(id : Long)
 GET	  /user/:id/mandatos				br.ufes.scap.controllers.MandatosController.showMandatosByProfessor(id : Long)
+GET	  /user/:id/solicitacoes			br.ufes.scap.controllers.SolicitacoesController.showAfastamentosByProfessor(id : Long)
 GET	  /addParentesco					br.ufes.scap.controllers.ParentescosController.addParentescoForm
 POST	  /addParentesco					br.ufes.scap.controllers.ParentescosController.addParentesco
 GET	  /listParentescos				br.ufes.scap.controllers.ParentescosController.listarParentescos

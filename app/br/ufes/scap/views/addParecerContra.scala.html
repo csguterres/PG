@@ -7,27 +7,32 @@
         </p>
 	}
 
-<body>
+<body bgcolor="teal"  >
+<fieldset>
       <form action = "@br.ufes.scap.controllers.routes.PareceresController.manifestarContra(solicitacao.id)" align="center"
 	method = "post">
          <br />
          
-         <textarea id="motivo"  name="motivo" rows = "5" cols = "50" name = "description">
-		Escreva o motivo de se posicionar contrário a essa solicitação
+		<h1><font color="white" face="trebuchet ms"> Manifestar-se contra a solicitação</font></h1>
+<br>
+
+	   <font color="white" face="trebuchet ms">Motivo: </font>
+		<br>
+         <textarea id="motivo"  align="center" name="motivo" rows = "5" cols = "50">
          </textarea>
          
 <br>
          <input onclick="return confirm('Você tem certeza de que deseja se manifestar contra essa solicitação?');" type = "submit" value = "Registrar">
       </form>
-</body>
+</fieldset>
 
 
 <br>
 <br>
 <br>
 
-		
-<form role="form" action='@br.ufes.scap.controllers.routes.LoginController.menu()' method="get" align="center">
-                <button type="submit" >Voltar ao Menu Principal</button>
+<form align="left">
+<a href="@br.ufes.scap.controllers.routes.LoginController.menu()"><font color="yellow" face="trebuchet ms">Voltar ao Menu Principal</font></a>
 </form>
+</body>
 }

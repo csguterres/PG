@@ -20,7 +20,7 @@ class ParentescosController @Inject()
   
   def listarParentescos = authenticatedUsuarioAction { 
         val parentescos = ParentescoService.listAllParentescos
-        Ok(br.ufes.scap.views.html.listParentescos(parentescos))
+        Ok(br.ufes.scap.views.html.listParentescos(parentescos, Global.SESSION_TIPO))
   }
 
   def deleteParentesco(id: Long) = authenticatedSecretarioAction { implicit request =>

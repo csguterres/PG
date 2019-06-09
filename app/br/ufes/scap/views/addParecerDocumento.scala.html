@@ -10,12 +10,15 @@
         </p>
 	}
 
-<body>
+<body bgcolor="teal"  >
+<fieldset>
       <form action = "@br.ufes.scap.controllers.routes.PareceresDocumentoController.registrarParecerDocumento(solicitacao.id)" align="center"
 	method = "post">
          <br>
 
-		Parecer: 
+		<h1><font color="white" face="trebuchet ms"> Registrar Parecer Externo</font></h1>
+
+		<font color="white" face="trebuchet ms">Órgão Emissor: &nbsp;&nbsp </font>
 
 		@if(solicitacao.status.equals(StatusSolicitacao.AprovadaCT.toString())){
 		<input type="text" readonly="readonly" name="tipo" id="tipo" value=@Setor.PRPPG.toString()>
@@ -24,10 +27,18 @@
 		}
 		<br> 
 		<br>
+
+		<font color="white" face="trebuchet ms"> Julgamento: &nbsp;&nbsp </font>
+		<select id=julgamento name="julgamento" value="">
+		@for(j <- TipoJulgamento.values){
+  			<option value=@j.toString()>@j.toString()</option>
+		}
+		</select>
 		<br> 
 		<br>
+		
 
-    		Escolha o documento para anexar:
+    		<font color="white" face="trebuchet ms">Escolha o documento para anexar: &nbsp;&nbsp </font>
     		<input type="file" name="filePath" id="filePath">
 
 		<br> 
@@ -35,28 +46,20 @@
 		<br> 
 		<br>
 
-		<select id=julgamento name="julgamento" value="">
-		@for(j <- TipoJulgamento.values){
-  			<option value=@j.toString()>@j.toString()</option>
-		}
-		</select>
-            </div>
-		<br> 
-		<br>
-		
-         
-<br>
+
          <input type = "submit" align="center" onclick="return confirm('Você tem certeza de que deseja registrar esse parecer?');" value = "Registrar">
       </form>
-</body>
 
+</fieldset>
 
 <br>
 <br>
 <br>
 
 		
-<form role="form" action='@br.ufes.scap.controllers.routes.LoginController.menu()' method="get" align="center">
-                <button type="submit" >Voltar ao Menu Principal</button>
+<form align="left">
+<a href="@br.ufes.scap.controllers.routes.LoginController.menu()"><font color="yellow" face="trebuchet ms">Voltar ao Menu Principal</font></a>
 </form>
+
+</body>
 }

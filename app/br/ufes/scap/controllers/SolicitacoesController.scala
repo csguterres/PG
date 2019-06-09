@@ -27,6 +27,11 @@ class SolicitacoesController @Inject()
         Ok(br.ufes.scap.views.html.buscarSolicitacoes(BuscaForm.form, users))
   }
   
+  def showAfastamentosByProfessor(idProfessor : Long) = authenticatedUsuarioAction {
+    val afastamentos = SolicitacaoService.listAllSolicitacoesBySolicitante(idProfessor)
+    Ok(br.ufes.scap.views.html.listSolicitacoes(afastamentos))
+  }
+  
   def definirBusca = authenticatedUsuarioAction.async { implicit request =>
         BuscaForm.form.bindFromRequest.fold(
         // if any error in submitted data

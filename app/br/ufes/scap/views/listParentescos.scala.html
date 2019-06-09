@@ -1,4 +1,7 @@
-@(parentescos : Seq[br.ufes.scap.models.ParentescoFull])()
+@(parentescos : Seq[br.ufes.scap.models.ParentescoFull], role : String)()
+
+@import br.ufes.scap.models.TipoUsuario
+
 @main() {
 
 <html>
@@ -20,15 +23,18 @@
                     <th><font color="white" face="trebuchet ms"> &nbsp;&nbsp ID  &nbsp;&nbsp;&nbsp </font> </th>
                     <th><font color="white" face="trebuchet ms"> &nbsp;&nbsp PROFESSOR(A) &nbsp;&nbsp </font> </th>
                     <th><font color="white" face="trebuchet ms"> &nbsp;&nbsp PROFESSOR(A) &nbsp;&nbsp </font> </th>
-			  <th><font color="white" face="trebuchet ms"> &nbsp;&nbsp DELETAR &nbsp;&nbsp </font></th>
+			  @if(role.equals(TipoUsuario.Sec.toString())){
+			  	<th><font color="white" face="trebuchet ms"> &nbsp;&nbsp DELETAR &nbsp;&nbsp </font></th>
+			  }
                 </tr>
                 @for(p <- parentescos){
                 <tr>
                     <td><font color="white" face="trebuchet ms"> &nbsp;&nbsp @p.id&nbsp;&nbsp </font></td>
                     <td><font color="white" face="trebuchet ms"> &nbsp;&nbsp@p.professor1.nome &nbsp;&nbsp </font></td>
                     <td><font color="white" face="trebuchet ms"> &nbsp;&nbsp @p.professor2.nome &nbsp;&nbsp </font></td>
-                    <td>&nbsp;&nbsp <a href="@br.ufes.scap.controllers.routes.ParentescosController.deleteParentesco(p.id)" 
-   class="btn btn-danger" onclick="return confirm('Você tem certeza de que deseja excluir esse parentesco?');"><font color="yellow" face="trebuchet ms"> deletar</font></a></td>
+			  @if(role.equals(TipoUsuario.Sec.toString())){
+                    	<td>&nbsp;&nbsp <a href="@br.ufes.scap.controllers.routes.ParentescosController.deleteParentesco(p.id)"><font color="yellow" face="trebuchet ms"> deletar</font></a></td>
+			  }
                 </tr>
                 }
 </table>

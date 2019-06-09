@@ -14,10 +14,12 @@
 
             <br/>
 
-<font color="white" face="trebuchet ms"> Designar relator para a solicitacao do professor @solicitacao.professor.nome para o evento @solicitacao.nomeEvento</font>
+<font color="white" face="trebuchet ms"> Designar relator para a solicitação do professor @solicitacao.professor.nome para o evento @solicitacao.nomeEvento</font>
+		
 
             <input type="hidden" id="idProfessor" name="idProfessor" value="@solicitacao.professor.id">
 
+		<br>
 		<br>
 		<font color="white" face="trebuchet ms"> Relator:  &nbsp;&nbsp </font>
 		<select id=idRelator name="idRelator" value="">
@@ -25,11 +27,10 @@
     			<option value=@user.id>@user.nome</option>
 		}
 		</select>
-            </div>
-
 		<br>
 		<br>
-            <br/>
+		<br>
+		<br>
 
                 <button type="submit" onclick="return confirm('Você tem certeza de que deseja designar esse professor(a) como relator(a) dessa solicitação de afastamento?');" class="btn btn-primary ynt-btn-orange">Designar</button>
 

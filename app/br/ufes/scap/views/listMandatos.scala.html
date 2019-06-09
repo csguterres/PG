@@ -36,7 +36,7 @@
 			  <td><font color="white" face="trebuchet ms"> &nbsp;&nbsp @mandato.dataIniMandato.getDayOfMonth() de @mandato.dataIniMandato.getMonth().getDisplayName(TextStyle.FULL, new Locale("pt")) de @mandato.dataIniMandato.getYear() &nbsp;&nbsp </font></td>
 			  <td><font color="white" face="trebuchet ms"> &nbsp;&nbsp @mandato.dataFimMandato.getDayOfMonth() de @mandato.dataFimMandato.getMonth().getDisplayName(TextStyle.FULL, new Locale("pt")) de @mandato.dataFimMandato.getYear() &nbsp;&nbsp </font></td>
 			  @if(role.equals(TipoUsuario.Sec.toString())) {
-	                    <td>&nbsp;&nbsp<a onclick="return confirm('Você tem certeza de que deseja deletar esse mandato?');" 					  href="@br.ufes.scap.controllers.routes.MandatosController.deleteMandato(mandato.id)"> <font color="yellow" face="trebuchet ms"> deletar</font></a> &nbsp;&nbsp</td>
+	                    <td>&nbsp;&nbsp<a href="@br.ufes.scap.controllers.routes.MandatosController.deleteMandato(mandato.id)"><font color="yellow" face="trebuchet ms">deletar</font></a>&nbsp;&nbsp</td>
 			  }
                 </tr>
                 }

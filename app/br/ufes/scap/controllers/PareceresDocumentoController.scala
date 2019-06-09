@@ -52,7 +52,7 @@ class PareceresDocumentoController @Inject()
                   SolicitacaoService.mudaStatus(solicitacao,StatusSolicitacao.AprovadaCT.toString())
                   EmailService.enviarEmailParaSolicitante(solicitacao.id, solicitacao.professor, StatusSolicitacao.AprovadaCT.toString())
                 }else{
-                   if (data.julgamento.equals(TipoJulgamento.Contra.toString()) && data.tipo.equals(Setor.PRPPG.toString())){
+                   if (data.julgamento.equals(TipoJulgamento.AFavor.toString()) && data.tipo.equals(Setor.PRPPG.toString())){
                      SolicitacaoService.mudaStatus(solicitacao,StatusSolicitacao.AprovadaPRPPG.toString())
                      EmailService.enviarEmailParaSolicitante(solicitacao.id, solicitacao.professor, StatusSolicitacao.AprovadaPRPPG.toString())
                    }
@@ -73,13 +73,13 @@ class PareceresDocumentoController @Inject()
     def DownloadFile(idParecer : Long) = authenticatedUsuarioAction{
           val parecerDocumento = ParecerDocumentoService.getParecer(idParecer)
           val currentDirectory = new java.io.File(".").getCanonicalPath
-          val output = new FileOutputStream(new File(currentDirectory + "/Pareceres/" + "PARECER-" + parecerDocumento.tipo));
+          val output = new FileOutputStream(new File(currentDirectory + "/Pareceres/" + "PARECER-" + parecerDocumento.tipo + "_ID-" + parecerDocumento.id));
           System.out.println("Getting file please be patient..");
     
           output.write(parecerDocumento.fileData);
           
           println("File writing complete !")
-          Ok(br.ufes.scap.views.html.verParecerDocumento(parecerDocumento))
+          Ok(br.ufes.scap.views.html.downloadSucesso())
       }
   
   }

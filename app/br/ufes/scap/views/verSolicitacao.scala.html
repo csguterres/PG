@@ -70,21 +70,20 @@
 <br>
 <br>
 @if(userTipo.equals(TipoUsuario.Sec.toString()) && (solicitacao.status.equals(StatusSolicitacao.Reprovada.toString()) || solicitacao.status.equals(StatusSolicitacao.AprovadaPRPPG.toString()))){
-<a ref="@br.ufes.scap.controllers.routes.SolicitacoesController.arquivar(solicitacao.id)"><font color="yellow" face="trebuchet ms">Arquivar solicitação</font></a>
+<a href="@br.ufes.scap.controllers.routes.SolicitacoesController.arquivar(solicitacao.id)"><font color="yellow" face="trebuchet ms">Arquivar solicitação</font></a>
 <br>
 <br>
 }
 
 @if(userTipo.equals(TipoUsuario.Sec.toString()) && (solicitacao.status.equals(StatusSolicitacao.AprovadaDI.toString()) || solicitacao.status.equals(StatusSolicitacao.AprovadaCT.toString()))){
-<a ref="@br.ufes.scap.controllers.routes.PareceresDocumentoController.registrarParecerDocumentoForm(solicitacao.id)"><font color="yellow" face="trebuchet ms">Registrar parecer externo</font></a>
+<a href="@br.ufes.scap.controllers.routes.PareceresDocumentoController.registrarParecerDocumentoForm(solicitacao.id)"><font color="yellow" face="trebuchet ms">Registrar parecer externo</font></a>
 <br>
 <br>
 }
 
 @if(userTipo.equals(TipoAcessorio.Chefe.toString()) && solicitacao.status.equals(StatusSolicitacao.Iniciada.toString())){
-<a href="@br.ufes.scap.controllers.routes.SolicitacoesController.encaminharSolicitacao(solicitacao.id)" align="center" method="get">
-<font color="yellow" face="trebuchet ms">Designar relator</font>
-</a>
+<a href="@br.ufes.scap.controllers.routes.SolicitacoesController.encaminharSolicitacao(solicitacao.id)">
+<font color="yellow" face="trebuchet ms">Designar relator</font></a>
 <br>
 <br>
 }
@@ -96,15 +95,15 @@
 <br>
 }
 
-@if(userTipo.equals(TipoUsuario.Prof.toString()) && (solicitacao.status.equals(StatusSolicitacao.Iniciada.toString()) || solicitacao.status.equals(StatusSolicitacao.Liberada.toString())) ){
+@if( (userTipo.equals(TipoUsuario.Prof.toString()) || userTipo.equals(TipoAcessorio.Chefe.toString())) && (solicitacao.status.equals(StatusSolicitacao.Iniciada.toString()) || solicitacao.status.equals(StatusSolicitacao.Liberada.toString())) ){
 <a href="@br.ufes.scap.controllers.routes.PareceresController.manifestarContraForm(solicitacao.id)">
-<font color="yellow" face="trebuchet ms">Manifestar-se Contra</font></a>
+<font color="yellow" face="trebuchet ms">Manifestar-se contra</font></a>
 <br>
 <br>
 }
 
 @if(userTipo.equals(TipoAcessorio.Relator.toString()) && solicitacao.status.equals(StatusSolicitacao.Liberada.toString())){
-<a href="@br.ufes.scap.controllers.routes.PareceresController.registrarParecer(solicitacao.id)"><font color="yellow" face="trebuchet ms">Registrar Parecer</font></a>
+<a href="@br.ufes.scap.controllers.routes.PareceresController.registrarParecer(solicitacao.id)"><font color="yellow" face="trebuchet ms">Registrar parecer</font></a>
 <br>
 <br>
 }

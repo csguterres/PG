@@ -3,7 +3,7 @@
 @import br.ufes.scap.models.TipoJulgamento
 
 @main() {
-
+<body bgcolor="teal"  >
     @parecerForm.globalError.map { error =>
         <p class="error">
             @error.message
@@ -14,23 +14,21 @@
 <form action = "@br.ufes.scap.controllers.routes.PareceresController.registrarParecer(solicitacao.id)" method = "post" align="center">
  
 <fieldset>
-        <div class="col-xs-4">
-            <div>
-                <label style="color: #F8741B; font-size: 22px;font-weight: bold; text-decoration:none">Registrar Parecer</label>
-            </div>
+		<h1><font color="white" face="trebuchet ms"> Registrar Parecer </font></h1>
             <br/>
 
-         	<p>Determinar o parecer<p>
+         	<font color="white" face="trebuchet ms">Julgamento: &nbsp;&nbsp</font>
 		<select id="julgamento" name="julgamento" value="">
 		@for(j <- TipoJulgamento.values){
   			<option value=@j.toString()>@j.toString()</option>
 		}
 		</select>
-            </div>
-
 		<br>
-		<p>Escreva o motivo</p>
-         <textarea id="motivo"  align="center" name="motivo" rows = "5" cols = "50" name = "description">
+		<br>
+		<br>
+         	<font color="white" face="trebuchet ms">Motivo: </font>
+		<br>
+         <textarea id="motivo"  align="center" name="motivo" rows = "5" cols = "50">
          </textarea>
 		<br>
 <br>
@@ -38,7 +36,6 @@
 <br>
          <input type = "submit" onclick="return confirm('Você tem certeza de que deseja registrar esse parecer? Não é possível alterá-lo depois.');" value = "Registrar">
       
-        </div>
     </fieldset>
 </form>
 
@@ -51,4 +48,6 @@
 <form role="form" action='@br.ufes.scap.controllers.routes.LoginController.menu()' method="get" align="center">
                 <button type="submit" >Voltar ao Menu Principal</button>
 </form>
+
+</body>
 }

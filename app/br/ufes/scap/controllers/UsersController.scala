@@ -15,9 +15,9 @@ class UsersController @Inject()
     authenticatedProfessorAction : AuthenticatedProfessorAction)
     extends Controller { 
 
-  def listarUsuarios = authenticatedSecretarioAction { implicit request =>
+  def listarUsuarios = authenticatedUsuarioAction { implicit request =>
         val users = UserService.listAllUsersByTipo(TipoUsuario.Prof.toString())
-        Ok(br.ufes.scap.views.html.listUsers(UserForm.form, users))
+        Ok(br.ufes.scap.views.html.listUsers(UserForm.form, users, Global.SESSION_TIPO))
   }
   
   def addUserForm() = authenticatedSecretarioAction {
