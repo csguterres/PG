@@ -20,6 +20,8 @@ GET     /solicitacao/:id/cancelar     		br.ufes.scap.controllers.SolicitacoesCon
 POST    /solicitacao/:id/cancelar    		br.ufes.scap.controllers.SolicitacoesController.cancelarSolicitacao(id : Long)
 GET	  /solicitacao/:id/encaminhar			br.ufes.scap.controllers.SolicitacoesController.encaminharSolicitacao(id : Long)
 POST	  /solicitacao/:id/encaminhar			br.ufes.scap.controllers.SolicitacoesController.encaminharSolicitacao(id : Long)
+GET	  /solicitacao/:id/aprovar			br.ufes.scap.controllers.SolicitacoesController.aprovar(id : Long)
+GET	  /solicitacao/:id/reprovar			br.ufes.scap.controllers.SolicitacoesController.reprovar(id : Long)
 GET	  /busca	      				br.ufes.scap.controllers.SolicitacoesController.definirBuscaForm
 POST	  /busca	      				br.ufes.scap.controllers.SolicitacoesController.definirBusca
 GET	  /login						br.ufes.scap.controllers.LoginController.loginForm
@@ -30,6 +32,7 @@ POST    /addMandato					br.ufes.scap.controllers.MandatosController.addMandato()
 GET     /deleteMandato/:id/         		br.ufes.scap.controllers.MandatosController.deleteMandato(id : Long)
 GET	  /user/:id/mandatos				br.ufes.scap.controllers.MandatosController.showMandatosByProfessor(id : Long)
 GET	  /user/:id/solicitacoes			br.ufes.scap.controllers.SolicitacoesController.showAfastamentosByProfessor(id : Long)
+GET	  /user/:id/parentescos				br.ufes.scap.controllers.ParentescosController.listarParentescosByProfessor(id : Long)
 GET	  /addParentesco					br.ufes.scap.controllers.ParentescosController.addParentescoForm
 POST	  /addParentesco					br.ufes.scap.controllers.ParentescosController.addParentesco
 GET	  /listParentescos				br.ufes.scap.controllers.ParentescosController.listarParentescos

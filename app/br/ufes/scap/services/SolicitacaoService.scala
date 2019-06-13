@@ -22,7 +22,17 @@ object SolicitacaoService {
 
   def listAllSolicitacoes: Seq[SolicitacaoFull] = {
     val solicitacoes = SolicitacaoDAOSlick.listAll
+ /*   var sol_final : Seq[Solicitacao] = Seq()
+    for (s <- solicitacoes){
+      if (!s.status.equals(StatusSolicitacao.Arquivada.toString())){
+        sol_final = sol_final :+ s
+      }
+    }
+    return turnSeqSolIntoSeqSolFull(sol_final) 
+    
+    */
     return turnSeqSolIntoSeqSolFull(solicitacoes) 
+
   }
   
   def turnSeqSolIntoSeqSolFull(solicitacoes : Seq[Solicitacao]): Seq[SolicitacaoFull] = {
@@ -73,7 +83,7 @@ object SolicitacaoService {
       }
       return solicitacoes
   }
-  
+
   def mudaStatus(oldSolicitacao : SolicitacaoFull, status : String) = {
     val solicitacao = SolicitacaoFull(oldSolicitacao.id, oldSolicitacao.professor,
               oldSolicitacao.relator, oldSolicitacao.dataSolicitacao, 
@@ -81,8 +91,7 @@ object SolicitacaoService {
               oldSolicitacao.dataIniEvento, oldSolicitacao.dataFimEvento, 
               oldSolicitacao.nomeEvento, oldSolicitacao.cidade, 
               oldSolicitacao.onus, oldSolicitacao.tipoAfastamento, 
-              status, oldSolicitacao.motivoCancelamento, 
-              oldSolicitacao.dataJulgamentoAfast)
+              status, oldSolicitacao.motivoCancelamento)
     SolicitacaoService.update(solicitacao)
   }
   
@@ -107,8 +116,7 @@ object SolicitacaoService {
               dataIniEvento, dataFimEvento, 
               oldSolicitacao.nomeEvento, oldSolicitacao.cidade, 
               oldSolicitacao.onus, oldSolicitacao.tipoAfastamento, 
-              oldSolicitacao.status,oldSolicitacao.motivoCancelamento, 
-              oldSolicitacao.dataJulgamentoAfast)
+              oldSolicitacao.status,oldSolicitacao.motivoCancelamento)
     return solicitacao
   }
   
@@ -132,8 +140,7 @@ object SolicitacaoService {
               dataIniEvento, dataFimEvento, 
               oldSolicitacao.nomeEvento, oldSolicitacao.cidade, 
               oldSolicitacao.onus, oldSolicitacao.tipoAfastamento, 
-              oldSolicitacao.status,oldSolicitacao.motivoCancelamento, 
-              oldSolicitacao.dataJulgamentoAfast)
+              oldSolicitacao.status,oldSolicitacao.motivoCancelamento)
     return solicitacao
   }
   
@@ -146,8 +153,7 @@ object SolicitacaoService {
       oldSolicitacao.dataIniEvento, oldSolicitacao.dataFimEvento, 
       oldSolicitacao.nomeEvento, oldSolicitacao.cidade, 
       oldSolicitacao.onus, oldSolicitacao.tipoAfastamento, 
-      oldSolicitacao.status,oldSolicitacao.motivoCancelamento, 
-      oldSolicitacao.dataJulgamentoAfast)
+      oldSolicitacao.status,oldSolicitacao.motivoCancelamento)
     return solicitacao
   }
   
@@ -159,8 +165,7 @@ object SolicitacaoService {
       oldSolicitacao.dataIniEvento, oldSolicitacao.dataFimEvento, 
       oldSolicitacao.nomeEvento, oldSolicitacao.cidade, 
       oldSolicitacao.onus, oldSolicitacao.tipoAfastamento, 
-      StatusSolicitacao.Cancelada.toString(),oldSolicitacao.motivoCancelamento, 
-      oldSolicitacao.dataJulgamentoAfast)
+      StatusSolicitacao.Cancelada.toString(),oldSolicitacao.motivoCancelamento)
     return solicitacao
   }
   

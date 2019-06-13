@@ -2,7 +2,7 @@ package br.ufes.scap.controllers
 
 import br.ufes.scap.models.{Global, User, UserForm, Solicitacao,
 SolicitacaoFull, ManifestacaoForm, EncaminhamentoForm, 
- SolicitacaoForm, StatusSolicitacao, 
+ SolicitacaoForm, StatusSolicitacao,
 TipoUsuario, BuscaForm, TipoAfastamento, TipoAcessorio}
 import play.api.mvc._
 import br.ufes.scap.services.{SolicitacaoService, UserService, 
@@ -55,7 +55,7 @@ class SolicitacoesController @Inject()
       if (AuthenticatorService.isAutor(sol.professor)){
         val newSolicitacao = SolicitacaoService.cancelaSolicitacao(sol)
         SolicitacaoService.update(newSolicitacao)
-        EmailService.enviarEmailParaChefeCancelamento(id)
+        EmailService.enviarEmailParaChefeCancelamento(newSolicitacao)
             Redirect(routes.LoginController.menu())
       }else{
             Ok(br.ufes.scap.views.html.erro())
@@ -93,6 +93,20 @@ class SolicitacoesController @Inject()
     Ok(br.ufes.scap.views.html.addSolicitacao(SolicitacaoForm.form))
   }
   
+  def aprovar(id : Long) = authenticatedSecretarioAction {
+    val sol = SolicitacaoService.getSolicitacao(id)
+    SolicitacaoService.mudaStatus(sol, StatusSolicitacao.AprovadaDI.toString())
+    EmailService.enviarEmailParaSolicitante(sol, StatusSolicitacao.AprovadaDI.toString())
+    Redirect(routes.SolicitacoesController.listarSolicitacoes())
+  }
+  
+  def reprovar(id : Long) = authenticatedSecretarioAction {
+    val sol = SolicitacaoService.getSolicitacao(id)
+    SolicitacaoService.mudaStatus(sol, StatusSolicitacao.Reprovada.toString())
+    EmailService.enviarEmailParaSolicitante(sol, StatusSolicitacao.Reprovada.toString())
+    Redirect(routes.SolicitacoesController.listarSolicitacoes())
+  }
+  
   def addSolicitacao() = authenticatedProfessorAction.async { implicit request =>
     SolicitacaoForm.form.bindFromRequest.fold(
       // if any error in submitted data
@@ -106,9 +120,9 @@ class SolicitacoesController @Inject()
         val newSolicitacao = Solicitacao(0, Global.SESSION_KEY, 0, dataAtual,
             iniAfast, fimAfast, iniEvento, fimEvento, 
             solicitacaoForm.nomeEvento, solicitacaoForm.cidade, solicitacaoForm.onus, solicitacaoForm.tipoAfastamento,
-            StatusSolicitacao.Iniciada.toString(), "", iniEvento)
+            StatusSolicitacao.Iniciada.toString(), "")
         SolicitacaoService.addSolicitacao(newSolicitacao)
-        EmailService.enviarEmailParaTodos(solicitacaoForm.nomeEvento)
+        EmailService.enviarEmailParaTodos()
         Future.successful(Redirect(routes.SolicitacoesController.listarSolicitacoes()))
       })
   }
@@ -138,7 +152,7 @@ SolicitacaoService.getSolicitacao(idSolicitacao)
         data => {
           val oldSolicitacao = SolicitacaoService.getSolicitacao(idSolicitacao)
           val newSolicitacao = SolicitacaoService.addRelator(oldSolicitacao, data.idRelator)
-          EmailService.enviarEmailParaRelator(idSolicitacao, UserService.getUser(data.idRelator).get)
+          EmailService.enviarEmailParaRelator(newSolicitacao, newSolicitacao.relator.get)
           SolicitacaoService.mudaStatus(newSolicitacao,StatusSolicitacao.Liberada.toString())
           Future.successful(Ok(br.ufes.scap.views.html.menu(UserForm.form, UserService.getUser(Global.SESSION_KEY))))
           

@@ -22,6 +22,11 @@ class ParentescosController @Inject()
         val parentescos = ParentescoService.listAllParentescos
         Ok(br.ufes.scap.views.html.listParentescos(parentescos, Global.SESSION_TIPO))
   }
+  
+  def listarParentescosByProfessor(idProfessor : Long) = authenticatedUsuarioAction { 
+        val parentescos = ParentescoService.listAllParentescosByProfessor(idProfessor)
+        Ok(br.ufes.scap.views.html.listParentescos(parentescos, Global.SESSION_TIPO))
+  }
 
   def deleteParentesco(id: Long) = authenticatedSecretarioAction { implicit request =>
     if(AuthenticatorService.isSecretario()){

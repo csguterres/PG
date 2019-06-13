@@ -21,8 +21,8 @@ object ParentescoService {
     turnSeqParentescoIntoSeqParentescoFull(ParentescoDAOSlick.listAll)
   }
   
-  def listAllParentescosByProfessor(idProfessor : Long): Seq[Parentesco] = {
-    ParentescoDAOSlick.findByProfessor(idProfessor)
+  def listAllParentescosByProfessor(idProfessor : Long): Seq[ParentescoFull] = {
+    turnSeqParentescoIntoSeqParentescoFull(ParentescoDAOSlick.findByProfessor(idProfessor))
   }
     
   def update(parentesco : Parentesco) = { 
@@ -50,7 +50,7 @@ object ParentescoService {
   def naoExisteParentesco(id1 : Long, id2 : Long):Boolean = {
           val parentescos = ParentescoService.listAllParentescosByProfessor(id1)
           for (p <- parentescos){
-            if (p.idProfessor1 == id2 || p.idProfessor2 == id2){
+            if (p.professor1.id == id2 || p.professor2.id == id2){
               return false
             }
           }

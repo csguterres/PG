@@ -46,15 +46,15 @@ class PareceresDocumentoController @Inject()
               val newParecerDocumento = ParecerDocumento(0, idSolicitacao, data.tipo, data.julgamento, byteArray, dataAtual)   
               if (data.julgamento.equals(TipoJulgamento.Contra.toString())){
                   SolicitacaoService.mudaStatus(solicitacao,StatusSolicitacao.Reprovada.toString())
-                  EmailService.enviarEmailParaSolicitante(solicitacao.id, solicitacao.professor, StatusSolicitacao.Reprovada.toString())
+                  EmailService.enviarEmailParaSolicitante(solicitacao, StatusSolicitacao.Reprovada.toString())
               }else{
                 if (data.julgamento.equals(TipoJulgamento.AFavor.toString()) && data.tipo.equals(Setor.CT.toString())){
                   SolicitacaoService.mudaStatus(solicitacao,StatusSolicitacao.AprovadaCT.toString())
-                  EmailService.enviarEmailParaSolicitante(solicitacao.id, solicitacao.professor, StatusSolicitacao.AprovadaCT.toString())
+                  EmailService.enviarEmailParaSolicitante(solicitacao, StatusSolicitacao.AprovadaCT.toString())
                 }else{
                    if (data.julgamento.equals(TipoJulgamento.AFavor.toString()) && data.tipo.equals(Setor.PRPPG.toString())){
                      SolicitacaoService.mudaStatus(solicitacao,StatusSolicitacao.AprovadaPRPPG.toString())
-                     EmailService.enviarEmailParaSolicitante(solicitacao.id, solicitacao.professor, StatusSolicitacao.AprovadaPRPPG.toString())
+                     EmailService.enviarEmailParaSolicitante(solicitacao, StatusSolicitacao.AprovadaPRPPG.toString())
                    }
                 }
               }

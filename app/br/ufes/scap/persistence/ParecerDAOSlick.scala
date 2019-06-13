@@ -8,8 +8,6 @@ import scala.concurrent.Future
 import slick.driver.JdbcProfile
 import slick.driver.MySQLDriver.api._
 import play.api.db.slick.DatabaseConfigProvider
-import play.api.data.Form
-import play.api.data.Forms._
 import scala.concurrent._
 import scala.concurrent.duration._
 

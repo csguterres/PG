@@ -17,7 +17,7 @@ class UsersController @Inject()
 
   def listarUsuarios = authenticatedUsuarioAction { implicit request =>
         val users = UserService.listAllUsersByTipo(TipoUsuario.Prof.toString())
-        Ok(br.ufes.scap.views.html.listUsers(UserForm.form, users, Global.SESSION_TIPO))
+        Ok(br.ufes.scap.views.html.listUsers(UserForm.form, users))
   }
   
   def addUserForm() = authenticatedSecretarioAction {

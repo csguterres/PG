@@ -25,7 +25,6 @@ create table `solicitacao` (
   `tipoAfastamento` TEXT NOT NULL,
   `status` TEXT NOT NULL,
   `motivoCancelamento` TEXT,
-  `dataJulgamentoAfast` DATETIME,
 	FOREIGN KEY (idProfessor)
         REFERENCES user(id)
 		ON DELETE CASCADE

@@ -7,8 +7,6 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import slick.driver.JdbcProfile
 import slick.driver.MySQLDriver.api._
 import play.api.db.slick.DatabaseConfigProvider
-import play.api.data.Form
-import play.api.data.Forms._
 import scala.concurrent._
 import scala.concurrent.duration._
 
@@ -34,7 +32,8 @@ object UserDAOSlick extends UserDAO {
   }
 
   def get(id: Long): Option[User] = {
-    Await.result(dbConfig.db.run(users.filter(_.id === id).result.headOption),Duration.Inf)
+    val Usuario : Future[Option[User]] = dbConfig.db.run(users.filter(_.id === id).result.headOption)
+    return Await.result(Usuario,Duration.Inf)
   }
 
   def update(u : Any) = {

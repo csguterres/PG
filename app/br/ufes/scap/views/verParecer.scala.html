@@ -1,4 +1,4 @@
-@(parecer : br.ufes.scap.models.ParecerFull)
+@(parecer : br.ufes.scap.models.ParecerFull, ehRelator : Boolean)
 
 @import java.util.Locale
 @import java.time.format.TextStyle
@@ -13,7 +13,7 @@
 <fieldset>
 <h1><font color="white" face="trebuchet ms">Dados do Parecer</font></h1>
 
-<font color="white" face="trebuchet ms"> * Parecer emitido para a solicitacao de afastamento do professor @parecer.solicitacao.professor.nome em virtude do evento @parecer.solicitacao.nomeEvento</font>
+<font color="white" face="trebuchet ms"> * Parecer emitido para a solicitacao de afastamento do(a) professor(a) @parecer.solicitacao.professor.nome em virtude do evento @parecer.solicitacao.nomeEvento</font>
 <br>
 <br>
 

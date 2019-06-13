@@ -3,7 +3,7 @@
 <body bgcolor="teal"  >
     @encaminhamentoForm.globalError.map { error =>
         <p class="error">
-            @error.message
+            <font face="trebuchet ms" color="yellow">@error.message </font>
         </p>
 	}
 
@@ -32,7 +32,7 @@
 		<br>
 		<br>
 
-                <button type="submit" onclick="return confirm('Você tem certeza de que deseja designar esse professor(a) como relator(a) dessa solicitação de afastamento?');" class="btn btn-primary ynt-btn-orange">Designar</button>
+                <button type="submit" onclick="return confirm('Você tem certeza de que deseja designar esse professor(a) como relator(a) dessa solicitação de afastamento?');" class="btn btn-default">Designar</button>
 
     </fieldset>
 </form>

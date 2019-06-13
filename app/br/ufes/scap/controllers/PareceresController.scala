@@ -28,16 +28,19 @@ class PareceresController  @Inject()
 
   def verParecer(idParecer: Long) = authenticatedUsuarioAction{
     val parecer = ParecerService.getParecer(idParecer)
-    Ok(br.ufes.scap.views.html.verParecer(parecer))
+    val relator = parecer.solicitacao.relator
+    var ehRelator = false
+    if (relator != None){
+      if (relator.get.id == parecer.professor.id){
+        ehRelator = true 
+      }
+    }
+    Ok(br.ufes.scap.views.html.verParecer(parecer, ehRelator))
   }
   
   def manifestarContraForm(idSolicitacao : Long) = authenticatedProfessorAction { implicit request =>
-    if (AuthenticatorService.isProfessor()){
       val solicitacao = SolicitacaoService.getSolicitacao(idSolicitacao)
       Ok(br.ufes.scap.views.html.addParecerContra(ManifestacaoForm.form, solicitacao))
-    }else{
-      Ok(br.ufes.scap.views.html.erro())
-    }
   }
   
   def registrarParecerForm(idSolicitacao : Long) = authenticatedProfessorAction { implicit request =>
@@ -65,12 +68,12 @@ class PareceresController  @Inject()
               if (data.julgamento.equals(TipoJulgamento.AFavor.toString())){
                   SolicitacaoService.mudaStatus(solicitacao,StatusSolicitacao.AprovadaDI.toString())
                   ParecerService.addParecer(newParecer)
-                  EmailService.enviarEmailParaSolicitante(idSolicitacao, solicitacao.professor, StatusSolicitacao.AprovadaDI.toString())
+                  EmailService.enviarEmailParaSolicitante(solicitacao, StatusSolicitacao.AprovadaDI.toString())
               }else{
                   //if (data.julgamento.equals(TipoJulgamento.Contra.toString())){
                     SolicitacaoService.mudaStatus(solicitacao,StatusSolicitacao.Reprovada.toString())              
                     ParecerService.addParecer(newParecer)
-                    EmailService.enviarEmailParaSolicitante(idSolicitacao, solicitacao.professor, StatusSolicitacao.Reprovada.toString())
+                    EmailService.enviarEmailParaSolicitante(solicitacao, StatusSolicitacao.Reprovada.toString())
                   //}
               }
               Future.successful(
@@ -93,8 +96,9 @@ class PareceresController  @Inject()
               val newParecer = Parecer(0, idSolicitacao, Global.SESSION_KEY, 
                   TipoJulgamento.Contra.toString(), data.motivo, dataAtual)
               val solicitacao = SolicitacaoService.getSolicitacao(idSolicitacao)
-              EmailService.enviarEmailParaSolicitante(idSolicitacao, solicitacao.professor, "Manifestação Contrária")
+              EmailService.enviarEmailParaSolicitante(solicitacao, "Bloqueada devido a uma manifestação contrária, o resultado final será decidido na próxima reunião do DI")
               ParecerService.addParecer(newParecer)
+              SolicitacaoService.mudaStatus(solicitacao, StatusSolicitacao.Bloqueada.toString())
               Future.successful(Redirect(routes.LoginController.menu()))
         }
     )

@@ -6,9 +6,13 @@
 <body bgcolor="teal"  >
     @parecerForm.globalError.map { error =>
         <p class="error">
-            @error.message
+            <font face="trebuchet ms" color="yellow">@error.message </font>
         </p>
 	}
+
+<form align="right">
+<a href="@br.ufes.scap.controllers.routes.LoginController.logout"><font color="yellow" face="trebuchet ms">Logout</font></a>
+</form>
 
 
 <form action = "@br.ufes.scap.controllers.routes.PareceresController.registrarParecer(solicitacao.id)" method = "post" align="center">
@@ -45,8 +49,8 @@
 <br>
 
 		
-<form role="form" action='@br.ufes.scap.controllers.routes.LoginController.menu()' method="get" align="center">
-                <button type="submit" >Voltar ao Menu Principal</button>
+<form align="left">
+<a href="@br.ufes.scap.controllers.routes.LoginController.menu()"><font color="yellow" face="trebuchet ms">Voltar ao Menu Principal</font></a>
 </form>
 
 </body>
