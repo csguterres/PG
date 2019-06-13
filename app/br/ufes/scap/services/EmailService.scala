@@ -31,21 +31,21 @@ object EmailService {
    }
    
   def enviarEmailParaRelator(sol : SolicitacaoFull, relator : User) = {
-      val mensagem = "Você foi designado como relator de uma solicitação de afastamento (ID = " + sol.id + ") do(a) professor(a) " + sol.professor.nome + "para o evento " + sol.nomeEvento + "\nAcesse o SCAP para deferir seu parecer." 
+      val mensagem = "Você foi designado como relator de uma solicitação de afastamento (ID = " + sol.id + ") do(a) professor(a) " + sol.professor.nome + " para o evento " + sol.nomeEvento + "\nAcesse o SCAP para deferir seu parecer." 
       val assunto = "Você foi designado para ser relator"
       sendEmail(relator, assunto, mensagem)
     }
           
     def enviarEmailParaChefeCancelamento(sol : SolicitacaoFull) = {
       val chefe = UserService.getUser(Global.CHEFE_ID)
-      val mensagem = "A solicitação de afastamento (ID = " + sol.id + ") do(a) professor(a) " + sol.professor.nome + "para o evento " + sol.nomeEvento + "foi cancelada pelo autor.\nAcesse o SCAP para ver mais detalhes."
+      val mensagem = "A solicitação de afastamento (ID = " + sol.id + ") do(a) professor(a) " + sol.professor.nome + " para o evento " + sol.nomeEvento + " foi cancelada pelo autor.\nAcesse o SCAP para ver mais detalhes."
       val assunto = "Uma solicitação foi cancelada"
       sendEmail(chefe.get, assunto, mensagem)
     }
     
     def enviarEmailParaSolicitante(sol : SolicitacaoFull, status : String) = {
       val mensagem = "Sua solicitação de afastamento (ID = " + sol.id + ") para o evento " + sol.nomeEvento +
-      "teve o status alterada para" + status + ".\nAcesse o SCAP para ver mais detalhes." 
+      " teve o status alterada para " + status + ".\nAcesse o SCAP para ver mais detalhes." 
       val assunto = "Atualização no status da sua solicitação de afastamento"
       sendEmail(sol.professor, assunto, mensagem)
     }

@@ -12,7 +12,7 @@
 <a href="@br.ufes.scap.controllers.routes.LoginController.logout"><font color="yellow" face="trebuchet ms">Logout</font></a>
 </form>
 
-<form role="form" action='@br.ufes.scap.controllers.routes.SolicitacoesController.addSolicitacao()' method="post" align="center">
+<form role="form" action='@br.ufes.scap.controllers.routes.SolicitacoesController.addSolicitacao()' method="post" align="center" autocomplete="off">
 
     <fieldset>
             <h1><font face="trebuchet ms" color="white">Registrar Solicitação de Afastamento</font></h1>
@@ -56,13 +56,13 @@
 		<br>
 
  		    <font color="white" face="trebuchet ms">Cidade do Evento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp </font>  
-                <input type="text" id="cidade" name="cidade" value="" placeholder="cidade do evento" required>
+                <input type="text" id="cidade" name="cidade" value="" placeholder="cidade do evento" autocomplete="false" required>
                 <br>
 
 		<br>
 		<br>
 
- 		    <font color="white" face="trebuchet ms">Onus &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp </font>  
+ 		    <font color="white" face="trebuchet ms">Ônus &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp </font>  
 		<select id=onus name="onus" value="">
     			<option value="INEXISTENTE">INEXISTENTE</option>
     			<option value="PARCIAL">PARCIAL</option>
