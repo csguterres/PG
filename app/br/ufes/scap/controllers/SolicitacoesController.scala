@@ -36,10 +36,10 @@ class SolicitacoesController @Inject()
         BuscaForm.form.bindFromRequest.fold(
         // if any error in submitted data
         errorForm => 
-          Future.successful
-          (BadRequest(br.ufes.scap.views.html.buscarSolicitacoes(errorForm, UserService.listAllUsers))),
-        data => {
-          val solicitacoes = SolicitacaoService.busca(data.idProfessor, data.idRelator, data.status)
+          Future.successful 
+          (BadRequest(br.ufes.scap.views.html.buscarSolicitacoes(errorForm, UserService.listAllUsersByTipo(TipoUsuario.Prof.toString())))),
+        buscaForm => {
+          val solicitacoes = SolicitacaoService.busca(buscaForm.idProfessor, buscaForm.idRelator, buscaForm.status)
           Future.successful(Ok(br.ufes.scap.views.html.listSolicitacoes(solicitacoes)))
         }
         )
